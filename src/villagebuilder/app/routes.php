@@ -7,13 +7,54 @@ Route::get('/', array(
     
 ));
 
+
+/*
+ * API
+ */
+Route::get('/api/check_login_status', array(
+    'as' => 'api-check-login-status',
+    'uses' => 'ApiController@getLoginStatus'
+));
+Route::get('api/meta-log-in', array(
+    'as' => 'api-meta-log-in',
+    'uses' => 'ApiController@metaLogIn'
+));
+Route::get('api/log-out', array(
+    'as' => 'api-log-out',
+    'uses' => 'ApiController@getLogOut'
+));
+Route::group(array('before' => 'csrf'), function() {
+    Route::post('api/log-in', array(
+        'as' => 'api-post-log-in',
+        'uses' => 'ApiController@postLogIn'
+    ));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
  * Authenticated group 
  * (auth and guest are set in filters)
  */
 Route::group(array('before' => 'auth'), function() {
     
-    Route::get('/account/sing-out', array(
+    Route::get('/account/sign-out', array(
         'as' => 'account-sign-out',
         'uses' => 'AccountController@getSignOut'
     ));

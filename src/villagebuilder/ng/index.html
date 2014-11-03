@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <!-- Bootstrap Themes -->
+    <link rel="stylesheet" href="http://bootswatch.com/cerulean/bootstrap.min.css">
+    <!-- jQuery  -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Bootstrap compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- AngularJS -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="//code.angularjs.org/1.2.26/angular-route.js"></script>
+    <script src="js/app/ng_sanitize.js"></script>
+    <!--<link rel="stylesheet" href="assets/css/data_analysis_tool.css">-->       
+    <title>Village Builder</title>
+</head>
+
+<body ng-controller="GlobalController" ng-init="State.authenticate()" ngcloak>
+    
+{{ State.debug }}
+ 
+<div class="container">
+    <div class="col-lg-12" id="header">
+        <div class="page-header">
+            <h1 id="navbar">Village Builder</h1>
+            <p>own less and have more</p>
+        </div>
+        <div class="text-danger">
+            <strong>
+                <div></div>
+            </strong>
+        </div>
+    </div>	
+    <div class="row" id="body">
+        <div ng-view></div>
+    </div>
+    <div class="row" id="footer">
+        <div class="col-lg-12">
+            <hr>
+            <p>Made in <a href="http://johnmeinken.com">Ohio</a>,
+            2014.<br />
+            Questions and feedback: 
+            <a href="mailto:thebellsofohio@hotmail.com">
+                thebellsofohio@hotmail.com
+            </a>   
+        </div>
+    </div>
+    
+
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true"></div>
+
+
+    
+<!-- AngularJS modules and directives -->    
+<script src="js/app/app.js"></script>
+<!-- AngularJS services  -->
+<script src="js/app/state_service.js"></script>
+<!-- AngularJS controllers  -->
+<script src="js/controllers/global_controller.js"></script>
+<script src="js/controllers/home_controller.js"></script>
+<script src="js/controllers/login_controller.js"></script>
+
+	
+</body>
+
+</html>
+

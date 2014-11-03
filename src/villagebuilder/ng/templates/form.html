@@ -1,0 +1,45 @@
+<div ng-repeat="key in keyArray(State.loginRequest)">
+    <div ng-switch="State.loginRequestMeta[key].type">
+        <div ng-switch-when="number"
+             ng-class="{'form-group':true, 'has-error':false}">
+            <label class="control-label">
+                {{ State.loginRequestMeta[key].name || key }}
+            </label>
+            <input class="form-control" name="min_length" type="number" integer 
+                   ng-model="State.loginRequest[key]" />
+            <span class="help-block" ng-show="State.loginRequestMeta[key].description">
+                {{ State.loginRequestMeta[key].description }}
+            </span>
+            <span class="text-danger" ng-show="false">
+                Please enter a valid integer or '0' for no minimum.
+            </span>
+        </div>
+        <div class="form-group" ng-switch-when="string">
+            <label class="control-label">
+                {{ State.loginRequestMeta[key].name || key }}
+            </label>
+            <input class="form-control" type="text" ng-model="State.loginRequest[key]" />
+            <span class="help-block" ng-show="State.loginRequestMeta[key].description">
+                {{ State.loginRequestMeta[key].description }}
+            </span>
+        </div>
+        <div class="form-group" ng-switch-when="password">
+            <label class="control-label">
+                {{ State.loginRequestMeta[key].name || key }}
+            </label>
+            <input class="form-control" type="password" ng-model="State.loginRequest[key]" />
+            <span class="help-block" ng-show="State.loginRequestMeta[key].description">
+                {{ State.loginRequestMeta[key].description }}
+            </span>
+        </div>
+        <div class="form-group" ng-switch-when="boolean" class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="State.loginRequest[key]" />
+                {{ State.loginRequestMeta[key].name || key }}
+            </label>
+            <span class="help-block" ng-show="State.loginRequestMeta[key].description">
+                {{ State.loginRequestMeta[key].description }}
+            </span>
+        </div>
+    </div>
+</div>
