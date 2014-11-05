@@ -1,31 +1,29 @@
 
-app.controller('CreateAccountController', function($scope, $location, $http, $routeParams, Ajax, State) {
+app.controller('ManageAccountController', function($scope, $location, $http, Ajax, State) {
     
-    //if user is logged in, redirect
+    $scope.showView = false;
+    
     $scope.$watch(function() {return State.authenticated}, 
         function (value) {
             if (typeof value === 'undefined') {
-                // do nothing and wait
-            } else if (value === true) {
-                //user already logged in; redirect to home page
-                $location.path( State.intendedLocation );
+                // do nothing
+            } else if (value === false) {
+                // set intended page as home and redirect to login
+                State.intendedLocation = '/home';
+                $location.path( "/login" );
             } else {
-                //show this page
+                //load the page
                 $scope.showView = true;
             }
         }
     );
     
-    $scope.testVar = "hello";
-    $scope.showView = false;
-    
-    $scope.code = $routeParams.code;
-    
     $scope.accountRequest = {};
     $scope.accountRequestMeta = {};
     $scope.accountFormDataLoaded = false;
 
-    $scope.createAccount = function() {
+    $scope.updateAccount = function() {
+        /*
         $http.post(Ajax.POST_ACCOUNT, this.accountRequest).
             success(function(data, status, headers, config) {
                 State.debug = status;
@@ -39,12 +37,13 @@ app.controller('CreateAccountController', function($scope, $location, $http, $ro
                 State.infoMessage = data;
                 $location.path( '/info' );
             });
+        */
     }
 
     
     $scope.initializeView = function() {
         // load data for account form
-        $http.get(Ajax.GET_ACCOUNT).
+        $http.get(Ajax.GET_ACCOUNT + '?user_id=' + State.userId).
             success(function(data, status, headers, config) {
                 $scope.accountRequest = data.values;
                 $scope.accountRequestMeta = data.meta;
@@ -56,17 +55,7 @@ app.controller('CreateAccountController', function($scope, $location, $http, $ro
             });
     }
     
-    $scope.activateAccount = function() {
-        $http.post(Ajax.POST_ACTIVATE_ACCOUNT, {'code': $routeParams.code }).
-            success(function(data, status, headers, config) {
-                State.infoTitle = "Account Activated";
-                State.infoMessage = "You can now log in with your email and password"
-                $location.path( '/info' );
-            }).
-            error(function(data, status, headers, config) {
-                State.debug = status;
-            });
-    }
+
     
 
    

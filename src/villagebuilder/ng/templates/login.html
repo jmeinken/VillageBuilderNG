@@ -1,5 +1,7 @@
 <div ng-init="initializeView()" ng-show="showView">
     this is the login page.<br><br>
+    
+    <div class="alert alert-danger" ng-if="loginErrorMessage">{{ loginErrorMessage }}</div>
 
     <div ng-if="loginFormDataLoaded" vb-build-form 
          form-defaults="loginRequest" form-meta="loginRequestMeta">></div>

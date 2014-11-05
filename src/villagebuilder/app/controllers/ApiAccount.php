@@ -7,26 +7,10 @@ class ApiAccount extends BaseController {
     const STATUS_BAD_REQUEST = 400;
     const STATUS_NOT_FOUND = 404;
     
-    
-    private $postAccountValidator = array(
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-            'password_again' => 'required|same:password'
-            //more validation
-        ); 
-    
    
-    
-    
-    
-    
-    
-
-    
-    
     public function postAccount() {
         //validate input
-        $validator = Validator::make( Input::all(), $this->postAccountValidator );
+        $validator = Validator::make( Input::all(), $this->postAccountValidator() );
         if ($validator->fails()) {
             return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
         }
@@ -57,27 +41,80 @@ class ApiAccount extends BaseController {
     
        
     public function getAccount() {
-        $defaults = [];
-        $defaults['email'] = "";
-        $defaults['password'] = "";
-        $defaults['password_again'] = "";
-        $defaults['first_name'] = '';
-        $defaults['last_name'] = '';
-        $defaults['address1'] = '';
-        $defaults['address2'] = '';
-        $defaults['city'] = '';
-        $defaults['state'] = '';
-        $defaults['zip_code'] = '';
-        $defaults['full_address'] = '';
-        $defaults['latitude'] = 0.0;
-        $defaults['longitude'] = 0.0;
-        $defaults['street'] = '';
-        $defaults['neighborhood'] = '';
-        $defaults['phone_number'] = '';
-        $defaults['phone_type'] = '';
-        $defaults['pic_large'] = '';
-        $defaults['pic_small'] = '';
-        $defaults['_token'] = csrf_token();
+        if (Input::has('user_id')) {
+            $values = $this->getAccountCurrentValues(Input::get('user_id'));
+        } else {
+            $values = $this->getAccountDefaultValues();
+        }
+        $response = [
+            'values' => $values,
+            'meta' => $this->getAccountMeta()
+        ];
+        return Response::json($response, self::STATUS_OK);
+    }
+    
+    private function postAccountValidator() {
+        return array(
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+            'password_again' => 'required|same:password'
+            //more validation
+        ); 
+    }
+    
+    private function getAccountDefaultValues() {
+        $values = [];
+        $values['email'] = "";
+        $values['password'] = "";
+        $values['password_again'] = "";
+        $values['first_name'] = '';
+        $values['last_name'] = '';
+        $values['address1'] = '';
+        $values['address2'] = '';
+        $values['city'] = '';
+        $values['state'] = '';
+        $values['zip_code'] = '';
+        $values['full_address'] = '';
+        $values['latitude'] = 0.0;
+        $values['longitude'] = 0.0;
+        $values['street'] = '';
+        $values['neighborhood'] = '';
+        $values['phone_number'] = '';
+        $values['phone_type'] = '';
+        $values['pic_large'] = '';
+        $values['pic_small'] = '';
+        $values['_token'] = csrf_token();
+        return $values;
+    }
+    
+    private function getAccountCurrentValues($userId) {
+        $account = DB::table('users')
+            ->join('member', 'users.id', '=', 'member.user_id')
+            ->join('person', 'person.member_id', '=', 'member.member_id')
+            ->where('users.id', $userId)->first();
+        $values = [];
+        $values['email'] = $account->email;
+        $values['first_name'] = $account->first_name;
+        $values['last_name'] = $account->last_name;
+        $values['address1'] = $account->address1;
+        $values['address2'] = $account->address2;
+        $values['city'] = $account->city;
+        $values['state'] = $account->state;
+        $values['zip_code'] = $account->zip_code;
+        $values['full_address'] = $account->full_address;
+        $values['latitude'] = $account->latitude;
+        $values['longitude'] = $account->longitude;
+        $values['street'] = $account->street;
+        $values['neighborhood'] = $account->neighborhood;
+        $values['phone_number'] = $account->phone_number;
+        $values['phone_type'] = $account->phone_type;
+        $values['pic_large'] = $account->pic_large;
+        $values['pic_small'] = $account->pic_small;
+        $values['_token'] = csrf_token();
+        return $values;
+    }
+    
+    private function getAccountMeta() {
         $meta = [];
         $meta['email'] = [
             'type' => 'string', 
@@ -206,14 +243,8 @@ class ApiAccount extends BaseController {
             'type' => 'string',
             'input_type' => 'hidden',
         ];
-        $response = [
-            'defaults' => $defaults,
-            'meta' => $meta
-        ];
-        return Response::json($response, self::STATUS_OK);
+        return $meta;
     }
-    
-    
     
     
 }

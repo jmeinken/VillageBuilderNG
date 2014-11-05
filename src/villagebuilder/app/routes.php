@@ -43,6 +43,11 @@ Route::group(array('before' => 'csrf'), function() {
 });
 
 
+Route::get('api/test', array (
+    'uses' => 'ApiAccount@getAccountCurrentValues'
+));
+
+
 
 
 

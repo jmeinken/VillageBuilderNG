@@ -14,11 +14,9 @@ app.service("State", function($http, $location, Ajax) {
     // will be redirected back to the page set here after successful login
     this.intendedLocation = '/home';
     
+    //user information
+    this.userId = "";
     
-    
-    
-
-   
 
     
 /***AJAX Requests**************************************************************/
@@ -30,6 +28,7 @@ app.service("State", function($http, $location, Ajax) {
         $http.get(Ajax.CHECK_LOGIN_STATUS).
             success(function(data, status, headers, config) {
                 self.authenticated = data.logged_in;
+                self.userId = data.user_id;
                 //self.debug = data;
             }).
             error(function(data, status, headers, config) {

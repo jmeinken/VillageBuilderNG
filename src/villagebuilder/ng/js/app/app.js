@@ -67,6 +67,10 @@ app.config(function($routeProvider) {
             templateUrl: 'templates/create_account.html?x=7',
             controller: 'CreateAccountController'
         }).
+        when('/manage_account', {
+            templateUrl: 'templates/manage_account.html?x=7',
+            controller: 'ManageAccountController'
+        }).
         when('/info', {
             templateUrl: 'templates/info.html?x=5'
         }).   

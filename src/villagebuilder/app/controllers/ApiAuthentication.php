@@ -15,7 +15,8 @@ class ApiAuthentication extends BaseController {
             $response['logged_in'] = true;
             $response['user_type'] = 'member';
             //$response['_token'] = csrf_token();
-            $response['email'] = Auth::user()->email;
+            $response['user_id'] = Auth::user()->id;
+            $response['user_email'] = Auth::user()->email;
             return Response::json($response, self::STATUS_OK);
         } else {
             $response = [];
@@ -25,11 +26,11 @@ class ApiAuthentication extends BaseController {
     }
     
     public function getLogIn() {
-        $defaults = [];
-        $defaults['email'] = "thebellsofohio@hotmail.com";
-        $defaults['password'] = "testtest";
-        $defaults['remember'] = false;
-        $defaults['_token'] = csrf_token();
+        $values = [];
+        $values['email'] = "thebellsofohio@hotmail.com";
+        $values['password'] = "testtest";
+        $values['remember'] = false;
+        $values['_token'] = csrf_token();
         $meta = [];
         $meta['email'] = [
             'type' => 'string',
@@ -53,7 +54,7 @@ class ApiAuthentication extends BaseController {
             'input_type' => 'hidden'
         ];
         $response = [
-            'defaults' => $defaults,
+            'values' => $values,
             'meta' => $meta
         ];
         return Response::json($response, self::STATUS_OK);
@@ -80,7 +81,10 @@ class ApiAuthentication extends BaseController {
             ), $remember);
             if ($auth) {
                 //send user back to where they wanted to go
-                return Response::json(['user' => Input::get('email')], self::STATUS_OK);
+                $response = [];
+                $response['user_id'] = Auth::user()->id;
+                $response['user_email'] = Auth::user()->email;
+                return Response::json($response, self::STATUS_OK);
             }
         }
         return Response::json(['message' => 'Incorrect email or password'], self::STATUS_NOT_FOUND);
