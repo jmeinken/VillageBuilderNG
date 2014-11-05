@@ -56,18 +56,29 @@ var app = angular.module('app', ['ngSanitize', 'ngRoute'], function($httpProvide
 app.config(function($routeProvider) {
     $routeProvider.
         when('/home', {
-            templateUrl: 'templates/home.html',
+            templateUrl: 'templates/home.html?x=1',
             controller: 'HomeController'
         }).
         when('/login', {
-            templateUrl: 'templates/login.html',
+            templateUrl: 'templates/login.html?x=2',
             controller: 'LoginController'
+        }).
+        when('/create_account', {
+            templateUrl: 'templates/create_account.html?x=7',
+            controller: 'CreateAccountController'
+        }).
+        when('/info', {
+            templateUrl: 'templates/info.html?x=5'
+        }).   
+        when('/activate_account/:code', {
+            templateUrl: 'templates/activate_account.html?x=6',
+            controller: 'ActivateAccountController'
         }).
         otherwise({
             redirectTo:'/home', 
-            templateUrl:'templates/home.html',
+            templateUrl:'templates/home.html?x=4',
             controller: 'HomeController'
-        });
+        }); 
 });
 
 
@@ -120,3 +131,31 @@ app.directive('integer', function() {
     }
   };
 });
+
+
+
+app.directive('vbBuildForm', function() {
+    
+    return {
+        scope: {
+            defaults : "=formDefaults",
+            meta : "=formMeta"
+        },
+        templateUrl: 'templates/directive_templates/myform.html?x=10',
+        link: function(scope){
+            scope.keyArray = function(obj) {
+                var arr = [];
+                var i=0;
+                for (var key in obj) {
+                    arr[i] = key;
+                    i++;
+                }
+                return arr;
+            }
+        }
+    };
+});
+
+
+
+

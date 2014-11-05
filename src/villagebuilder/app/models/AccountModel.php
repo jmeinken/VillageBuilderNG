@@ -1,0 +1,59 @@
+<?php
+
+class AccountModel {
+    
+    
+    public static function accountExists($email) {
+        $user = DB::table('users')
+            ->where('email', '=', $email)
+            ->first();
+        return (is_null($user) ? false : true);
+    }
+    
+    
+    //all values except code should be set in Input
+    public static function createAccount($code) {
+        try {
+            DB::transaction(function() use ($code) {
+               $userId = DB::table('users')->insertGetId(
+                   array(
+                       'email' => Input::get('email'), 
+                       'password' => Hash::make(Input::get('password')),
+                       'code' => $code,
+                       'active' => 0
+                   )
+               );
+               $memberId = DB::table('member')->insertGetId(
+                   array(
+                       'full_address' => Input::get('full_address'), 
+                       'address1' => Input::get('address1'), 
+                       'address2' => Input::get('address2'), 
+                       'city' => Input::get('city'), 
+                       'state' => Input::get('state'), 
+                       'zip_code' => Input::get('zip_code'), 
+                       'latitude' => Input::get('latitude'), 
+                       'longitude' => Input::get('longitude'), 
+                       'street' => Input::get('street'), 
+                       'neighborhood' => Input::get('neighborhood'), 
+                       'phone_number' => Input::get('phone_number'), 
+                       'phone_type' => Input::get('phone_type'), 
+                       'pic_large' => Input::get('pic_large'), 
+                       'pic_small' => Input::get('pic_small'), 
+                       'user_id' => $userId 
+                   )
+               );
+               DB::table('person')->insert(
+                   array(
+                       'member_id' => $memberId, 
+                       'first_name' => Input::get('first_name'),
+                       'last_name' => Input::get('last_name')
+                   )
+               );
+           });
+           return true;
+        } catch(Exception $e) {
+           return false;
+        }
+    }
+
+}

@@ -1,8 +1,10 @@
 <div ng-init="initializeView()" ng-show="showView">
     this is the login page.<br><br>
 
-    <div ng-if="State.loginFormDataLoaded" ng-include="'templates/form.html'"></div>
-    <button ng-click="signIn()">Sign In</button>
+    <div ng-if="loginFormDataLoaded" vb-build-form 
+         form-defaults="loginRequest" form-meta="loginRequestMeta">></div>
+    <button ng-click="logIn()">Sign In</button><br><br>
+    <a href="#/create_account">Create Account</a>
 
     <br><br>
 

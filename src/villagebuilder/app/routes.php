@@ -11,22 +11,34 @@ Route::get('/', array(
 /*
  * API
  */
-Route::get('/api/check_login_status', array(
+Route::get('/api/check-login-status', array(
     'as' => 'api-check-login-status',
-    'uses' => 'ApiController@getLoginStatus'
+    'uses' => 'ApiAuthentication@checkLoginStatus'
 ));
-Route::get('api/meta-log-in', array(
-    'as' => 'api-meta-log-in',
-    'uses' => 'ApiController@metaLogIn'
+Route::get('api/get-log-in', array(
+    'as' => 'api-get-log-in',
+    'uses' => 'ApiAuthentication@getLogIn'
 ));
-Route::get('api/log-out', array(
-    'as' => 'api-log-out',
-    'uses' => 'ApiController@getLogOut'
+Route::get('api/post-log-out', array(
+    'as' => 'api-post-log-out',
+    'uses' => 'ApiAuthentication@postLogOut'
+));
+Route::post('api/post-activate-account', array(
+    'as' => 'api-post-activate-account',
+    'uses' => 'ApiAuthentication@postActivateAccount'
+));
+Route::get('api/get-account', array(
+    'as' => 'api-get-account',
+    'uses' => 'ApiAccount@getAccount'
 ));
 Route::group(array('before' => 'csrf'), function() {
-    Route::post('api/log-in', array(
+    Route::post('api/post-log-in', array(
         'as' => 'api-post-log-in',
-        'uses' => 'ApiController@postLogIn'
+        'uses' => 'ApiAuthentication@postLogIn'
+    ));
+    Route::post('api/post-account', array(
+        'as' => 'api-post-account',
+        'uses' => 'ApiAccount@postAccount'
     ));
 });
 

@@ -1,0 +1,59 @@
+<u>testinngggg</u><br><br>
+
+<div ng-repeat="key in keyArray(defaults)">
+    <div ng-switch="meta[key].input_type">
+        <div ng-switch-when="number"
+             ng-class="{'form-group':true, 'has-error':false}">
+            <label class="control-label">
+                {{ meta[key].name || key }}
+            </label>
+            <input class="form-control" name="min_length" type="number" integer 
+                   ng-model="defaults[key]" />
+            <span class="help-block" ng-show="meta[key].description">
+                {{ meta[key].description }}
+            </span>
+            <span class="text-danger" ng-show="false">
+                Please enter a valid integer or '0' for no minimum.
+            </span>
+        </div>
+        <div class="form-group" ng-switch-when="text">
+            <label class="control-label">
+                {{ meta[key].name || key }}
+            </label>
+            <input class="form-control" type="text" ng-model="defaults[key]" />
+            <span class="help-block" ng-show="meta[key].description">
+                {{ meta[key].description }}
+            </span>
+        </div>
+        <div class="form-group" ng-switch-when="password">
+            <label class="control-label">
+                {{ meta[key].name || key }}
+            </label>
+            <input class="form-control" type="password" ng-model="defaults[key]" />
+            <span class="help-block" ng-show="meta[key].description">
+                {{ meta[key].description }}
+            </span>
+        </div>
+        <div class="form-group" ng-switch-when="checkbox" class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="defaults[key]" />
+                {{ meta[key].name || key }}
+            </label>
+            <span class="help-block" ng-show="meta[key].description">
+                {{ meta[key].description }}
+            </span>
+        </div>
+        <div class="form-group" ng-switch-when="select">
+            <label class="control-label">
+                {{ meta[key].name || key }}
+            </label>
+            <select class="form-control" ng-model="defaults[key]">
+                <option ng-repeat="option in keyArray(meta[key].options)"
+                        value="{{key}}">{{ meta[key].options[option] }}</option>
+            </select>
+            <span class="help-block" ng-show="meta[key].description">
+                {{ meta[key].description }}
+            </span>
+        </div>
+    </div>
+</div>

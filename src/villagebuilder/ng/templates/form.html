@@ -1,5 +1,5 @@
 <div ng-repeat="key in keyArray(State.loginRequest)">
-    <div ng-switch="State.loginRequestMeta[key].type">
+    <div ng-switch="State.loginRequestMeta[key].input_type">
         <div ng-switch-when="number"
              ng-class="{'form-group':true, 'has-error':false}">
             <label class="control-label">
@@ -14,7 +14,7 @@
                 Please enter a valid integer or '0' for no minimum.
             </span>
         </div>
-        <div class="form-group" ng-switch-when="string">
+        <div class="form-group" ng-switch-when="text">
             <label class="control-label">
                 {{ State.loginRequestMeta[key].name || key }}
             </label>
@@ -32,7 +32,7 @@
                 {{ State.loginRequestMeta[key].description }}
             </span>
         </div>
-        <div class="form-group" ng-switch-when="boolean" class="checkbox">
+        <div class="form-group" ng-switch-when="checkbox" class="checkbox">
             <label>
                 <input type="checkbox" ng-model="State.loginRequest[key]" />
                 {{ State.loginRequestMeta[key].name || key }}

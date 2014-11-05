@@ -24,7 +24,7 @@ class AccountController extends BaseController {
             $username = Input::get('username');
             $password = Input::get('password');
             $code = str_random(60);
-            
+            AccountModel::createAccount(INPUT,$code);
             $user = User::create(array(
                 'email' => $email,
                 'username' => $username,
