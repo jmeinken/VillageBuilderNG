@@ -55,5 +55,47 @@ class AccountModel {
            return false;
         }
     }
+    
+    
+    //all values except code should be set in Input
+    public static function updateAccount() {
+        try {
+            DB::transaction(function() {
+                DB::table('users')
+                    ->where('id', Input::get('user_id'))
+                    ->update(array(
+                        'email' => Input::get('email')
+                     ));
+                DB::table('member')
+                    ->where('member_id', Input::get('member_id'))
+                    ->update(array(
+                        'full_address' => Input::get('full_address'), 
+                        'address1' => Input::get('address1'), 
+                        'address2' => Input::get('address2'), 
+                        'city' => Input::get('city'), 
+                        'state' => Input::get('state'), 
+                        'zip_code' => Input::get('zip_code'), 
+                        'latitude' => Input::get('latitude'), 
+                        'longitude' => Input::get('longitude'), 
+                        'street' => Input::get('street'), 
+                        'neighborhood' => Input::get('neighborhood'), 
+                        'phone_number' => Input::get('phone_number'), 
+                        'phone_type' => Input::get('phone_type'), 
+                        'pic_large' => Input::get('pic_large'), 
+                        'pic_small' => Input::get('pic_small'), 
+                        'user_id' => Input::get('user_id')
+                     ));
+                DB::table('person')
+                    ->where('member_id', Input::get('member_id'))
+                    ->update(array(
+                        'first_name' => Input::get('first_name'),
+                        'last_name' => Input::get('last_name')
+                     ));
+           });
+           return true;
+        } catch(Exception $e) {
+           return $e;
+        }
+    }
 
 }

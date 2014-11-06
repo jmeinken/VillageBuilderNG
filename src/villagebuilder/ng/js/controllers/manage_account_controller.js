@@ -3,6 +3,11 @@ app.controller('ManageAccountController', function($scope, $location, $http, Aja
     
     $scope.showView = false;
     
+    $scope.accountRequest = {};
+    $scope.accountRequestMeta = {};
+    $scope.accountFormDataLoaded = false;
+    
+    //redirect to login if not logged in
     $scope.$watch(function() {return State.authenticated}, 
         function (value) {
             if (typeof value === 'undefined') {
@@ -14,36 +19,14 @@ app.controller('ManageAccountController', function($scope, $location, $http, Aja
             } else {
                 //load the page
                 $scope.showView = true;
+                getFormData();
             }
         }
     );
-    
-    $scope.accountRequest = {};
-    $scope.accountRequestMeta = {};
-    $scope.accountFormDataLoaded = false;
-
-    $scope.updateAccount = function() {
-        /*
-        $http.post(Ajax.POST_ACCOUNT, this.accountRequest).
-            success(function(data, status, headers, config) {
-                State.debug = status;
-                State.infoTitle = "Almost There";
-                State.infoMessage = "Check your email to confirm account creation."
-                $location.path( '/info' );
-            }).
-            error(function(data, status, headers, config) {
-                State.debug = status;
-                State.infoTitle = "Error";
-                State.infoMessage = data;
-                $location.path( '/info' );
-            });
-        */
-    }
-
-    
-    $scope.initializeView = function() {
-        // load data for account form
-        $http.get(Ajax.GET_ACCOUNT + '?user_id=' + State.userId).
+        
+    function getFormData() {
+       State.debug="started";
+       $http.get(Ajax.GET_ACCOUNT, { params: { user_id: State.userId } }).
             success(function(data, status, headers, config) {
                 $scope.accountRequest = data.values;
                 $scope.accountRequestMeta = data.meta;
@@ -53,7 +36,46 @@ app.controller('ManageAccountController', function($scope, $location, $http, Aja
             error(function(data, status, headers, config) {
                 State.debug = "failure";
             });
+   }
+   
+    $scope.updateAccount = function() {
+        //State.debug = $scope.accountRequest;
+        $http.post(Ajax.PUT_ACCOUNT, $scope.accountRequest).
+            success(function(data, status, headers, config) {
+                State.debug = data;
+            }).
+            error(function(data, status, headers, config) {
+                State.debug = data;
+            });
     }
+    
+    //load form data if authentication has finished
+    /*
+    $scope.$watch('showView', 
+        function (newValue, oldValue) {
+            if (newValue === true) {
+                $http.get(Ajax.GET_ACCOUNT + '?user_id=' + State.userId).
+                success(function(data, status, headers, config) {
+                    $scope.accountRequest = data.values;
+                    $scope.accountRequestMeta = data.meta;
+                    $scope.accountFormDataLoaded = true;
+                    State.debug = "account";
+                }).
+                error(function(data, status, headers, config) {
+                    State.debug = "failure";
+                });
+            }
+        }
+    );
+    */
+   
+   
+    
+    
+
+   
+ 
+    
     
 
     

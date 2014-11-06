@@ -40,6 +40,10 @@ Route::group(array('before' => 'csrf'), function() {
         'as' => 'api-post-account',
         'uses' => 'ApiAccount@postAccount'
     ));
+    Route::post('api/put-account', array(
+        'as' => 'api-put-account',
+        'uses' => 'ApiAccount@putAccount'
+    ));
 });
 
 

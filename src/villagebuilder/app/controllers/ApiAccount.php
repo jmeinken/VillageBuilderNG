@@ -39,6 +39,23 @@ class ApiAccount extends BaseController {
         return Response::json(['user' => Input::get('email')], self::STATUS_OK);
     }
     
+    public function putAccount() {
+        //validate input
+        $validator = Validator::make( Input::all(), $this->putAccountValidator() );
+        if ($validator->fails()) {
+            return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
+        }
+        //return error if account does not already exist
+        if ( !AccountModel::accountExists(Input::get('email')) ) {
+            return Response::json(['message' => 'user not found'], self::STATUS_BAD_REQUEST);
+        }
+        $success = AccountModel::updateAccount();
+        if ($success !== true) {
+            return Response::json($success, self::STATUS_NOT_FOUND);
+        }
+        return Response::json(['user' => Input::get('email')], self::STATUS_OK);
+    }
+    
        
     public function getAccount() {
         if (Input::has('user_id')) {
@@ -62,9 +79,18 @@ class ApiAccount extends BaseController {
         ); 
     }
     
+    private function putAccountValidator() {
+        return array(
+            'email' => 'required|email',
+            //'password' => 'required|min:6',
+            //'password_again' => 'required|same:password'
+            //more validation
+        ); 
+    }
+    
     private function getAccountDefaultValues() {
         $values = [];
-        $values['email'] = "";
+        $values['email'] = "a";
         $values['password'] = "";
         $values['password_again'] = "";
         $values['first_name'] = '';
@@ -93,6 +119,8 @@ class ApiAccount extends BaseController {
             ->join('person', 'person.member_id', '=', 'member.member_id')
             ->where('users.id', $userId)->first();
         $values = [];
+        $values['user_id'] = $account->id;
+        $values['member_id'] = $account->member_id;
         $values['email'] = $account->email;
         $values['first_name'] = $account->first_name;
         $values['last_name'] = $account->last_name;
