@@ -118,6 +118,95 @@ class ApiAuthentication extends BaseController {
         return Response::json("unknown error", self::STATUS_BAD_REQUEST);
     }
     
+    public function postActivateResetPassword() {
+        //validate input code
+        $validator = Validator::make( Input::all(), array(
+            'code' => 'required|min:60|max:60'
+        ) );
+        if ($validator->fails()) {
+            return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
+        }
+        $user = User::where('code', '=', Input::get('code'))->where('password_temp', '!=', '');
+        //send error if no match in database
+        if(!$user->count()) {
+            return Response::json("Unable to activate", self::STATUS_BAD_REQUEST);
+        }
+        //activate account and reset code
+        $user = $user->first();
+        $user->password = $user->password_temp;
+        $user->password_temp = '';
+        $user->code = '';
+        if ($user->save()) {
+           return Response::json(['message' => "account activated"], self::STATUS_OK);
+        } 
+        return Response::json("unknown error", self::STATUS_BAD_REQUEST);
+    }
+    
+    public function getResetPassword() {
+        $response = [
+            'values' => $this->getResetPasswordValues(),
+            'meta' => $this->getResetPasswordMeta()
+        ];
+        return Response::json($response, self::STATUS_OK);
+    }
+    
+    public function postResetPassword() {
+        $validator = Validator::make(Input::all(), array(
+            'email' => 'required|email'
+        ));
+        if($validator->fails()) {
+            return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
+        } else {
+            //change password
+            $user = User::where('email', '=', Input::get('email'));
+            if ($user->count()) {
+                $user = $user->first();
+                $code = str_random(60);
+                $password = str_random(10);
+                $user->code = $code;
+                $user->password_temp = Hash::make($password);
+                if ($user->save()) {
+                    Mail::send('emails.auth.recover',
+                        array(
+                            'link' =>  'http://johnmeinken.com/vb-dev/src/villagebuilder/ng/#/activate_reset_password/' . $code,
+                            'username' => $user->username,
+                            'password' => $password
+                        ),
+                        function($message) use ($user) {
+                            $message->to($user->email, $user->username)
+                                    ->subject('Your new password');
+                        }              
+                    );
+                    return Response::json(['message' => 'success'], self::STATUS_OK);
+                }
+            }
+        }
+        return Response::json(['message' => 'failed'], self::STATUS_NOT_FOUND); 
+    }
+    
+    
+    private function getResetPasswordValues() {
+        $values = [];
+        $values['email'] = "";
+        $values['_token'] = csrf_token();
+        return $values;
+    }
+    
+        private function getResetPasswordMeta() {
+        $meta = [];
+        $meta['email'] = [
+            'type' => 'string', 
+            'input_type' => 'text',
+            'name' => 'Email Address', 
+            'required'=>true
+        ];
+        $meta['_token'] = [
+            'type' => 'string',
+            'input_type' => 'hidden',
+        ];
+        return $meta;
+    }
+    
    
     
     

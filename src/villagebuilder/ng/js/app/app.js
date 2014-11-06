@@ -68,12 +68,16 @@ app.config(function($routeProvider) {
             controller: 'CreateAccountController'
         }).
         when('/manage_account', {
-            templateUrl: 'templates/manage_account.html?x=7',
+            templateUrl: 'templates/manage_account.html?x=8',
             controller: 'ManageAccountController'
         }).
         when('/manage_password', {
-            templateUrl: 'templates/manage_password.html?x=7',
+            templateUrl: 'templates/manage_password.html?x=9',
             controller: 'ManagePasswordController'
+        }).
+        when('/reset_password', {
+            templateUrl: 'templates/reset_password.html?x=10',
+            controller: 'ResetPasswordController'
         }).
         when('/info', {
             templateUrl: 'templates/info.html?x=5'
@@ -81,6 +85,10 @@ app.config(function($routeProvider) {
         when('/activate_account/:code', {
             templateUrl: 'templates/activate_account.html?x=6',
             controller: 'ActivateAccountController'
+        }).
+        when('/activate_reset_password/:code', {
+            templateUrl: 'templates/activate_reset_password.html?x=11',
+            controller: 'ActivateResetPasswordController'
         }).
         otherwise({
             redirectTo:'/home', 

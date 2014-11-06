@@ -11,6 +11,9 @@ app.service("Ajax", function() {
     this.POST_LOG_IN = root + 'post-log-in';
     this.POST_LOG_OUT = root + 'post-log-out';
     this.POST_ACTIVATE_ACCOUNT = root + 'post-activate-account';
+    this.GET_RESET_PASSWORD = root + 'get-reset-password';
+    this.POST_RESET_PASSWORD = root + 'post-reset-password';
+    this.POST_ACTIVATE_RESET_PASSWORD = root + 'post-activate-reset-password';
     
     /*
      * Account API

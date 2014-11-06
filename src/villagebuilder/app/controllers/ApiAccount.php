@@ -39,7 +39,7 @@ class ApiAccount extends BaseController {
         return Response::json(['user' => Input::get('email')], self::STATUS_OK);
     }
     
-   public function getPassword() {
+    public function getPassword() {
         $response = [
             'values' => $this->getPasswordValues(),
             'meta' => $this->getPasswordMeta()

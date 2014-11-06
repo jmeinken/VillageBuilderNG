@@ -27,6 +27,10 @@ Route::post('api/post-activate-account', array(
     'as' => 'api-post-activate-account',
     'uses' => 'ApiAuthentication@postActivateAccount'
 ));
+Route::post('api/post-activate-reset-password', array(
+    'as' => 'api-post-activate-reset-password',
+    'uses' => 'ApiAuthentication@postActivateResetPassword'
+));
 Route::get('api/get-account', array(
     'as' => 'api-get-account',
     'uses' => 'ApiAccount@getAccount'
@@ -34,6 +38,10 @@ Route::get('api/get-account', array(
 Route::get('api/get-password', array(
     'as' => 'api-get-password',
     'uses' => 'ApiAccount@getPassword'
+));
+Route::get('api/get-reset-password', array(
+    'as' => 'api-get-reset-password',
+    'uses' => 'ApiAuthentication@getResetPassword'
 ));
 Route::group(array('before' => 'csrf'), function() {
     Route::post('api/post-log-in', array(
@@ -49,9 +57,14 @@ Route::group(array('before' => 'csrf'), function() {
         'uses' => 'ApiAccount@putAccount'
     ));
     Route::post('api/put-password', array(
-        'as' => 'api-put-passworf',
+        'as' => 'api-put-password',
         'uses' => 'ApiAccount@putPassword'
     ));
+    Route::post('api/post-reset-password', array(
+        'as' => 'api-post-reset-password',
+        'uses' => 'ApiAuthentication@postResetPassword'
+    ));
+    
 });
 
 
