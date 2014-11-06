@@ -71,6 +71,10 @@ app.config(function($routeProvider) {
             templateUrl: 'templates/manage_account.html?x=7',
             controller: 'ManageAccountController'
         }).
+        when('/manage_password', {
+            templateUrl: 'templates/manage_password.html?x=7',
+            controller: 'ManagePasswordController'
+        }).
         when('/info', {
             templateUrl: 'templates/info.html?x=5'
         }).   

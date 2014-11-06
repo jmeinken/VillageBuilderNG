@@ -31,6 +31,10 @@ Route::get('api/get-account', array(
     'as' => 'api-get-account',
     'uses' => 'ApiAccount@getAccount'
 ));
+Route::get('api/get-password', array(
+    'as' => 'api-get-password',
+    'uses' => 'ApiAccount@getPassword'
+));
 Route::group(array('before' => 'csrf'), function() {
     Route::post('api/post-log-in', array(
         'as' => 'api-post-log-in',
@@ -43,6 +47,10 @@ Route::group(array('before' => 'csrf'), function() {
     Route::post('api/put-account', array(
         'as' => 'api-put-account',
         'uses' => 'ApiAccount@putAccount'
+    ));
+    Route::post('api/put-password', array(
+        'as' => 'api-put-passworf',
+        'uses' => 'ApiAccount@putPassword'
     ));
 });
 

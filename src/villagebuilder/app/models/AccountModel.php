@@ -3,9 +3,9 @@
 class AccountModel {
     
     
-    public static function accountExists($email) {
+    public static function accountExists($field, $value) {
         $user = DB::table('users')
-            ->where('email', '=', $email)
+            ->where($field, '=', $value)
             ->first();
         return (is_null($user) ? false : true);
     }

@@ -18,6 +18,8 @@ app.service("Ajax", function() {
     this.GET_ACCOUNT = root + 'get-account';
     this.POST_ACCOUNT = root + 'post-account';
     this.PUT_ACCOUNT = root + 'put-account';
+    this.GET_PASSWORD = root + 'get-password';
+    this.PUT_PASSWORD = root + 'put-password';
 
 
  

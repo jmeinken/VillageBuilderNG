@@ -15,7 +15,7 @@ class ApiAccount extends BaseController {
             return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
         }
         //return error if account already exists
-        if ( AccountModel::accountExists(Input::get('email')) ) {
+        if ( AccountModel::accountExists('email', Input::get('email')) ) {
             return Response::json(['message' => 'Email already taken'], self::STATUS_BAD_REQUEST);
         }
         //insert record for user, member and person
@@ -39,6 +39,40 @@ class ApiAccount extends BaseController {
         return Response::json(['user' => Input::get('email')], self::STATUS_OK);
     }
     
+   public function getPassword() {
+        $response = [
+            'values' => $this->getPasswordValues(),
+            'meta' => $this->getPasswordMeta()
+        ];
+        return Response::json($response, self::STATUS_OK);
+    }
+    
+    public function putPassword() {
+        $validator = Validator::make(Input::all(), array(
+            'old_password' => 'required',
+            'new_password' => 'required|min:6',
+            'new_password_again' => 'required|same:new_password'
+        ));
+        if ($validator->fails()) {
+            //echo print_r(json_encode($validator->messages()));
+            return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
+        } else {
+            //change password    
+            $user = User::find(Auth::user()->id);
+            $old_password = Input::get('old_password');
+            $password = Input::get('new_password');
+            if (Hash::check($old_password, $user->getAuthPassword())) {
+                $user->password = Hash::make($password);
+                if ($user->save()) {
+                    return Response::json(['message' => 'success'], self::STATUS_OK);
+                }
+            } else {
+                return Response::json(['message' => 'old password incorrect'], self::STATUS_NOT_FOUND);
+            }
+        }
+        return Response::json(['message' => 'failed'], self::STATUS_NOT_FOUND); 
+    }
+    
     public function putAccount() {
         //validate input
         $validator = Validator::make( Input::all(), $this->putAccountValidator() );
@@ -46,7 +80,7 @@ class ApiAccount extends BaseController {
             return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
         }
         //return error if account does not already exist
-        if ( !AccountModel::accountExists(Input::get('email')) ) {
+        if ( !AccountModel::accountExists('id', Input::get('user_id')) ) {
             return Response::json(['message' => 'user not found'], self::STATUS_BAD_REQUEST);
         }
         $success = AccountModel::updateAccount();
@@ -86,6 +120,42 @@ class ApiAccount extends BaseController {
             //'password_again' => 'required|same:password'
             //more validation
         ); 
+    }
+    
+    private function getPasswordValues() {
+        $values = [];
+        $values['old_password'] = "";
+        $values['new_password'] = "";
+        $values['new_password_again'] = "";
+        $values['_token'] = csrf_token();
+        return $values;
+    }
+    
+        private function getPasswordMeta() {
+        $meta = [];
+        $meta['old_password'] = [
+            'type' => 'string', 
+            'input_type' => 'password',
+            'name' => 'Current Password', 
+            'required'=>true
+        ];
+        $meta['new_password'] = [
+            'type' => 'string', 
+            'input_type' => 'password',
+            'name' => 'New Password', 
+            'required' => true
+        ];
+        $meta['new_password_again'] = [
+            'type' => 'string', 
+            'input_type' => 'password',
+            'name' => 'Reenter New Password', 
+            'required' => true
+        ];
+        $meta['_token'] = [
+            'type' => 'string',
+            'input_type' => 'hidden',
+        ];
+        return $meta;
     }
     
     private function getAccountDefaultValues() {
@@ -141,6 +211,8 @@ class ApiAccount extends BaseController {
         $values['_token'] = csrf_token();
         return $values;
     }
+    
+
     
     private function getAccountMeta() {
         $meta = [];

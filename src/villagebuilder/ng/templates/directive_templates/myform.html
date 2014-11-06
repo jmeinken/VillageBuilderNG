@@ -45,9 +45,8 @@
             <label class="control-label">
                 {{ meta[key].name || key }}
             </label>
-            <select class="form-control" ng-model="defaults[key]">
-                <option ng-repeat="option in keyArray(meta[key].options)"
-                        value="{{key}}">{{ meta[key].options[option] }}</option>
+            <select class="form-control" ng-model="defaults[key]"
+                    ng-options="meta[key].options[option] for option in keyArray(meta[key].options)">
             </select>
             <span class="help-block" ng-show="meta[key].description">
                 {{ meta[key].description }}
