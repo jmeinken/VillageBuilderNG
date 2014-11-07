@@ -39,13 +39,25 @@ app.controller('ManagePasswordController', function($scope, $location, $http, Aj
    }
    
     $scope.updatePassword = function() {
-        //State.debug = $scope.accountRequest;
+        //State.debug = $scope.request;
         $http.post(Ajax.PUT_PASSWORD, $scope.passwordRequest).
             success(function(data, status, headers, config) {
                 State.debug = data;
             }).
             error(function(data, status, headers, config) {
-                State.debug = data;
+                State.debug = status;
+                if (status == 400)  {  //bad request (validation failed)
+                    $scope.requestErrors = data;
+                } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
+                    $scope.formErrorMessage = data.errorMessage;
+                } else {  // token mismatch (500), unauthorized (401), etc.
+                    State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
+                    State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
+                    State.infoLinks = [
+                        {"link" : "#/home", "description": "Return to Home Page"}
+                    ];
+                    $location.path( '/info' );
+                }
             });
     }
     

@@ -1,7 +1,8 @@
 <div ng-repeat="key in keyArray(defaults)">
+    <div ng-if="errors[key]" class="text-danger">{{ errors[key][0] }}</div>
     <div ng-switch="meta[key].input_type">
         <div ng-switch-when="number"
-             ng-class="{'form-group':true, 'has-error':false}">
+             ng-class="{'form-group':true, 'has-error':errors[key]}">
             <label class="control-label">
                 {{ meta[key].name || key }}
             </label>
@@ -14,7 +15,7 @@
                 Please enter a valid integer or '0' for no minimum.
             </span>
         </div>
-        <div class="form-group" ng-switch-when="text">
+        <div ng-class="{'form-group':true, 'has-error':errors[key]}" ng-switch-when="text">
             <label class="control-label">
                 {{ meta[key].name || key }}
             </label>
@@ -23,7 +24,7 @@
                 {{ meta[key].description }}
             </span>
         </div>
-        <div class="form-group" ng-switch-when="password">
+        <div ng-class="{'form-group':true, 'has-error':errors[key]}" ng-switch-when="password">
             <label class="control-label">
                 {{ meta[key].name || key }}
             </label>
@@ -32,7 +33,7 @@
                 {{ meta[key].description }}
             </span>
         </div>
-        <div class="form-group" ng-switch-when="checkbox" class="checkbox">
+        <div ng-class="{'form-group':true, 'has-error':errors[key]}" ng-switch-when="checkbox" class="checkbox">
             <label>
                 <input type="checkbox" ng-model="defaults[key]" />
                 {{ meta[key].name || key }}
@@ -41,7 +42,7 @@
                 {{ meta[key].description }}
             </span>
         </div>
-        <div class="form-group" ng-switch-when="select">
+        <div ng-class="{'form-group':true, 'has-error':errors[key]}" ng-switch-when="select">
             <label class="control-label">
                 {{ meta[key].name || key }}
             </label>

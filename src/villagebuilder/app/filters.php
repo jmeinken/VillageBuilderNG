@@ -33,6 +33,7 @@ App::after(function($request, $response)
 |
 */
 
+/*  ORIGINAL AUTH FUNCTION REPLACED BELOW
 Route::filter('auth', function()
 {
 	if (Auth::guest())
@@ -45,6 +46,16 @@ Route::filter('auth', function()
 		{
 			return Redirect::guest(URL::route('account-sign-in'));
 		}
+	}
+});
+ * 
+ */
+
+Route::filter('auth', function()
+{
+	if (Auth::guest())
+	{
+                return Response::make('Unauthorized', 401);
 	}
 });
 

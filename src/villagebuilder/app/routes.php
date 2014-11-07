@@ -15,10 +15,17 @@ Route::get('/api/check-login-status', array(
     'as' => 'api-check-login-status',
     'uses' => 'ApiAuthentication@checkLoginStatus'
 ));
+
+
+
 Route::get('api/get-log-in', array(
     'as' => 'api-get-log-in',
     'uses' => 'ApiAuthentication@getLogIn'
 ));
+
+
+
+
 Route::get('api/post-log-out', array(
     'as' => 'api-post-log-out',
     'uses' => 'ApiAuthentication@postLogOut'

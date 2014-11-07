@@ -87,7 +87,7 @@ class ApiAuthentication extends BaseController {
                 return Response::json($response, self::STATUS_OK);
             }
         }
-        return Response::json(['message' => 'Incorrect email or password'], self::STATUS_NOT_FOUND);
+        return Response::json(['errorMessage' => 'Unable to log in.  Check your email and password.'], self::STATUS_NOT_FOUND);
     }
     
     public function postLogOut() {
@@ -101,12 +101,12 @@ class ApiAuthentication extends BaseController {
             'code' => 'required|min:60|max:60'
         ) );
         if ($validator->fails()) {
-            return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
+            return Response::json(['errorMessage' => "There was a problem with the account activation code. Did you copy the entire link?"], self::STATUS_BAD_REQUEST);
         }
         $user = User::where('code', '=', Input::get('code'))->where('active', '=', 0);
         //send error if no match in database
         if(!$user->count()) {
-            return Response::json("Unable to activate", self::STATUS_BAD_REQUEST);
+            return Response::json(['errorMessage' => "Unable to activate account.  Has this account already been activated?"], self::STATUS_NOT_FOUND);
         }
         //activate account and reset code
         $user = $user->first();
@@ -115,7 +115,7 @@ class ApiAuthentication extends BaseController {
         if($user->save()) {
             return Response::json(['message' => "account activated"], self::STATUS_OK);
         }
-        return Response::json("unknown error", self::STATUS_BAD_REQUEST);
+        return Response::json("unknown error", self::STATUS_NOT_FOUND);
     }
     
     public function postActivateResetPassword() {
@@ -124,12 +124,12 @@ class ApiAuthentication extends BaseController {
             'code' => 'required|min:60|max:60'
         ) );
         if ($validator->fails()) {
-            return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
+            return Response::json(['errorMessage' => "There was a problem with the reset password activation code. Did you copy the entire link?"], self::STATUS_BAD_REQUEST);
         }
         $user = User::where('code', '=', Input::get('code'))->where('password_temp', '!=', '');
         //send error if no match in database
         if(!$user->count()) {
-            return Response::json("Unable to activate", self::STATUS_BAD_REQUEST);
+            return Response::json(['errorMessage' => "Unable to activate new password.  Has this password already been activated?"], self::STATUS_NOT_FOUND);
         }
         //activate account and reset code
         $user = $user->first();
@@ -139,7 +139,7 @@ class ApiAuthentication extends BaseController {
         if ($user->save()) {
            return Response::json(['message' => "account activated"], self::STATUS_OK);
         } 
-        return Response::json("unknown error", self::STATUS_BAD_REQUEST);
+        return Response::json("unknown error", self::STATUS_NOT_FOUND);
     }
     
     public function getResetPassword() {
@@ -181,7 +181,7 @@ class ApiAuthentication extends BaseController {
                 }
             }
         }
-        return Response::json(['message' => 'failed'], self::STATUS_NOT_FOUND); 
+        return Response::json(['errorMessage' => 'Failed to reset password.  Did you enter the correct email address?'], self::STATUS_NOT_FOUND); 
     }
     
     

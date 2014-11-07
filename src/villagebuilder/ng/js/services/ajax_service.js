@@ -23,8 +23,14 @@ app.service("Ajax", function() {
     this.PUT_ACCOUNT = root + 'put-account';
     this.GET_PASSWORD = root + 'get-password';
     this.PUT_PASSWORD = root + 'put-password';
+    
+    /*
+     * Error Messages
+     */
 
-
+    this.ERROR_GENERAL_TITLE = "That Wasn't Supposed to Happen";
+    this.ERROR_GENERAL_DESCRIPTION = 'There was an error processing your request. ' +
+                        "Please try again.  If the problem persists, contact us. ";
  
 
 });

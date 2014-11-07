@@ -3,20 +3,17 @@ app.controller('HomeController', function($scope, $location, State) {
 
     $scope.showView = false;
     
-    $scope.$watch(function() {return State.authenticated}, 
-        function (value) {
-            if (typeof value === 'undefined') {
-                // do nothing
-            } else if (value === false) {
-                // set intended page as home and redirect to login
-                State.intendedLocation = '/home';
-                $location.path( "/login" );
-            } else {
-                //load the page
-                $scope.showView = true;
-            }
+    //check authentication and redirect
+    $scope.$watch(function() {return State.authenticated}, function (value) {
+        //do if logged out
+        if (typeof value !== 'undefined' && value === false) {
+            State.intendedLocation = '/home';
+            $location.path( "/login" );
+        //do if logged in
+        } else if (typeof value !== 'undefined' && value === true){
+            $scope.showView = true;
         }
-    );
+    });
 
 }); 
 

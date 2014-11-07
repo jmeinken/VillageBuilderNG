@@ -1,58 +1,66 @@
 app.controller('LoginController', function($scope, $location, $http, Ajax, State) {
 
-    //redirect if user is already logged in
-    $scope.$watch(function() {return State.authenticated}, 
-        function (value) {
-            if (typeof value === 'undefined') {
-                // do nothing and wait
-            } else if (value === true) {
-                //user already logged in; redirect to home page
-                $location.path( State.intendedLocation );
-            } else {
-                //show this page
-                $scope.showView = true;
-            }
-        }
-    );
 
-
-    //show login view
     $scope.showView = false;
     
     //stores data for login form
-    $scope.loginRequest = {};
-    $scope.loginRequestMeta = {};
-    $scope.loginFormDataLoaded = false;
+    $scope.request = {};
+    $scope.requestMeta = {};
+    $scope.formDataLoaded = false;
+    $scope.requestErrors = {};
+    $scope.formErrorMessage = "";
     
-    //login error message
-    $scope.loginErrorMessage = "";
-
+    //check authentication and redirect
+    $scope.$watch(function() {return State.authenticated}, function (value) {
+            //do if logged in
+            if (typeof value !== 'undefined' && value === true) {
+                $location.path( State.intendedLocation );
+            //do if logged out    
+            } else if (typeof value !== 'undefined' && value === false){
+                $scope.showView = true;
+                getFormData();
+            }
+    });
 
     //loads data for login form
-    $scope.initializeView = function() {
+    function getFormData() {
         $http.get(Ajax.GET_LOG_IN).
             success(function(data, status, headers, config) {
-                $scope.loginRequest = data.values;
-                $scope.loginRequestMeta = data.meta;
-                $scope.loginFormDataLoaded = true;
+                $scope.request = data.values;
+                $scope.requestMeta = data.meta;
+                $scope.formDataLoaded = true;
+                State.debug = status;
             }).
             error(function(data, status, headers, config) {
+                
             });
     }
     
     //log user in
     $scope.logIn = function() {
-        $http.post(Ajax.POST_LOG_IN, this.loginRequest).
+        $scope.requestErrors = {};
+        $scope.formErrorMessage = "";
+        $http.post(Ajax.POST_LOG_IN, this.request).
             success(function(data, status, headers, config) {
                 State.debug = status;
                 State.userId = data.user_id;
                 State.authenticated = true;
             }).
             error(function(data, status, headers, config) {
-                State.debug = data;
-                $scope.loginErrorMessage = "Login failed.  Please check that the "
-                    + "username and password are valid.";
-                $scope.loginRequest.password = "";
+                State.debug = status;
+                if (status == 400)  {  //bad request (validation failed)
+                    $scope.requestErrors = data;
+                } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
+                    $scope.formErrorMessage = data.errorMessage;
+                    State.debug="error message found";
+                } else {  // token mismatch (500), unauthorized (401), etc.
+                    State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
+                    State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
+                    State.infoLinks = [
+                        {"link" : "#/home", "description": "Return to Home Page"}
+                    ];
+                    $location.path( '/info' );
+                }
             });
     }
 

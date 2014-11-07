@@ -155,7 +155,8 @@ app.directive('vbBuildForm', function() {
     return {
         scope: {
             defaults : "=formDefaults",
-            meta : "=formMeta"
+            meta : "=formMeta",
+            errors : "=formErrors"
         },
         templateUrl: 'templates/directive_templates/myform.html?x=10',
         link: function(scope){

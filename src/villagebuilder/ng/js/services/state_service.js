@@ -5,7 +5,8 @@ app.service("State", function($http, $location, Ajax) {
     
     //used by '#/info' view to give simple message to user
     this.infoTitle = "";
-    this.infoMessage = ""
+    this.infoMessage = "";
+    this.infoLinks = [];
 
     //true/false if user logged in/out; undefined if check has not been performed
     this.authenticated; 

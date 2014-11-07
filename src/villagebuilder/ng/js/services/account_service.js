@@ -19,9 +19,9 @@ app.service("Account", function($http, $location) {
     this.loginRequestMeta = {};
     this.loginFormDataLoaded = false;
     
-    this.accountRequest = {};
-    this.accountRequestMeta = {};
-    this.accountFormDataLoaded = false;
+    this.request = {};
+    this.requestMeta = {};
+    this.formDataLoaded = false;
 
    
 
@@ -58,15 +58,15 @@ app.service("Account", function($http, $location) {
     this.loadAccountMeta = function() {   
         $http.get('http://johnmeinken.com/vb-dev/src/villagebuilder/public/api/get-account').
             success(function(data, status, headers, config) {
-                self.accountRequest = data.defaults;
-                self.accountRequestMeta = data.meta;
-                self.accountFormDataLoaded = true;
+                self.request = data.defaults;
+                self.requestMeta = data.meta;
+                self.formDataLoaded = true;
             }).
             error(function(data, status, headers, config) {
             });
     };
     this.createAccount = function() {   
-        $http.post('http://johnmeinken.com/vb-dev/src/villagebuilder/public/api/post-account', this.accountRequest).
+        $http.post('http://johnmeinken.com/vb-dev/src/villagebuilder/public/api/post-account', this.request).
             success(function(data, status, headers, config) {
                 self.debug = status;
                 self.infoTitle = "Almost There";

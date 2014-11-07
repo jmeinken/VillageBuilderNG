@@ -16,14 +16,14 @@ class ApiAccount extends BaseController {
         }
         //return error if account already exists
         if ( AccountModel::accountExists('email', Input::get('email')) ) {
-            return Response::json(['message' => 'Email already taken'], self::STATUS_BAD_REQUEST);
+            return Response::json(['errorMessage' => 'Email already taken'], self::STATUS_FORBIDDEN);
         }
         //insert record for user, member and person
         $code = str_random(60);
         $success = AccountModel::createAccount($code);
         //if the transaction failed, return error
         if (!$success) {
-            return Response::json(['message' => 'query failed'], self::STATUS_NOT_FOUND);
+            return Response::json('query failed', 500);
         }
         //send account activation email
         $email = Input::get('email');
@@ -67,10 +67,10 @@ class ApiAccount extends BaseController {
                     return Response::json(['message' => 'success'], self::STATUS_OK);
                 }
             } else {
-                return Response::json(['message' => 'old password incorrect'], self::STATUS_NOT_FOUND);
+                return Response::json(['errorMessage' => 'old password incorrect'], self::STATUS_NOT_FOUND);
             }
         }
-        return Response::json(['message' => 'failed'], self::STATUS_NOT_FOUND); 
+        return Response::json(['errorMessage' => 'failed'], self::STATUS_NOT_FOUND); 
     }
     
     public function putAccount() {
