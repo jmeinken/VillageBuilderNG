@@ -154,11 +154,10 @@ app.directive('vbBuildForm', function() {
     
     return {
         scope: {
-            defaults : "=formDefaults",
-            meta : "=formMeta",
-            errors : "=formErrors"
+            request : "=vbRequestObject",
+            submit : "=vbSubmit"
         },
-        templateUrl: 'templates/directive_templates/myform.html?x=10',
+        templateUrl: 'templates/directive_templates/form.html?x=20',
         link: function(scope){
             scope.keyArray = function(obj) {
                 var arr = [];
