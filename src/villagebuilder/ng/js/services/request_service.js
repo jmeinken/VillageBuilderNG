@@ -4,8 +4,9 @@ app.service("Request", function($http, State) {
     self = this;
     
     
-    this.loadForm = function(name, url) {
-        $http.get(url).
+    this.loadForm = function(name, url, parameters) {
+        parameters = parameters || {};
+        $http.get(url, {params: parameters}).
             success(function(data, status, headers, config){
                 self[name] = {};
                 self[name].request = data.values;

@@ -3,7 +3,7 @@ app.controller('LoginController', function($scope, $location, $http, Ajax, State
 
     $scope.showView = false;
     
-    //check authentication and redirect
+    //check authentication and redirect or load forms and show view
     $scope.$watch(function() {return State.authenticated}, function (value) {
             //do if logged in
             if (typeof value !== 'undefined' && value === true) {

@@ -5,7 +5,7 @@ app.controller('ActivateResetPasswordController', function($scope, $location, $h
     
     $scope.code = $routeParams.code;
     
-    $scope.activateAccount = function() {
+    $scope.activateResetPassword = function() {
         $http.post(Ajax.POST_ACTIVATE_RESET_PASSWORD, {'code': $routeParams.code }).
             success(function(data, status, headers, config) {
                 State.infoTitle = "Password Reset";

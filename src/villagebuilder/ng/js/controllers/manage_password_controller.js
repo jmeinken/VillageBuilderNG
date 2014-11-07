@@ -1,55 +1,37 @@
 
-app.controller('ManagePasswordController', function($scope, $location, $http, Ajax, State) {
+app.controller('ManagePasswordController', function($scope, $location, $http, Ajax, State, Request) {
     
     $scope.showView = false;
     
-    $scope.passwordRequest = {};
-    $scope.passwordRequestMeta = {};
-    $scope.passwordFormDataLoaded = false;
     
-    //redirect to login if not logged in
-    $scope.$watch(function() {return State.authenticated}, 
-        function (value) {
-            if (typeof value === 'undefined') {
-                // do nothing
-            } else if (value === false) {
-                // set intended page as home and redirect to login
+       
+    $scope.$watch(function() {return State.authenticated}, function (value) {
+            //do if logged in
+            if (typeof value !== 'undefined' && value === true) {
+                $scope.showView = true;
+                Request.loadForm('password', Ajax.GET_PASSWORD);
+            //do if logged out    
+            } else if (typeof value !== 'undefined' && value === false){
                 State.intendedLocation = '/home';
                 $location.path( "/login" );
-            } else {
-                //load the page
-                $scope.showView = true;
-                getFormData();
             }
-        }
-    );
+    });
         
-    function getFormData() {
-       State.debug="started";
-       $http.get(Ajax.GET_PASSWORD).
-            success(function(data, status, headers, config) {
-                $scope.passwordRequest = data.values;
-                $scope.passwordRequestMeta = data.meta;
-                $scope.passwordFormDataLoaded = true;
-                State.debug = "account";
-            }).
-            error(function(data, status, headers, config) {
-                State.debug = "failure";
-            });
-   }
+
    
     $scope.updatePassword = function() {
-        //State.debug = $scope.request;
-        $http.post(Ajax.PUT_PASSWORD, $scope.passwordRequest).
+        Request.password.inputErrors = {};
+        Request.password.formError = "";
+        $http.post(Ajax.PUT_PASSWORD, Request.password.request).
             success(function(data, status, headers, config) {
                 State.debug = data;
             }).
             error(function(data, status, headers, config) {
                 State.debug = status;
                 if (status == 400)  {  //bad request (validation failed)
-                    $scope.requestErrors = data;
+                    Request.password.inputErrors = data;
                 } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
-                    $scope.formErrorMessage = data.errorMessage;
+                    Request.password.formError = data.errorMessage;
                 } else {  // token mismatch (500), unauthorized (401), etc.
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;

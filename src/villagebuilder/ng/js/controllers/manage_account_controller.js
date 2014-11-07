@@ -1,5 +1,5 @@
 
-app.controller('ManageAccountController', function($scope, $location, $http, Ajax, State) {
+app.controller('ManageAccountController', function($scope, $location, $http, Ajax, State, Request) {
     
     $scope.showView = false;
     
@@ -20,37 +20,26 @@ app.controller('ManageAccountController', function($scope, $location, $http, Aja
             } else {
                 //load the page
                 $scope.showView = true;
-                getFormData();
+                Request.loadForm('account', Ajax.GET_ACCOUNT, { user_id: State.userId });
             }
         }
     );
         
-    function getFormData() {
-       State.debug="started";
-       $http.get(Ajax.GET_ACCOUNT, { params: { user_id: State.userId } }).
-            success(function(data, status, headers, config) {
-                $scope.request = data.values;
-                $scope.requestMeta = data.meta;
-                $scope.formDataLoaded = true;
-                State.debug = "account";
-            }).
-            error(function(data, status, headers, config) {
-                State.debug = "failure";
-            });
-   }
+
    
     $scope.updateAccount = function() {
-        //State.debug = $scope.request;
-        $http.post(Ajax.PUT_ACCOUNT, $scope.request).
+        Request.account.inputErrors = {};
+        Request.account.formError = "";
+        $http.post(Ajax.PUT_ACCOUNT, Request.account.request).
             success(function(data, status, headers, config) {
                 State.debug = data;
             }).
             error(function(data, status, headers, config) {
                 State.debug = status;
                 if (status == 400)  {  //bad request (validation failed)
-                    $scope.requestErrors = data;
+                    Request.account.inputErrors = data;
                 } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
-                    $scope.formErrorMessage = data.errorMessage;
+                    Request.account.formError = data.errorMessage;
                 } else {  // token mismatch (500), unauthorized (401), etc.
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;

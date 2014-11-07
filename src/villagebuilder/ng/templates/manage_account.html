@@ -4,9 +4,9 @@
 
     This is manage account view.
    
+    <div ng-if="Request.account" vb-build-form vb-request-object="Request.account"
+         vb-submit="{val:'Update Account', func:updateAccount}"></div>
     
-    <div ng-if="formDataLoaded" vb-build-form 
-         form-defaults="request" form-meta="requestMeta" form-errors="requestErrors"></div>
-    <button ng-click="updateAccount()">Sign In</button><br><br>
+
 
 </div>

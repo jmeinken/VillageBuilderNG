@@ -1,11 +1,11 @@
-<div ng-show="showView" ng-init="initializeView()">
+<div ng-show="showView">
 
 
     This is create account view.
    
+    <div ng-if="Request.account" vb-build-form vb-request-object="Request.account"
+         vb-submit="{val:'Create Account', func:createAccount}"></div>
     
-    <div ng-if="formDataLoaded" vb-build-form 
-         form-defaults="request" form-meta="requestMeta" form-errors="requestErrors"></div>
-    <button ng-click="createAccount()">Sign In</button><br><br>
+
 
 </div>
