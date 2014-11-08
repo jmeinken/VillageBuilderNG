@@ -11,9 +11,15 @@ app.controller('LoginController', function($scope, $location, $http, Ajax, State
             //do if logged out    
             } else if (typeof value !== 'undefined' && value === false){
                 $scope.showView = true;
+                //if (!Request.hasOwnProperty('login')) {
                 Request.loadForm('login', Ajax.GET_LOG_IN);
+                //}
             }
     });
+    
+    $scope.reset = function() {
+        Request.reset('login');
+    }
 
     //log user in
     $scope.logIn = function() {

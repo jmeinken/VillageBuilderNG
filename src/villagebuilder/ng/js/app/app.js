@@ -155,7 +155,8 @@ app.directive('vbBuildForm', function() {
     return {
         scope: {
             request : "=vbRequestObject",
-            submit : "=vbSubmit"
+            submit : "=vbSubmit",
+            reset : "=vbReset"
         },
         templateUrl: 'templates/directive_templates/form.html?x=20',
         link: function(scope){

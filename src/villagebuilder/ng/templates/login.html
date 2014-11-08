@@ -2,7 +2,10 @@
     this is the login page.<br><br>
     
     <div ng-if="Request.login" vb-build-form vb-request-object="Request.login"
-         vb-submit="{val:'Sign In', func:logIn}"></div>
+         vb-submit="{val:'Sign In', func:logIn}" vb-reset="{val:'Reset Form', func:reset}"></div>
+    <div ng-if="!Request.login">Form loading...</div>
+
+    
     <a href="#/create_account">Create Account</a>
     <a href="#/reset_password">Forgot Password?</a>
 

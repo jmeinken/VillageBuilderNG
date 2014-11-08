@@ -29,12 +29,19 @@ app.service("Request", function($http, State) {
     //controller instead of using the Request service to run it
     this.createRequest = function(name, data) {
         this[name] = {};
+        this[name].name = name;
         this[name].request = data.values;
         this[name].originalRequest = JSON.parse(JSON.stringify(data.values));
         this[name].meta = data.meta;
         this[name].inputErrors = {};
         this[name].formError = '';
     }
+    
+    this.reset = function(name) {
+        this[name].request = JSON.parse(JSON.stringify(this[name].originalRequest));
+    }
+    
+
  
 
 });
