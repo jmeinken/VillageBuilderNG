@@ -1,5 +1,5 @@
 
-var app = angular.module('app', ['ngSanitize', 'ngRoute'], function($httpProvider) {
+var app = angular.module('app', ['ngSanitize', 'ui.router'], function($httpProvider) {
   // Use x-www-form-urlencoded Content-Type
   $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
@@ -52,7 +52,10 @@ var app = angular.module('app', ['ngSanitize', 'ngRoute'], function($httpProvide
 /*
  * ROUTES
  */
+ 
 
+
+/*
 app.config(function($routeProvider) {
     $routeProvider.
         when('/home', {
@@ -96,7 +99,7 @@ app.config(function($routeProvider) {
             controller: 'HomeController'
         }); 
 });
-
+*/
 
 
 

@@ -15,7 +15,7 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <!-- AngularJS -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    <script src="//code.angularjs.org/1.2.26/angular-route.js"></script>
+    <script src="js/app/angular-ui-router.min.js"></script>
     <script src="js/app/ng_sanitize.js"></script>
     <!--<link rel="stylesheet" href="assets/css/data_analysis_tool.css">-->       
     <title>Village Builder</title>
@@ -39,7 +39,7 @@
         </div>
     </div>	
     <div class="row" id="body">
-        <div ng-view></div>
+        <div ui-view></div>
     </div>
     <div class="row" id="footer">
         <div class="col-lg-12">
@@ -63,6 +63,7 @@
     
 <!-- AngularJS modules and directives -->    
 <script src="js/app/app.js"></script>
+<script src="js/app/states.js"></script>
 <!-- AngularJS services  -->
 <script src="js/services/ajax_service.js"></script>
 <script src="js/services/state_service.js"></script>

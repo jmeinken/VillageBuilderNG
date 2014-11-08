@@ -168,7 +168,7 @@ class ApiAuthentication extends BaseController {
                 if ($user->save()) {
                     Mail::send('emails.auth.recover',
                         array(
-                            'link' =>  'http://johnmeinken.com/vb-dev/src/villagebuilder/ng/#/activate_reset_password/' . $code,
+                            'link' =>  'http://johnmeinken.com/vb-dev/src/villagebuilder/ng/#/activate-reset-password/' . $code,
                             'username' => $user->username,
                             'password' => $password
                         ),

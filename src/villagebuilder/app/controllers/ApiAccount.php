@@ -29,7 +29,7 @@ class ApiAccount extends BaseController {
         $email = Input::get('email');
         $name = Input::get('first_name');
         Mail::send('emails.auth.activate', array(
-                'link' =>  'http://johnmeinken.com/vb-dev/src/villagebuilder/ng/#/activate_account/' . $code,
+                'link' =>  'http://johnmeinken.com/vb-dev/src/villagebuilder/ng/#/activate-account/' . $code,
                 'username' => $name                
             ), function($message) use ($email, $name) {
                 $message->to($email, $name)->subject('Activate account');
