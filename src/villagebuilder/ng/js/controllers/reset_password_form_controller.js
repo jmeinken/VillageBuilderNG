@@ -1,27 +1,22 @@
 
-app.controller('ResetPasswordController', function($scope, $location, $http, Ajax, State, Request) {
+app.controller('ResetPasswordFormController', function($scope, $location, $http, Ajax, State, Request) {
     
-    $scope.showView = false;
-    
-    
-    //check authentication and redirect
-    $scope.$watch(function() {return State.authenticated}, function (value) {
-            //do if logged in
-            if (typeof value !== 'undefined' && value === true) {
-                $location.path( State.intendedLocation );
-            //do if logged out    
-            } else if (typeof value !== 'undefined' && value === false){
-                $scope.showView = true;
-               Request.loadForm('resetPassword', Ajax.GET_RESET_PASSWORD);
-            }
-    });
-     
-
+   var form = 'resetPassword';
+   var getUrl = Ajax.GET_RESET_PASSWORD;
+   var postUrl = Ajax.POST_RESET_PASSWORD;
    
-    $scope.resetPassword = function() {
-        Request.resetPassword.inputErrors = {};
-        Request.resetPassword.formError = "";
-        $http.post(Ajax.POST_RESET_PASSWORD, Request.resetPassword.request).
+   $scope.loadForm = function() {
+       Request.loadForm(form, getUrl);
+   }
+    
+    $scope.resetForm = function() {
+        Request.reset(form);
+    }
+   
+    $scope.submitForm = function() {
+        Request[form].inputErrors = {};
+        Request[form].formError = "";
+        $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
                 State.debug = data;
             }).

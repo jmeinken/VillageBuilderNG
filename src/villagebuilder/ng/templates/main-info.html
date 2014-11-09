@@ -1,0 +1,7 @@
+<h3>{{ State.infoTitle }}</h3>
+
+<p ng-bind-html="State.infoMessage"></p>
+
+<a ng-href="{{link.link}}" ng-repeat="link in State.infoLinks"> 
+    {{ link.description }}
+</a>

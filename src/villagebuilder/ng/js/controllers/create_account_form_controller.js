@@ -1,29 +1,23 @@
 
-app.controller('CreateAccountController', function($scope, $location, $http, Ajax, State, Request) {
+app.controller('CreateAccountFormController', function($scope, $location, $http, Ajax, State, Request) {
     
-    //if user is logged in, redirect
-    $scope.$watch(function() {return State.authenticated}, 
-        function (value) {
-            if (typeof value === 'undefined') {
-                // do nothing and wait
-            } else if (value === true) {
-                //user already logged in; redirect to home page
-                $location.path( State.intendedLocation );
-            } else {
-                //show this page
-                Request.loadForm('account', Ajax.GET_ACCOUNT);
-                $scope.showView = true;
-            }
-        }
-    );
+   var form = 'createAccount';
+   var getUrl = Ajax.GET_ACCOUNT;
+   var postUrl = Ajax.POST_ACCOUNT;
+   
+   $scope.loadForm = function() {
+       Request.loadForm(form, getUrl);
+   }
     
-    $scope.showView = false;
+    $scope.resetForm = function() {
+        Request.reset(form);
+    }
     
     
-    $scope.createAccount = function() {
-        Request.account.inputErrors = {};
-        Request.account.formError = "";
-        $http.post(Ajax.POST_ACCOUNT, Request.account.request).
+    $scope.submitForm = function() {
+        Request[form].inputErrors = {};
+        Request[form].formError = "";
+        $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
                 State.debug = status;
                 State.infoTitle = "Almost There";
@@ -36,9 +30,9 @@ app.controller('CreateAccountController', function($scope, $location, $http, Aja
             error(function(data, status, headers, config) {
                 State.debug = status;
                 if (status == 400)  {  //bad request (validation failed)
-                    Request.account.inputErrors = data;
+                    Request.createAccount.inputErrors = data;
                 } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
-                    Request.account.formError = data.errorMessage;
+                    Request.createAccount.formError = data.errorMessage;
                 } else {  // token mismatch (500), unauthorized (401), etc.
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;

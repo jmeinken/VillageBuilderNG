@@ -1,28 +1,24 @@
 
-app.controller('ManagePasswordController', function($scope, $location, $http, Ajax, State, Request) {
+app.controller('ManagePasswordFormController', function($scope, $location, $http, Ajax, State, Request) {
     
-    $scope.showView = false;
+    var form = 'password';
+    var getUrl = Ajax.GET_PASSWORD;
+    var postUrl = Ajax.PUT_PASSWORD;
+   
+    $scope.loadForm = function() {
+        Request.loadForm(form, getUrl);
+    }
     
-    
-       
-    $scope.$watch(function() {return State.authenticated}, function (value) {
-            //do if logged in
-            if (typeof value !== 'undefined' && value === true) {
-                $scope.showView = true;
-                Request.loadForm('password', Ajax.GET_PASSWORD);
-            //do if logged out    
-            } else if (typeof value !== 'undefined' && value === false){
-                State.intendedLocation = '/home';
-                $location.path( "/login" );
-            }
-    });
+    $scope.resetForm = function() {
+        Request.reset(form);
+    }
         
 
    
-    $scope.updatePassword = function() {
-        Request.password.inputErrors = {};
-        Request.password.formError = "";
-        $http.post(Ajax.PUT_PASSWORD, Request.password.request).
+    $scope.submitForm = function() {
+        Request[form].inputErrors = {};
+        Request[form].formError = "";
+        $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
                 State.debug = data;
             }).

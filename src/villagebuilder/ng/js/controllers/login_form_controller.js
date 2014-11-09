@@ -1,31 +1,22 @@
-app.controller('LoginController', function($scope, $location, $http, Ajax, State, Request) {
+app.controller('LoginFormController', function($scope, $location, $http, Ajax, State, Request) {
 
-
-    $scope.showView = false;
+   var form = 'login';
+   var getUrl = Ajax.GET_LOG_IN;
+   var postUrl = Ajax.POST_LOG_IN;
+   
+   $scope.loadForm = function() {
+       Request.loadForm(form, getUrl);
+   }
     
-    //check authentication and redirect or load forms and show view
-    $scope.$watch(function() {return State.authenticated}, function (value) {
-            //do if logged in
-            if (typeof value !== 'undefined' && value === true) {
-                $location.path( State.intendedLocation );
-            //do if logged out    
-            } else if (typeof value !== 'undefined' && value === false){
-                $scope.showView = true;
-                //if (!Request.hasOwnProperty('login')) {
-                Request.loadForm('login', Ajax.GET_LOG_IN);
-                //}
-            }
-    });
-    
-    $scope.reset = function() {
-        Request.reset('login');
+    $scope.resetForm = function() {
+        Request.reset(form);
     }
 
     //log user in
-    $scope.logIn = function() {
-        Request.login.inputErrors = {};
-        Request.login.formError = "";
-        $http.post(Ajax.POST_LOG_IN, Request.login.request).
+    $scope.submitForm = function() {
+        Request[form].inputErrors = {};
+        Request[form].formError = "";
+        $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
                 State.debug = status;
                 State.userId = data.user_id;

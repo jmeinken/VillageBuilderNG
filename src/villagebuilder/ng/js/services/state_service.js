@@ -2,6 +2,7 @@
 app.service("State", function($http, $location, Ajax) {
     
     this.debug = "no messages";
+    this.showPage = false;
     
     //used by '#/info' view to give simple message to user
     this.infoTitle = "";
@@ -13,7 +14,7 @@ app.service("State", function($http, $location, Ajax) {
     
     //if user tries to access a protected page and is forced to log in, they
     // will be redirected back to the page set here after successful login
-    this.intendedLocation = '/home';
+    this.intendedLocation = '/main/home';
     
     //user information
     this.userId = "";

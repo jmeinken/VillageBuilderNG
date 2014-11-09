@@ -21,13 +21,43 @@
     <title>Village Builder</title>
 </head>
 
-<body ng-cloak  ng-controller="GlobalController"  ng-init="State.authenticate()">
-
+<body ng-controller="GlobalController" ng-init="State.authenticate()" ngcloak>
+    
 {{ State.debug }}
 
-<div class="container" ui-view></div>
+ 
+<div class="container">
+    <div class="col-lg-12" id="header">
+        <div class="page-header">
+            <h1 id="navbar">Village Builder</h1>
+            <p>own less and have more</p>
+        </div>
+        <div class="text-danger">
+            <strong>
+                <div></div>
+            </strong>
+        </div>
+    </div>	
+    <div class="row" id="body">
+        <div ui-view></div>
+    </div>
+    <div class="row" id="footer">
+        <div class="col-lg-12">
+            <hr>
+            <p>Made in <a href="http://johnmeinken.com">Ohio</a>,
+            2014.<br />
+            Questions and feedback: 
+            <a href="mailto:thebellsofohio@hotmail.com">
+                thebellsofohio@hotmail.com
+            </a>   
+        </div>
+    </div>
+    
 
+</div>
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true"></div>
 
 
     
@@ -41,14 +71,12 @@
 <!--<script src="js/services/auth_service.js"></script>-->
 <!-- AngularJS controllers  -->
 <script src="js/controllers/global_controller.js"></script>
-<script src="js/controllers/logged_out_controller.js"></script>
-<script src="js/controllers/logged_in_controller.js"></script>
 <script src="js/controllers/home_controller.js"></script>
 <script src="js/controllers/login_form_controller.js"></script>
-<script src="js/controllers/create_account_form_controller.js"></script>
+<script src="js/controllers/create_account_controller.js"></script>
 <script src="js/controllers/activate_account_controller.js"></script>
 <script src="js/controllers/manage_account_form_controller.js"></script>
-<script src="js/controllers/manage_password_form_controller.js"></script>
+<script src="js/controllers/manage_password_controller.js"></script>
 <script src="js/controllers/reset_password_form_controller.js"></script>
 <script src="js/controllers/activate_reset_password_controller.js"></script>
 

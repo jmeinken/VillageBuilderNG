@@ -11,17 +11,17 @@
         </div>
     </div>	
     <div class="row" id="body">
-        this is the login page.<br><br>
-        <div ng-controller="LoginFormController" ng-init="loadForm()">
-            <div ng-if="Request.login" 
+        this is the create account page.<br><br>
+        <div ng-controller="CreateAccountFormController" ng-init="loadForm()">
+            <div ng-if="Request.createAccount" 
                  vb-build-form 
-                 vb-request-object="Request.login"
-                 vb-submit="{val:'Sign In', func:submitForm}" 
+                 vb-request-object="Request.createAccount"
+                 vb-submit="{val:'Create Account', func:submitForm}" 
                  vb-reset="{val:'Reset Form', func:resetForm}"></div>
-            <div ng-if="!Request.login">Form loading...</div>
+            <div ng-if="!Request.createAccount">Form loading...</div>
         </div>
 
-        <a ui-sref="create-account">Create Account</a>
+        <a ui-sref="login">Login</a>
         <a ui-sref="reset-password">Forgot Password?</a>
     </div>
     <div class="row" id="footer">

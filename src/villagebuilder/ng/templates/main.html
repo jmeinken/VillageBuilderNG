@@ -1,7 +1,7 @@
 <div ng-if="showPage">
     <div class="col-lg-12" id="header">
         <div class="page-header">
-            <h1 id="navbar">Village Builder</h1>
+            <h1 id="navbar">Village Builder Main View</h1>
             <p>own less and have more</p>
         </div>
         <div class="text-danger">
@@ -10,20 +10,7 @@
             </strong>
         </div>
     </div>	
-    <div class="row" id="body">
-        this is the login page.<br><br>
-        <div ng-controller="LoginFormController" ng-init="loadForm()">
-            <div ng-if="Request.login" 
-                 vb-build-form 
-                 vb-request-object="Request.login"
-                 vb-submit="{val:'Sign In', func:submitForm}" 
-                 vb-reset="{val:'Reset Form', func:resetForm}"></div>
-            <div ng-if="!Request.login">Form loading...</div>
-        </div>
-
-        <a ui-sref="create-account">Create Account</a>
-        <a ui-sref="reset-password">Forgot Password?</a>
-    </div>
+    <div class="row" id="body" ui-view></div>
     <div class="row" id="footer">
         <div class="col-lg-12">
             <hr>
