@@ -11,6 +11,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: 'templates/create-account.html?x=7',
             controller: 'LoggedOutController'
         })
+        .state('create-account.map', {
+            url: '/map',
+            templateUrl: 'templates/map.html?x=16',
+            controller: 'MapController'
+        })
         .state('reset-password', {
             url: '/reset-password',
             templateUrl: 'templates/reset-password.html?x=10',

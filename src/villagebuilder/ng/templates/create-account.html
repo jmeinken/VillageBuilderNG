@@ -11,15 +11,21 @@
         </div>
     </div>	
     <div class="row" id="body">
-        this is the create account page.<br><br>
+        Personal Info >> Address >> Privacy Settings >> Find Friends 
+        <hr>
+
         <div ng-controller="CreateAccountFormController" ng-init="loadForm()">
+            <div ui-view></div>
+        <!--
             <div ng-if="Request.createAccount" 
                  vb-build-form 
                  vb-request-object="Request.createAccount"
                  vb-submit="{val:'Create Account', func:submitForm}" 
                  vb-reset="{val:'Reset Form', func:resetForm}"></div>
             <div ng-if="!Request.createAccount">Form loading...</div>
+        -->
         </div>
+        
 
         <a ui-sref="login">Login</a>
         <a ui-sref="reset-password">Forgot Password?</a>

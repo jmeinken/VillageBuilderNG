@@ -19,11 +19,18 @@
     <script src="js/app/ng_sanitize.js"></script>
     <!--<link rel="stylesheet" href="assets/css/data_analysis_tool.css">-->       
     <title>Village Builder</title>
+    
+    <script type="text/javascript"
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0gq-iooxPujERCOEM0ozvxmUPAySnuYU">
+</script>
+    
+    
+    
 </head>
 
 <body ng-cloak  ng-controller="GlobalController"  ng-init="State.authenticate()">
 
-{{ State.debug }}
+    <code>{{ State.debug }}</code>
 
 <div class="container" ui-view></div>
 
@@ -46,6 +53,7 @@
 <script src="js/controllers/home_controller.js"></script>
 <script src="js/controllers/login_form_controller.js"></script>
 <script src="js/controllers/create_account_form_controller.js"></script>
+<script src="js/controllers/map_controller.js"></script>
 <script src="js/controllers/activate_account_controller.js"></script>
 <script src="js/controllers/manage_account_form_controller.js"></script>
 <script src="js/controllers/manage_password_form_controller.js"></script>

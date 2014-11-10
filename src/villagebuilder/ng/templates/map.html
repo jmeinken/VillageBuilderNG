@@ -1,0 +1,22 @@
+<style type="text/css">
+#map-canvas { height: 300px; width: 500px; margin: 0; padding: 0;}
+</style>
+
+
+{{ addressIndex }}
+
+Address:
+<input type="text" size="100" ng-model="userProvidedAddress" />
+<button ng-click="lookupAddress()">Lookup Address</button>
+<br><br>
+
+<div id="map-canvas" ng-init="initializeMap()"></div>
+
+<div ng-repeat="result in geocodeResults">
+<label>
+    <input type="radio" ng-model="$parent.addressIndex" value="{{$index}}" ng-change='redrawMap($index)'> {{ result.formatted_address }}
+</label>
+</div>
+
+
+
