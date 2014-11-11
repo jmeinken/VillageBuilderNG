@@ -16,6 +16,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: 'templates/map.html?x=16',
             controller: 'MapController'
         })
+        .state('create-account.user-image', {
+            url: '/user-image',
+            templateUrl: 'templates/user-image.html?x=17',
+            controller: 'UserImageController'
+        })
         .state('reset-password', {
             url: '/reset-password',
             templateUrl: 'templates/reset-password.html?x=10',

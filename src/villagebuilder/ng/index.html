@@ -19,12 +19,15 @@
     <script src="js/app/ng_sanitize.js"></script>
     <!--<link rel="stylesheet" href="assets/css/data_analysis_tool.css">-->       
     <title>Village Builder</title>
-    
+    <!-- Google Maps API -->
     <script type="text/javascript"
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0gq-iooxPujERCOEM0ozvxmUPAySnuYU">
-</script>
-    
-    
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0gq-iooxPujERCOEM0ozvxmUPAySnuYU">
+    </script>
+    <!-- Jcrop API -->
+    <script src="libraries/jcrop/jpick_upload.min.js"></script>
+    <script src="libraries/jcrop/jquery.Jcrop.min.js"></script>
+    <link rel="stylesheet" href="libraries/jcrop/css/jquery.Jcrop.min.css" type="text/css" />
+    <link rel="stylesheet" href="libraries/jcrop/css/progressBar.css" type="text/css" />    
     
 </head>
 
@@ -41,6 +44,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0gq-iooxPujERCOEM0ozvxmU
 <!-- AngularJS modules and directives -->    
 <script src="js/app/app.js"></script>
 <script src="js/app/states.js"></script>
+<script src="js/app/file_reader.js"></script>
 <!-- AngularJS services  -->
 <script src="js/services/ajax_service.js"></script>
 <script src="js/services/state_service.js"></script>
@@ -54,6 +58,7 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD0gq-iooxPujERCOEM0ozvxmU
 <script src="js/controllers/login_form_controller.js"></script>
 <script src="js/controllers/create_account_form_controller.js"></script>
 <script src="js/controllers/map_controller.js"></script>
+<script src="js/controllers/user_image_controller.js"></script>
 <script src="js/controllers/activate_account_controller.js"></script>
 <script src="js/controllers/manage_account_form_controller.js"></script>
 <script src="js/controllers/manage_password_form_controller.js"></script>

@@ -1,0 +1,131 @@
+<style type="text/css">
+
+        #file, #progressBar, #upload, .drag-drop {
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+
+        .drag-drop {
+            width: 300px;
+            height: 88px;
+            border: 2px dotted #0B85A1;
+            text-align: center;
+            line-height: 88px;
+            background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.02)
+        }
+
+        .drag-drop-active {
+            border: 2px solid #0B85A1;
+            background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.08)
+        }
+
+        .text{
+            font-size: 18px;
+        }
+
+        .button {
+            font-size: 22px;
+        }
+
+        #grid{
+            margin-top: 20px;
+            margin-bottom: 100px;
+        }
+
+        #grid td {
+            text-align: center;
+            vertical-align: top;
+            padding-right: 30px;
+        }
+
+        .preview{
+            padding: 10px;
+        }
+
+        .red{
+            color: orangered;
+        }
+        
+        .control td {
+            padding-right: 58px;
+        }
+        
+        .frame {
+            background: none repeat scroll 0 0 #fff;
+            border: 2px solid #ddd;
+            padding: 10px;
+        }
+
+    </style>
+
+
+
+
+
+
+
+<div ng-init="attachJcrop()">
+
+This is user image view
+
+<form>
+    <input type="file" ng-file-select="onFileSelect($files)" >
+ <!--  <input type="file" ng-file-select="onFileSelect($files)" multiple> -->
+</form>
+   
+<b>Preview:</b><br />
+   <i ng-hide="imageSrc">No image selected</i>
+<img ng-src="{{imageSrc}}" height="200" id="user_image" /><br/>
+   
+
+<div class="page-header"><h2>Basic Demo</h2></div>
+    <div class="well">
+        <table class="control" cellspacing="8">
+            <tr>
+                <td><input class="button" id="file" type="file" name="file"/> <br/>
+                </td>
+                <td><input class="btn btn-lg btn-success" id="upload" type="button" onclick="upload()" value="Upload"/>
+            </tr>
+            <tr>
+                <td>
+                    <div id="dragDrop" class="drag-drop text" data-jcu-active="drag-drop-active">Drag and Drop Here
+                    </div>
+                </td>
+                <td>
+                    <div id="progressBar" class="big-green">
+                        <div></div>
+                    </div>
+                </td>
+                </td>
+            </tr>
+        </table>
+
+        <table id="grid" cellspacing="40">
+            <tr>
+                <td><div class="frame"><img id="image" src="assets/images/lukas.jpg"></div></td>
+                <td><h4 class="red">Preview: Medium</h4>
+                    <canvas class="img-thumbnail" id="medium" width="200" height="150"></canvas>
+                </td>
+                <td><h4 class="red">Preview: Small</h4>
+                    <canvas class="img-thumbnail" id="small" width="120" height="90"></canvas>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+<!--
+   <b>Progress:</b>
+  <progress value="{{progress}}"></progress>-->
+
+</div>
+
