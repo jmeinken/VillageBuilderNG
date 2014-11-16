@@ -37,6 +37,9 @@ class AccountModel {
                        'neighborhood' => Input::get('neighborhood'), 
                        'phone_number' => Input::get('phone_number'), 
                        'phone_type' => Input::get('phone_type'), 
+                       'share_email' => Input::has('share_email'), 
+                       'share_address' => Input::has('share_address'), 
+                       'share_phone' => Input::has('share_phone'), 
                        'pic_large' => Input::get('pic_large'), 
                        'pic_small' => Input::get('pic_small'), 
                        'user_id' => $userId 
@@ -81,6 +84,9 @@ class AccountModel {
                         'neighborhood' => Input::get('neighborhood'), 
                         'phone_number' => Input::get('phone_number'), 
                         'phone_type' => Input::get('phone_type'), 
+                        'share_email' => Input::has('share_email'), 
+                        'share_address' => Input::has('share_address'), 
+                        'share_phone' => Input::has('share_phone'), 
                         'pic_large' => Input::get('pic_large'), 
                         'pic_small' => Input::get('pic_small'), 
                         'user_id' => Input::get('user_id')

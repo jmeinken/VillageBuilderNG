@@ -207,6 +207,9 @@ class ApiAccount extends BaseController {
         $values['neighborhood'] = '';
         $values['phone_number'] = '';
         $values['phone_type'] = '';
+        $values['share_email'] = true;
+        $values['share_address'] = true;
+        $values['share_phone'] = false;
         $values['pic_large'] = '';
         $values['pic_small'] = '';
         $values['_token'] = csrf_token();
@@ -236,6 +239,9 @@ class ApiAccount extends BaseController {
         $values['neighborhood'] = $account->neighborhood;
         $values['phone_number'] = $account->phone_number;
         $values['phone_type'] = $account->phone_type;
+        $values['share_email'] = $account->share_email;
+        $values['share_address'] = $account->share_address;
+        $values['share_phone'] = $account->share_phone;
         $values['pic_large'] = $account->pic_large;
         $values['pic_small'] = $account->pic_small;
         $values['_token'] = csrf_token();
@@ -360,6 +366,21 @@ class ApiAccount extends BaseController {
             'name' => 'Phone Type',
             'input_type' => 'select',
             'options' => ['mobile'=>'mobile','home'=>'home','work'=>'work']
+        ];
+        $meta['share_email'] = [
+            'type' => 'boolean',
+            'name' => 'Allow friends to see my email address',
+            'input_type' => 'checkbox'
+        ];
+        $meta['share_address'] = [
+            'type' => 'boolean',
+            'name' => 'Allow friends to see my full address',
+            'input_type' => 'checkbox'
+        ];
+        $meta['share_phone'] = [
+            'type' => 'boolean',
+            'name' => 'Allow friends to see my phone number',
+            'input_type' => 'checkbox'
         ];
         $meta['pic_large'] = [
             'type' => 'file',

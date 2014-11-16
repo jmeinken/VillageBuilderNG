@@ -117,30 +117,17 @@
     <div class="col-lg-3 col-lg-offset-1">
         <form class="form-horizontal">
           <fieldset>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" />
-                    Allow friends to see my email address
-                </label>
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" />
-                    Allow friends to see my full address
-                </label>
-            </div>
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" />
-                    Allow friends to see my phone number
-                </label>
-            </div>
-            <div ng-repeat="inputName in ['phone_number','phone_type']" 
+            <div ng-repeat="inputName in ['share_email','share_address','share_phone']" 
                 ng-if="Request.createAccount" 
                      vb-build-input 
                      vb-request-object="Request.createAccount"
                      vb-input-name="inputName"></div>
             <div ng-if="!Request.createAccount">Form loading...</div>
+            <div ng-repeat="inputName in ['phone_number','phone_type']" 
+                ng-show="Request.createAccount.request.share_phone" 
+                     vb-build-input 
+                     vb-request-object="Request.createAccount"
+                     vb-input-name="inputName"></div>
           </fieldset>
         </form>
     </div>
@@ -168,6 +155,16 @@
 				
         <hr />
         <h3>Shared Only With Friends</h3>
+        <div ng-if="Request.createAccount.request.share_email">
+            <strong>email:</strong> {{ Request.createAccount.request.email }}
+        </div>
+        <div ng-if="Request.createAccount.request.share_address">
+            <strong>address:</strong> {{ Request.createAccount.request.full_address }}
+        </div>
+        <div ng-if="Request.createAccount.request.share_phone">
+            <strong>phone:</strong> {{ Request.createAccount.request.phone_number }}
+            ({{ Request.createAccount.request.phone_type }})
+        </div>
     </div>
 </div>
     
