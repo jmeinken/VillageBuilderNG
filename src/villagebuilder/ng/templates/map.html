@@ -16,6 +16,7 @@ Address:
     <input type="radio" ng-model="$parent.addressIndex" value="{{$index}}" ng-change='redrawMap($index)'> {{ result.formatted_address }}
 </label>
 </div>
+<button ng-click="useSelectedGecodeResult()">Use Selected Address</button>
 
 
 

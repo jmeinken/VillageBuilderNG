@@ -11,14 +11,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: 'templates/create-account.html?x=7',
             controller: 'LoggedOutController'
         })
+        .state('create-account.account-info', {
+            url: '/account-info',
+            templateUrl: 'templates/account-info.html?x=26'
+        })
         .state('create-account.map', {
             url: '/map',
             templateUrl: 'templates/map.html?x=16',
             controller: 'MapController'
         })
-        .state('create-account.user-image', {
-            url: '/user-image',
-            templateUrl: 'templates/user-image.html?x=17',
+        .state('create-account.personal-info', {
+            url: '/personal-info',
+            templateUrl: 'templates/personal-info.html?x=17',
             controller: 'UserImageController'
         })
         .state('reset-password', {

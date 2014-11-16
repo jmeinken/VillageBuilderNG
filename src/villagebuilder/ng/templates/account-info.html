@@ -1,0 +1,8 @@
+This is account info view.
+
+<div ng-repeat="inputName in ['email','first_name','last_name','password','password_again']" 
+        ng-if="Request.createAccount" 
+                 vb-build-input 
+                 vb-request-object="Request.createAccount"
+                 vb-input-name="inputName"></div>
+            <div ng-if="!Request.createAccount">Form loading...</div>

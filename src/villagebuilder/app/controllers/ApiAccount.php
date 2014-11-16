@@ -39,6 +39,36 @@ class ApiAccount extends BaseController {
         return Response::json(['user' => Input::get('email')], self::STATUS_OK);
     }
     
+    public function postUserImage() {
+        
+        //return Response::json(['message' => $ct], self::STATUS_OK);
+        if (Input::hasFile('thumb') && Input::hasFile('large')) {
+            $ct = $this->getNextNumber(Config::get('constants.imagePath') . 'count.txt');
+            $thumbFileName = 'user_thumb' . $ct . '.jpg';
+            $largeFileName = 'user_large' . $ct . '.jpg';
+            Input::file('thumb')->move(Config::get('constants.imagePath'), $thumbFileName);
+            Input::file('large')->move(Config::get('constants.imagePath'), $largeFileName);
+            return Response::json([
+                    'thumbFileName' => $thumbFileName,
+                    'largeFileName' => $largeFileName
+                ], self::STATUS_OK);
+        } else {
+            return Response::json(['message' => 'photo not found'], self::STATUS_OK);
+        }
+    }
+    
+    private function getNextNumber($fileLoc) {
+        //$myfile = fopen($fileLoc, "r+");
+        $count = file_get_contents($fileLoc);
+        $count++;
+        file_put_contents($fileLoc, $count);
+        //fclose($myfile);
+        //$count = (int)file_get_contents($fileLoc);
+        //$count+=1;
+        //file_put_contents($fileLoc,$count);
+        return $count;
+    }
+    
     public function getPassword() {
         $response = [
             'values' => $this->getPasswordValues(),

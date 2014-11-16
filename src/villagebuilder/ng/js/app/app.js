@@ -176,6 +176,28 @@ app.directive('vbBuildForm', function() {
     };
 });
 
+app.directive('vbBuildInput', function() {
+    
+    return {
+        scope: {
+            request : "=vbRequestObject",
+            key : "=vbInputName"
+        },
+        templateUrl: 'templates/directive_templates/form_1.html?x=21',
+        link: function(scope){
+            scope.keyArray = function(obj) {
+                var arr = [];
+                var i=0;
+                for (var key in obj) {
+                    arr[i] = key;
+                    i++;
+                }
+                return arr;
+            }
+        }
+    };
+});
+
 app.directive("ngFileSelect",function(){
 
   return {

@@ -23,6 +23,7 @@ app.service("Ajax", function() {
     this.PUT_ACCOUNT = root + 'put-account';
     this.GET_PASSWORD = root + 'get-password';
     this.PUT_PASSWORD = root + 'put-password';
+    this.POST_USER_IMAGE = root + 'post-user-image';
     
     /*
      * Error Messages

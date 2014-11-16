@@ -34,6 +34,10 @@ Route::post('api/post-activate-account', array(
     'as' => 'api-post-activate-account',
     'uses' => 'ApiAuthentication@postActivateAccount'
 ));
+Route::post('api/post-user-image', array(
+    'as' => 'api-post-user-image',
+    'uses' => 'ApiAccount@postUserImage'
+));
 Route::post('api/post-activate-reset-password', array(
     'as' => 'api-post-activate-reset-password',
     'uses' => 'ApiAuthentication@postActivateResetPassword'

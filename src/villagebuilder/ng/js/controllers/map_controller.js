@@ -65,14 +65,21 @@ app.controller('MapController', function($scope, $interval, State, Request) {
         }
     }
     
-
-    
     $scope.redrawMap = function(value) {
         $scope.map.setCenter($scope.geocodeResults[value].geometry.location);
         $scope.map.setZoom(15);
         $scope.marker.setMap(null);
         $scope.marker = new google.maps.Marker({ map: $scope.map });
         $scope.marker.setPosition($scope.geocodeResults[value].geometry.location);
+    }
+    
+    //selected address accessed as:
+    //$scope.geocodeResults[$scope.addressIndex]
+    
+    $scope.useSelectedGecodeResult = function() {
+        State.debug = $scope.addressIndex;
+        var selected = $scope.geocodeResults[$scope.addressIndex];
+        
     }
   
 
