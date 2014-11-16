@@ -77,9 +77,30 @@ app.controller('MapController', function($scope, $interval, State, Request) {
     //$scope.geocodeResults[$scope.addressIndex]
     
     $scope.useSelectedGecodeResult = function() {
-        State.debug = $scope.addressIndex;
-        var selected = $scope.geocodeResults[$scope.addressIndex];
+        //State.debug = $scope.addressIndex;
         
+        var selected = $scope.geocodeResults[$scope.addressIndex];
+        Request.createAccount.request.full_address = selected.formatted_address;
+        Request.createAccount.request.latitude = selected.geometry.location.k;
+        Request.createAccount.request.longitude = selected.geometry.location.B;
+        for (var i=0; i<selected.address_components.length; i++) {
+            if ($.inArray("route", selected.address_components[i].types) != -1) {
+                State.debug = selected.address_components[i].short_name;
+                Request.createAccount.request.street = selected.address_components[i].short_name;
+            } 
+            if ($.inArray("neighborhood", selected.address_components[i].types) != -1) {
+                Request.createAccount.request.neighborhood = selected.address_components[i].short_name;
+            }
+            if ($.inArray("locality", selected.address_components[i].types) != -1) {
+                Request.createAccount.request.city = selected.address_components[i].short_name;
+            }
+            if ($.inArray("administrative_area_level_1", selected.address_components[i].types) != -1) {
+                Request.createAccount.request.state = selected.address_components[i].short_name;
+            }
+            if ($.inArray("postal_code", selected.address_components[i].types) != -1) {
+                Request.createAccount.request.zip_code = selected.address_components[i].short_name;
+            }
+        }
     }
   
 

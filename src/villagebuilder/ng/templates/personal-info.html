@@ -86,21 +86,16 @@
         <form class="form-horizontal">
           <fieldset>
             <div class="form-group">
-                <label for="inputEmail" class="control-label">Address <a href="">(edit)</a></label><br>
-                <textarea disabled="" class="form-control" rows="2" id="textArea">371 Terrace Ave., Cincinnati, OH 45220, USA</textarea>
+                <label for="inputEmail" class="control-label">Full Address <a href="">(edit)</a></label><br>
+                <textarea disabled="" class="form-control" rows="2" id="textArea"
+                          ng-model="Request.createAccount.request.full_address"></textarea>
             </div>
-            <div class="form-group">
-                <label for="inputEmail" class="control-label">Street</label>
-                <input class="form-control" id="inputEmail" placeholder="Email" type="text">
-            </div>
-            <div class="form-group">
-                <label for="inputEmail" class="control-label">City</label>
-                <input class="form-control" id="inputEmail" placeholder="Email" type="text">
-            </div>
-            <div class="form-group">
-                <label for="inputEmail" class="control-label">Neighborhood</label>
-                <input class="form-control" id="inputEmail" placeholder="Email" type="text">
-            </div>
+            <div ng-repeat="inputName in ['street','city','neighborhood']" 
+            ng-if="Request.createAccount" 
+                     vb-build-input 
+                     vb-request-object="Request.createAccount"
+                     vb-input-name="inputName"></div>
+                <div ng-if="!Request.createAccount">Form loading...</div>
             <div class="form-group">
                 <label class="control-label">Profile Pic</label>
                 <div>
@@ -131,7 +126,7 @@
             <div class="form-group">
                 <label>
                     <input type="checkbox" />
-                    Allow friends to see my home address
+                    Allow friends to see my full address
                 </label>
             </div>
             <div class="form-group">
@@ -140,14 +135,12 @@
                     Allow friends to see my phone number
                 </label>
             </div>
-            <div class="form-group">
-                <label for="inputEmail" class="control-label">Phone Number</label>
-                <input class="form-control" id="inputEmail" placeholder="Email" type="text">
-            </div>
-            <div class="form-group">
-                <label for="inputEmail" class="control-label">Phone Type</label>
-                <input class="form-control" id="inputEmail" placeholder="Email" type="text">
-            </div>
+            <div ng-repeat="inputName in ['phone_number','phone_type']" 
+                ng-if="Request.createAccount" 
+                     vb-build-input 
+                     vb-request-object="Request.createAccount"
+                     vb-input-name="inputName"></div>
+            <div ng-if="!Request.createAccount">Form loading...</div>
           </fieldset>
         </form>
     </div>
@@ -156,11 +149,17 @@
         <table>
             <tr>
                 <td>
-                    <img alt="User Picture" ng-src="{{ imgLarge }}" width="45" height="45" />
+                    <img alt="User Picture" ng-src="{{ imgLarge }}" width="55" height="55" />
                 </td>
                 <td>
-                    <div>John Meinken</div>
-                    <div>Terrace Ave. (Clifton Gaslight)</div>
+                    <div>
+                        {{ Request.createAccount.request.first_name }} 
+                        {{ Request.createAccount.request.last_name }}
+                    </div>
+                    <div>
+                        {{ Request.createAccount.request.street }} 
+                        ({{ Request.createAccount.request.neighborhood || Request.createAccount.request.city }})
+                    </div>
                 </td>
             </tr>
         </table>    
