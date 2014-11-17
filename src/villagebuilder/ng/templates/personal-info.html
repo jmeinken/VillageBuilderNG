@@ -96,14 +96,7 @@
                      vb-request-object="Request.createAccount"
                      vb-input-name="inputName"></div>
                 <div ng-if="!Request.createAccount">Form loading...</div>
-            <div class="form-group">
-                <label class="control-label">Profile Pic</label>
-                <div>
-                    <button href="" data-target="#myModal" data-toggle="modal">
-                        Upload Picture
-                    </button>
-                </div>
-            </div>
+            
             
             <!--<div ng-if="Request.createAccount" 
                  vb-build-form 
@@ -117,6 +110,15 @@
     <div class="col-lg-3 col-lg-offset-1">
         <form class="form-horizontal">
           <fieldset>
+            <div class="form-group">
+                <label class="control-label">Profile Pic</label>
+                <div>
+                    <img alt="User Picture" ng-src="{{ imgLarge }}" width="150" height="150" />
+                    <button href="" data-target="#myModal" data-toggle="modal">
+                        Upload Picture
+                    </button>
+                </div>
+            </div>
             <div ng-repeat="inputName in ['share_email','share_address','share_phone']" 
                 ng-if="Request.createAccount" 
                      vb-build-input 

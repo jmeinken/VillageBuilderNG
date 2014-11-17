@@ -190,7 +190,7 @@ class ApiAccount extends BaseController {
     
     private function getAccountDefaultValues() {
         $values = [];
-        $values['email'] = "a";
+        $values['email'] = "thebellsofohio@hotmail.com";
         $values['password'] = "";
         $values['password_again'] = "";
         $values['first_name'] = '';
@@ -256,7 +256,10 @@ class ApiAccount extends BaseController {
             'type' => 'string', 
             'input_type' => 'text',
             'name' => 'Email', 
-            'required'=>true
+            'required'=>true,
+            'minLength'=>10,
+            'maxLength'=>50,
+            'pattern'=>'/test/'
         ];
         $meta['password'] = [
             'type' => 'string', 

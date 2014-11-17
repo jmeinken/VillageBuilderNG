@@ -1,5 +1,5 @@
 
-var app = angular.module('app', ['ngSanitize', 'ui.router'], function($httpProvider) {
+var app = angular.module('app', ['ngSanitize', 'ui.router', 'interpol'], function($httpProvider) {
   // Use x-www-form-urlencoded Content-Type
   $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
@@ -176,14 +176,13 @@ app.directive('vbBuildForm', function() {
     };
 });
 
-app.directive('vbBuildInput', function() {
-    
+app.directive('vbBuildInput', function() {   
     return {
         scope: {
             request : "=vbRequestObject",
             key : "=vbInputName"
         },
-        templateUrl: 'templates/directive_templates/form_1.html?x=21',
+        templateUrl: 'templates/directive_templates/form_2.html?x=21',
         link: function(scope){
             scope.keyArray = function(obj) {
                 var arr = [];
@@ -218,4 +217,4 @@ app.directive("ngFileSelect",function(){
 
 
 
-
+ 

@@ -1,0 +1,56 @@
+<div ng-if="request.inputErrors[key]" class="text-danger">{{ request.inputErrors[key][0] }}</div>
+<div ng-switch="request.meta[key].input_type">
+    <div ng-switch-when="number"
+         ng-class="{'form-group':true, 'has-error':request.inputErrors[key]}">
+        <label class="control-label">
+            {{ request.meta[key].name || key }}
+        </label>
+        <input class="form-control" name="min_length" type="number" integer 
+               ng-model="request.request[key]" />
+        <span class="help-block" ng-show="request.meta[key].description">
+            {{ request.meta[key].description }}
+        </span>
+        <span class="text-danger" ng-show="false">
+            Please enter a valid integer or '0' for no minimum.
+        </span>
+    </div>
+    <div ng-class="{'form-group':true, 'has-error':request.inputErrors[key]}" ng-switch-when="text">
+        <label class="control-label">
+            {{ request.meta[key].name || key }}
+        </label>
+        <input required class="form-control" name="{{key}}" type="text" ng-model="request.request[key]" />
+        <span class="help-block" ng-show="request.meta[key].description">
+            {{ request.meta[key].description }}
+        </span>
+        <p class="help-block">{{ myform.first_name.$error }}</p>
+    </div>
+    <div ng-class="{'form-group':true, 'has-error':request.inputErrors[key]}" ng-switch-when="password">
+        <label class="control-label">
+            {{ request.meta[key].name || key }}
+        </label>
+        <input class="form-control" type="password" ng-model="request.request[key]" />
+        <span class="help-block" ng-show="request.meta[key].description">
+            {{ request.meta[key].description }}
+        </span>
+    </div>
+    <div ng-class="{'form-group':true, 'has-error':request.inputErrors[key]}" ng-switch-when="checkbox" class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="request.request[key]" />
+            {{ request.meta[key].name || key }}
+        </label>
+        <span class="help-block" ng-show="request.meta[key].description">
+            {{ request.meta[key].description }}
+        </span>
+    </div>
+    <div ng-class="{'form-group':true, 'has-error':request.inputErrors[key]}" ng-switch-when="select">
+        <label class="control-label">
+            {{ request.meta[key].name || key }}
+        </label>
+        <select class="form-control" ng-model="request.request[key]"
+                ng-options="request.meta[key].options[option] for option in keyArray(request.meta[key].options)">
+        </select>
+        <span class="help-block" ng-show="request.meta[key].description">
+            {{ request.meta[key].description }}
+        </span>
+    </div>
+</div>
