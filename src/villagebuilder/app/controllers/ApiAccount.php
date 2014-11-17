@@ -190,7 +190,7 @@ class ApiAccount extends BaseController {
     
     private function getAccountDefaultValues() {
         $values = [];
-        $values['email'] = "thebellsofohio@hotmail.com";
+        $values['email'] = "testellsofohio@hotmail.com";
         $values['password'] = "";
         $values['password_again'] = "";
         $values['first_name'] = '';
@@ -386,12 +386,12 @@ class ApiAccount extends BaseController {
             'input_type' => 'checkbox'
         ];
         $meta['pic_large'] = [
-            'type' => 'file',
-            'name' => 'Email'
+            'type' => 'hidden',
+            'name' => 'Large Pic'
         ];
         $meta['pic_small'] = [
-            'type' => 'file',
-            'name' => 'Email'
+            'type' => 'hidden',
+            'name' => 'Thumbnail'
         ];
         $meta['_token'] = [
             'type' => 'string',
