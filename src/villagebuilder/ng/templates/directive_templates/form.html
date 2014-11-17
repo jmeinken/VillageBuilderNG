@@ -49,10 +49,9 @@
         <span class="help-block" ng-show="request.meta[key].description">
             {{ request.meta[key].description }}
         </span>
-        <span class="text-danger" ng-show="false">
-            Please enter a valid integer or '0' for no minimum.
-        </span>
-        <p ng-show="myform[key].$invalid">{{ myform[key].$error }}</p>
+        <div class="text-danger" ng-show="myform[key].$invalid">
+            {{ myform[key].$error }}
+        </div>
     </div>
     
 </div>

@@ -386,12 +386,14 @@ class ApiAccount extends BaseController {
             'input_type' => 'checkbox'
         ];
         $meta['pic_large'] = [
-            'type' => 'hidden',
-            'name' => 'Large Pic'
+            'type' => 'text',
+            'name' => 'Large Pic',
+            'input_type' => 'hidden'
         ];
         $meta['pic_small'] = [
-            'type' => 'hidden',
-            'name' => 'Thumbnail'
+            'type' => 'text',
+            'name' => 'Thumbnail',
+            'input_type' => 'hidden'
         ];
         $meta['_token'] = [
             'type' => 'string',
