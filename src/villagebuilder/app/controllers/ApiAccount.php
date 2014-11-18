@@ -257,9 +257,10 @@ class ApiAccount extends BaseController {
             'input_type' => 'text',
             'name' => 'Email', 
             'required'=>true,
-            'minLength'=>10,
-            'maxLength'=>50,
-            'pattern'=>'/test/'
+            'minlength'=>10,
+            'maxlength'=>50,
+            'pattern'=>'/test/',
+            'pattern_error' => 'Toooooooo loooonnnnggg'
         ];
         $meta['password'] = [
             'type' => 'string', 
@@ -269,9 +270,10 @@ class ApiAccount extends BaseController {
         ];
         $meta['password_again'] = [
             'type' => 'string', 
-            'input_type' => 'password',
+            'input_type' => 'password_confirm',
             'name' => 'Reenter Password', 
-            'required' => true
+            'required' => true,
+            'matches' => 'password'
         ];
         $meta['first_name'] = [
             'type' => 'string', 

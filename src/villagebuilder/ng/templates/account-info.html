@@ -2,8 +2,20 @@ This is account info view.
 
 
 
-<div ng-if="Request.createAccount" 
-                 vb-build-form 
+<!--<div ng-if="Request.createAccount"
+                 vb-build-form
                  vb-request-object="Request.createAccount"
-                 vb-submit="{val:'Sign In', func:submitForm}" 
-                 vb-reset="{val:'Reset Form', func:resetForm}"></div>
+                 vb-include-fields="['email','password','password_again','first_name','last_name']"
+                 vb-submit="{val:'Save and Continue', func:validateAccountInfo}"></div>-->
+
+<form name="form1" novalidate ng-controller="AccountInfoFormController"
+      ng-if="Request.createAccount">
+    <div ng-include="'templates/forms/input-elements.html'"></div>
+    <button ng-click="validateAccountInfo(form1.$valid)">Save and Continue</button>
+</form>
+<div ng-if="!Request.createAccount">Form loading...</div>
+
+
+
+
+

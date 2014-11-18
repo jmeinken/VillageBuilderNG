@@ -1,5 +1,5 @@
 
-app.controller('MapController', function($scope, $interval, State, Request) {
+app.controller('MapController', function($scope, $interval, $location, State, Request) {
     
     $scope.userProvidedAddress = "";
     $scope.map;
@@ -7,6 +7,7 @@ app.controller('MapController', function($scope, $interval, State, Request) {
     $scope.geocoder = new google.maps.Geocoder();
     $scope.geocodeResults = [];
     $scope.addressIndex = 0;
+    $scope.resultExists = false;
     
     //these are used with interval to run lookup until successful
     $scope.promise;
@@ -48,10 +49,13 @@ app.controller('MapController', function($scope, $interval, State, Request) {
                     $scope.map.setZoom(15);
                     $scope.marker = new google.maps.Marker({ map: $scope.map });
                     $scope.marker.setPosition(results[0].geometry.location);
+                    $scope.resultExists = true;
                     checkStatus();
                 } else {
                     $scope.geocodeResults = [];
                     $scope.addressSubmissionComplete = true;
+                    $scope.resultExists = false;
+                    alert('No results found for that address.');
                     checkStatus();
                 }
             });
@@ -101,6 +105,8 @@ app.controller('MapController', function($scope, $interval, State, Request) {
                 Request.createAccount.request.zip_code = selected.address_components[i].short_name;
             }
         }
+        State.debug = "yes it ran";
+        $location.path( "/create-account/personal-info" );
     }
   
 

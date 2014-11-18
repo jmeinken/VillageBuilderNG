@@ -1,10 +1,10 @@
 
 
-<form name="form1" id="form1" novalidate>
+
 
 <div class="alert alert-danger" ng-if="request.formError">{{ request.formError }}</div>
-
-<div ng-repeat="key in fields" ng-if="request.meta[key].input_type!='hidden'">
+<div ng-init="counter = inputFieldsCounter"></div>
+<div ng-repeat="key in inputFields[counter]" ng-if="request.meta[key].input_type!='hidden'">
     <div ng-if="request.inputErrors[key]" class="text-danger">{{ request.inputErrors[key][0] }}</div>
 
     <div ng-class="{'form-group':true, 'has-error':request.inputErrors[key]}">
@@ -65,7 +65,7 @@
             {{ request.meta[key].description }}
         </span>
         
-        <div class="text-danger" ng-show="form1[key].$invalid && formSubmitted">
+        <div class="text-danger" ng-show="form1[key].$invalid && showInputErrors">
                 
             <div ng-show="form1[key].$error.required">
                 {{ request.meta[key].required_error || "Value is required." }}
@@ -84,12 +84,11 @@
             </div>
         </div>
     </div>
-    
+    <!--<div ng-init="incrementInputFieldCounter()"></div>-->
 </div>
 
 
 
-<button id="form1_submit" ng-if="submit" ng-click="submit.func()">{{submit.val}}</button> 
-<button ng-if="reset" ng-click="reset.func()">{{reset.val}}</button><br><br>
 
-</form>
+
+
