@@ -1,19 +1,36 @@
 app.controller('LoginFormController', function($scope, $location, $http, Ajax, State, Request) {
 
-   var form = 'login';
-   var getUrl = Ajax.GET_LOG_IN;
-   var postUrl = Ajax.POST_LOG_IN;
+    var form = 'login';
+    var getUrl = Ajax.GET_LOG_IN;
+    var postUrl = Ajax.POST_LOG_IN;
    
-   $scope.loadForm = function() {
-       Request.loadForm(form, getUrl);
-   }
+    $scope.testme = "testing";
+   
+    $scope.request = {};
+    $scope.showInputErrors = false;
+
+    $scope.$watch(function() {return Request.login}, function() {
+        $scope.request = Request.login;
+    });
+
     
-    $scope.resetForm = function() {
-        Request.reset(form);
+   
+    $scope.loadForm = function() {
+        Request.loadForm(form, getUrl);
+    }
+    
+    $scope.validateForm = function(isValid) {
+        if (isValid) {
+            State.debug="validated";
+            submitForm();
+        } else {
+            State.debug="validate failed";
+            $scope.showInputErrors = true;
+        }
     }
 
-    //log user in
-    $scope.submitForm = function() {
+
+    function submitForm() {
         Request[form].inputErrors = {};
         Request[form].formError = "";
         $http.post(postUrl, Request[form].request).
@@ -40,15 +57,13 @@ app.controller('LoginFormController', function($scope, $location, $http, Ajax, S
             });
     }
 
-    
-    
-
-   
- 
-
 
 
 }); 
 
 
+
+app.controller('LoginFormFieldController1', function($scope) {
+    $scope.inputFields = ['email','password'];
+});
 

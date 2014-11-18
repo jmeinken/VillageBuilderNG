@@ -18,15 +18,15 @@ app.controller('PersonalInfoFormController', function($scope, $location, State, 
 
 });
 
-app.controller('PersonalInfoFormFieldController1', function($scope, $location, State, Request) {
+app.controller('PersonalInfoFormFieldController1', function($scope) {
     $scope.inputFields = ['street','city','neighborhood'];
 });
 
-app.controller('PersonalInfoFormFieldController2', function($scope, $location, State, Request) {
+app.controller('PersonalInfoFormFieldController2', function($scope) {
     $scope.inputFields = ['share_email','share_address','share_phone'];
 });
 
-app.controller('PersonalInfoFormFieldController3', function($scope, $location, State, Request) {
+app.controller('PersonalInfoFormFieldController3', function($scope) {
     $scope.inputFields = ['phone_number','phone_type'];
 });
 

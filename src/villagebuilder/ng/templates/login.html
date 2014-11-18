@@ -12,14 +12,15 @@
     </div>	
     <div class="row" id="body">
         this is the login page.<br><br>
-        <div ng-controller="LoginFormController" ng-init="loadForm()">
-            <div ng-if="Request.login" 
-                 vb-build-form 
-                 vb-request-object="Request.login"
-                 vb-submit="{val:'Sign In', func:submitForm}" 
-                 vb-reset="{val:'Reset Form', func:resetForm}"></div>
-            <div ng-if="!Request.login">Form loading...</div>
-        </div>
+
+
+        <form name="form1" ng-controller="LoginFormController" novalidate
+              ng-init="loadForm()">
+
+            <div ng-include="'templates/forms/input-elements.html'"
+                 ng-controller="LoginFormFieldController1"></div>
+            <button ng-click="validateForm(form1.$valid)">Login</button>
+        </form>
 
         <a ui-sref="create-account.map">Create Account</a>
         <a ui-sref="reset-password">Forgot Password?</a>

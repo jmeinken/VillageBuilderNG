@@ -57,15 +57,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
         .state('main.home', {
             url: '/home',
-            templateUrl: 'templates/home.html?x=2',
+            templateUrl: 'templates/home.html?x=2'
         })
         .state('main.manage-account', {
             url: '/manage-account',
-            templateUrl: 'templates/manage-account.html?x=8',
+            templateUrl: 'templates/manage-account.html?x=8'
         })
         .state('main.manage-password', {
             url: '/manage-password',
-            templateUrl: 'templates/manage-password.html?x=9',
+            templateUrl: 'templates/manage-password.html?x=9'
         })
         .state('main.info', {
             url: '/info',
