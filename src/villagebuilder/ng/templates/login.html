@@ -17,12 +17,11 @@
         <form name="form1" ng-controller="LoginFormController" novalidate
               ng-init="loadForm()">
 
-            <div ng-include="'templates/forms/input-elements.html'"
-                 ng-controller="LoginFormFieldController1"></div>
+            <div ng-include="'templates/forms/input-elements.html'"></div>
             <button ng-click="validateForm(form1.$valid)">Login</button>
         </form>
 
-        <a ui-sref="create-account.map">Create Account</a>
+        <a ui-sref="create-account.account-info">Create Account</a>
         <a ui-sref="reset-password">Forgot Password?</a>
     </div>
     <div class="row" id="footer">

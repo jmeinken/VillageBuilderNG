@@ -1,22 +1,25 @@
-app.controller('LoginFormController', function($scope, $location, $http, Ajax, State, Request) {
 
-    var form = 'login';
-    var getUrl = Ajax.GET_LOG_IN;
-    var postUrl = Ajax.POST_LOG_IN;
-   
-    $scope.testme = "testing";
+app.controller('ManagePasswordFormController', function($scope, $location, $http, Ajax, State, Request, Utilities) {
+    
+    var form = 'password';
+    var getUrl = Ajax.GET_PASSWORD;
+    var postUrl = Ajax.PUT_PASSWORD;
    
     $scope.request = {};
+    $scope.inputFields = [];
     $scope.showInputErrors = false;
 
-    $scope.$watch(function() {return Request.login}, function() {
-        $scope.request = Request.login;
+    $scope.$watch(function() {return Request[form]}, function() {
+        $scope.request = Request[form];
+        $scope.inputFields = Utilities.keyArray(Request[form].request);
     });
-
-    
    
     $scope.loadForm = function() {
         Request.loadForm(form, getUrl);
+    }
+    
+    $scope.resetForm = function() {
+        Request.reset(form);
     }
     
     $scope.validateForm = function(isValid) {
@@ -28,24 +31,22 @@ app.controller('LoginFormController', function($scope, $location, $http, Ajax, S
             $scope.showInputErrors = true;
         }
     }
+        
 
-
+   
     function submitForm() {
         Request[form].inputErrors = {};
         Request[form].formError = "";
         $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
-                State.debug = status;
-                State.userId = data.user_id;
-                State.authenticated = true;
+                State.debug = data;
             }).
             error(function(data, status, headers, config) {
                 State.debug = status;
                 if (status == 400)  {  //bad request (validation failed)
-                    Request.login.inputErrors = data;
+                    Request.password.inputErrors = data;
                 } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
-                    Request.login.formError = data.errorMessage;
-                    State.debug="error message found";
+                    Request.password.formError = data.errorMessage;
                 } else {  // token mismatch (500), unauthorized (401), etc.
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
@@ -56,14 +57,10 @@ app.controller('LoginFormController', function($scope, $location, $http, Ajax, S
                 }
             });
     }
-
+    
+  
 
 
 }); 
 
-
-
-app.controller('LoginFormFieldController1', function($scope) {
-    $scope.inputFields = ['email','password'];
-});
 

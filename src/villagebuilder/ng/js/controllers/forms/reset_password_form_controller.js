@@ -1,9 +1,18 @@
 
-app.controller('ManagePasswordFormController', function($scope, $location, $http, Ajax, State, Request) {
+app.controller('ResetPasswordFormController', function($scope, $location, $http, Ajax, State, Request, Utilities) {
     
-    var form = 'password';
-    var getUrl = Ajax.GET_PASSWORD;
-    var postUrl = Ajax.PUT_PASSWORD;
+    var form = 'resetPassword';
+    var getUrl = Ajax.GET_RESET_PASSWORD;
+    var postUrl = Ajax.POST_RESET_PASSWORD;
+   
+    $scope.request = {};
+    $scope.inputFields = [];
+    $scope.showInputErrors = false;
+    
+    $scope.$watch(function() {return Request[form]}, function() {
+        $scope.request = Request[form];
+        $scope.inputFields = Utilities.keyArray(Request[form].request);
+    });
    
     $scope.loadForm = function() {
         Request.loadForm(form, getUrl);
@@ -12,10 +21,18 @@ app.controller('ManagePasswordFormController', function($scope, $location, $http
     $scope.resetForm = function() {
         Request.reset(form);
     }
-        
-
+    
+    $scope.validateForm = function(isValid) {
+        if (isValid) {
+            State.debug="validated";
+            submitForm();
+        } else {
+            State.debug="validate failed";
+            $scope.showInputErrors = true;
+        }
+    }
    
-    $scope.submitForm = function() {
+    function submitForm() {
         Request[form].inputErrors = {};
         Request[form].formError = "";
         $http.post(postUrl, Request[form].request).
@@ -25,9 +42,9 @@ app.controller('ManagePasswordFormController', function($scope, $location, $http
             error(function(data, status, headers, config) {
                 State.debug = status;
                 if (status == 400)  {  //bad request (validation failed)
-                    Request.password.inputErrors = data;
+                    Request.resetPassword.inputErrors = data;
                 } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
-                    Request.password.formError = data.errorMessage;
+                    Request.resetPassword.formError = data.errorMessage;
                 } else {  // token mismatch (500), unauthorized (401), etc.
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
