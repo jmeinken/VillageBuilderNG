@@ -18,9 +18,56 @@
         <a href="" ui-sref="create-account.personal-info">Personal Info and Privacy Settings</a>
         >> 
         Find Friends 
-        <hr>
-
+        
         <div ng-controller="CreateAccountFormController" ng-init="loadForm()">
+            
+            <hr>
+        where is it{{ completion['account_info'] }}
+        <hr>
+        
+        <ul class="nav nav-pills nav-wizard">
+            <li ng-class="{active: $state.includes('create-account.account-info'), disabled: !completion['account_info']}">
+                <a href="" ui-sref="create-account.account-info" ng-if="completion['account_info']">
+                    Account Info
+                </a>
+                <a href="" ng-if="!completion['account_info']">
+                    Account Info
+                </a>
+                <div class="nav-arrow"></div>
+            </li>
+            <li ng-class="{active: $state.includes('create-account.map'), disabled: !completion['account_info']}">
+                <div class="nav-wedge"></div>
+                <a href="" ui-sref="create-account.map" ng-if="completion['account_info']">
+                    Address
+                </a>
+                <a href="" ng-if="!completion['account_info']">
+                    Address
+                </a>
+                <div class="nav-arrow"></div>
+            </li>
+            <li ng-class="{active: $state.includes('create-account.personal-info'), disabled: !completion['address']}">
+                <div class="nav-wedge"></div>
+                <a href="" ui-sref="create-account.personal-info" ng-if="completion['address']">
+                    Personal Info and Privacy Settings
+                </a>
+                <a href="" ng-if="!completion['address']">
+                    Personal Info and Privacy Settings
+                </a>
+                <div class="nav-arrow"></div>
+            </li>
+            <li ng-class="{active: $state.includes('create-account.confirmation'), disabled: true}">
+                <div class="nav-wedge"></div>
+                <a href="">Confirmation</a>
+            </li>
+        </ul>
+        <hr>
+            
+            
+            
+            
+            
+            
+            
             <div ui-view></div>
         <!--
             <div ng-if="Request.createAccount" 

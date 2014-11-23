@@ -106,6 +106,7 @@ app.controller('MapController', function($scope, $interval, $location, State, Re
             }
         }
         State.debug = "yes it ran";
+        $scope.completion['address'] = true;
         $location.path( "/create-account/personal-info" );
     }
   

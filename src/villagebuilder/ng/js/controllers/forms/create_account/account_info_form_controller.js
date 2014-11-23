@@ -12,9 +12,11 @@ app.controller('AccountInfoFormController', function($scope, $location, State, R
     $scope.validateForm = function(isValid) {
         if (isValid) {
             State.debug="validated";
+            $scope.completion['account_info'] = true;
             $location.path( "/create-account/map" );
         } else {
             State.debug="validate failed";
+            $scope.completion['account_info'] = false;
             $scope.showInputErrors = true;
         }
     }
