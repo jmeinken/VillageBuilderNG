@@ -19,6 +19,9 @@ app.service("State", function($http, $location, Ajax) {
     //user information
     this.userId = "";
     
+    //used by Manage Account view to show/hide editing for specific fields
+    this.accountDataEditToggle = {}
+    
 
     
 /***AJAX Requests**************************************************************/

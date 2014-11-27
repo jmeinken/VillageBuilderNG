@@ -4,7 +4,9 @@
 
 return array( 
     'assetPath' => '/home1/johnmein/public_html/vb-dev/src/villagebuilder/public/assets/',
-    'imagePath' => '/home1/johnmein/public_html/vb-dev/src/villagebuilder/public/assets/images/'
+    'imagePath' => '/home1/johnmein/public_html/vb-dev/src/villagebuilder/public/assets/images/',
+    'assetUrlPath' => '/vb-dev/src/villagebuilder/public/assets/',
+    'imageUrlPath' => '/vb-dev/src/villagebuilder/public/assets/images/'
         
     
     

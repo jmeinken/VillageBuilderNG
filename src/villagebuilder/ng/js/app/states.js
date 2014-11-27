@@ -18,16 +18,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
         .state('create-account.account-info', {
             url: '/account-info',
-            templateUrl: 'templates/account-info.html?x=26'
+            templateUrl: 'templates/create-account/account-info.html?x=26'
         })
         .state('create-account.map', {
             url: '/map',
-            templateUrl: 'templates/map.html?x=16',
+            templateUrl: 'templates/create-account/map.html?x=16',
             controller: 'MapController'
         })
         .state('create-account.personal-info', {
             url: '/personal-info',
-            templateUrl: 'templates/personal-info.html?x=17',
+            templateUrl: 'templates/create-account/personal-info.html?x=17',
             controller: 'UserImageController'
         })
         .state('reset-password', {
@@ -57,19 +57,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
         .state('main.home', {
             url: '/home',
-            templateUrl: 'templates/home.html?x=2'
+            templateUrl: 'templates/main/home.html?x=2'
         })
         .state('main.manage-account', {
             url: '/manage-account',
-            templateUrl: 'templates/manage-account.html?x=8'
+            templateUrl: 'templates/main/manage-account.html?x=8'
         })
         .state('main.manage-password', {
             url: '/manage-password',
-            templateUrl: 'templates/manage-password.html?x=9'
+            templateUrl: 'templates/main/manage-password.html?x=9'
         })
         .state('main.info', {
             url: '/info',
-            templateUrl: 'templates/main-info.html?x=5'
+            templateUrl: 'templates/main/main-info.html?x=5'
         })   
 });
 

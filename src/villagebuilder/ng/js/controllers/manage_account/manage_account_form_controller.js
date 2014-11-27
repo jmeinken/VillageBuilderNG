@@ -9,8 +9,11 @@ app.controller('ManageAccountFormController', function($scope, $location, $http,
         Request.loadForm(form, getUrl, { user_id: State.userId });
     }
     
-    $scope.resetForm = function() {
-        Request.reset(form);
+    $scope.cancelSubmit = function() {
+        Request.loadForm(form, getUrl, { user_id: State.userId });
+        for (field in State.accountDataEditToggle) {
+            State.accountDataEditToggle[field] = false;
+        }
     }
 
    
@@ -19,6 +22,9 @@ app.controller('ManageAccountFormController', function($scope, $location, $http,
         Request[form].formError = "";
         $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
+                for (field in State.accountDataEditToggle) {
+                    State.accountDataEditToggle[field] = false;
+                }
                 State.debug = data;
             }).
             error(function(data, status, headers, config) {

@@ -49,8 +49,14 @@ class ApiAccount extends BaseController {
             Input::file('thumb')->move(Config::get('constants.imagePath'), $thumbFileName);
             Input::file('large')->move(Config::get('constants.imagePath'), $largeFileName);
             return Response::json([
-                    'thumbFileName' => $thumbFileName,
-                    'largeFileName' => $largeFileName
+                    'pic_small' => [
+                        'name' => $thumbFileName,
+                        'path' => Config::get('constants.imageUrlPath') . $thumbFileName
+                    ],
+                    'pic_large' => [
+                        'name' => $largeFileName,
+                        'path' => Config::get('constants.imageUrlPath') . $largeFileName
+                    ]
                 ], self::STATUS_OK);
         } else {
             return Response::json(['message' => 'photo not found'], self::STATUS_OK);
@@ -207,9 +213,9 @@ class ApiAccount extends BaseController {
         $values['neighborhood'] = '';
         $values['phone_number'] = '';
         $values['phone_type'] = '';
-        $values['share_email'] = true;
-        $values['share_address'] = true;
-        $values['share_phone'] = false;
+        $values['share_email'] = "1";
+        $values['share_address'] = "1";
+        $values['share_phone'] = "0";
         $values['pic_large'] = '';
         $values['pic_small'] = '';
         $values['_token'] = csrf_token();

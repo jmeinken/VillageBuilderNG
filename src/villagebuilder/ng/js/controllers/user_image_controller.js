@@ -6,6 +6,8 @@ app.controller('UserImageController', function($scope, State, Request, Ajax, $ti
     $scope.imageUploaded = false;
     $scope.imgLarge = "assets/images/generic-user.png";
     
+    //$scope.watch(function() {return Request.})
+    
     $scope.api;  //used by jCrop and Upload
     $scope.options = {
         fileInputs: ['#file'],

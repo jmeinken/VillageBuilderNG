@@ -75,8 +75,11 @@
 </style>
 
 
+
 <form name="form1" novalidate ng-controller="PersonalInfoFormController"
           ng-if="Request.createAccount">
+    
+{{ Request.createAccount.request }}
 
 <div class="row">
     <div class="col-lg-3">  
@@ -88,7 +91,7 @@
                           ng-model="Request.createAccount.request.full_address"></textarea>
             </div>
 
-                  <div ng-include="'templates/forms/input-elements.html'"
+                  <div ng-include="'templates/_reusable/input-elements.html'"
                        ng-controller="PersonalInfoFormFieldController1"></div>
           </fieldset>
     </div>
@@ -103,9 +106,9 @@
                     </button>
                 </div>
             </div>
-            <div ng-include="'templates/forms/input-elements.html'"
+            <div ng-include="'templates/_reusable/input-elements.html?c=41'"
                        ng-controller="PersonalInfoFormFieldController2"></div>
-            <div ng-include="'templates/forms/input-elements.html'"
+            <div ng-include="'templates/_reusable/input-elements.html'"
                  ng-show="Request.createAccount.request.share_phone"
                        ng-controller="PersonalInfoFormFieldController3"></div>
           </fieldset>

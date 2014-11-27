@@ -35,15 +35,18 @@
         #footer {
             text-align: center;
         }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0 !important;
+        }
     </style>
     
 </head>
 
 <body ng-cloak  ng-controller="GlobalController"  ng-init="State.authenticate()">
 
-    <code>{{ State.debug }}</code>
+    <!--<code>{{ State.debug }}</code>-->
 
-<div class="container" ui-view></div>
+<div ui-view></div>
 
 
 
@@ -60,25 +63,25 @@
 <script src="js/services/request_service.js"></script>
 <script src="js/services/utilities_service.js"></script>
 <!--<script src="js/services/auth_service.js"></script>-->
-<!-- AngularJS controllers  -->
+<!-- AngularJS Controllers  -->
 <script src="js/controllers/global_controller.js"></script>
 <script src="js/controllers/logged_out_controller.js"></script>
 <script src="js/controllers/logged_in_controller.js"></script>
-<script src="js/controllers/home_controller.js"></script>
-<script src="js/controllers/map_controller.js"></script>
 <script src="js/controllers/user_image_controller.js"></script>
-<script src="js/controllers/activate_account_controller.js"></script>
-<script src="js/controllers/activate_reset_password_controller.js"></script>
-<script src="js/controllers/tester_controller.js"></script>
-<!-- Form Controllers-->
-<script src="js/controllers/forms/login_form_controller.js"></script>
-<script src="js/controllers/forms/create_account/create_account_form_controller.js"></script>
-<script src="js/controllers/forms/create_account/account_info_form_controller.js"></script>
-<script src="js/controllers/forms/create_account/personal_info_form_controller.js"></script>
-<script src="js/controllers/forms/manage_account_form_controller.js"></script>
-<script src="js/controllers/forms/manage_password_form_controller.js"></script>
-<script src="js/controllers/forms/reset_password_form_controller.js"></script>
-
+<script src="js/controllers/login_form_controller.js"></script>
+<!-- Create Account Controllers-->
+<script src="js/controllers/create_account/create_account_form_controller.js"></script>
+<script src="js/controllers/create_account/account_info_form_controller.js"></script>
+<script src="js/controllers/create_account/map_controller.js"></script>
+<script src="js/controllers/create_account/personal_info_form_controller.js"></script>
+<!-- Manage Account Controllers-->
+<script src="js/controllers/manage_account/manage_account_form_controller.js"></script>
+<script src="js/controllers/manage_account/manage_password_form_controller.js"></script>
+<script src="js/controllers/manage_account/reset_password_form_controller.js"></script>
+<script src="js/controllers/manage_account/activate_account_controller.js"></script>
+<script src="js/controllers/manage_account/activate_reset_password_controller.js"></script>
+<!-- Debug/Testing -->
+<script src="js/controllers/debug/tester_controller.js"></script>
 	
 </body>
 

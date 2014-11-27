@@ -1,0 +1,207 @@
+<div ng-controller="ManageAccountFormController" ng-init="loadForm()">
+
+    this is the manage account page.<br><br>
+    {{ Request.account.request }}<br><br>
+
+    <strong>Email</strong> 
+    <a href="" class="label label-primary" 
+           ng-if="!State.accountDataEditToggle.email"
+           ng-click="State.accountDataEditToggle.email=!State.accountDataEditToggle.email">
+        edit
+    </a>
+    <div ng-if="!State.accountDataEditToggle.email">
+        {{Request.account.request.email }} 
+        
+    </div>
+    <div ng-if="State.accountDataEditToggle.email">
+        <div ng-if="Request.account.inputErrors.email" class="text-danger">
+            {{ Request.account.inputErrors.email[0] }}
+        </div>
+        <div class="input-group">
+            <input name="email" class="form-control" type="email" 
+                   ng-model="Request.account.request.email" 
+                   ng-required="request.meta.email.required" />
+            <span class="input-group-btn">
+                <button class="btn btn-primary" ng-click="submitForm()">Submit</button>
+                <button class="btn btn-warning" ng-click="cancelSubmit()">Cancel</button>
+            </span>
+        </div>
+    </div>
+    <br>
+    
+    <strong>Name</strong> 
+    <a href="" class="label label-primary" 
+           ng-if="!State.accountDataEditToggle.name"
+           ng-click="State.accountDataEditToggle.name=!State.accountDataEditToggle.name">
+        edit
+    </a>
+    <div ng-if="!State.accountDataEditToggle.name">
+        {{Request.account.request.first_name }} {{Request.account.request.last_name }} 
+    </div>
+    <div ng-if="State.accountDataEditToggle.name">
+        <div ng-if="Request.account.inputErrors.first_name" class="text-danger">
+            {{ Request.account.inputErrors.first_name[0] }}
+        </div>
+        <div ng-if="Request.account.inputErrors.last_name" class="text-danger">
+            {{ Request.account.inputErrors.last_name[0] }}
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">First</span>
+            <input name="first_name" class="form-control" type="text" 
+                           ng-model="Request.account.request.first_name" 
+                           ng-required="Request.account.meta.first_name.required"
+                           ng-minlength="{{Request.account.meta.first_name.minlength}}"
+                           ng-maxlength="{{Request.account.meta.first_name.maxlength}}"
+                           maxlength="{{Request.account.meta.first_name.maxlength}}"
+                           ng-pattern="{{Request.account.meta.first_name.pattern}}"
+                           />
+            <span class="input-group-addon">Last</span>
+            <input name="last_name" class="form-control" type="text" 
+                           ng-model="Request.account.request.last_name" 
+                           ng-required="Request.account.meta.last_name.required"
+                           ng-minlength="{{Request.account.meta.last_name.minlength}}"
+                           ng-maxlength="{{Request.account.meta.last_name.maxlength}}"
+                           maxlength="{{Request.account.meta.last_name.maxlength}}"
+                           ng-pattern="{{Request.account.meta.last_name.pattern}}"
+                           />
+            <span class="input-group-btn">
+                <button class="btn btn-primary" ng-click="submitForm()">Submit</button>
+                <button class="btn btn-warning" ng-click="cancelSubmit()">Cancel</button>
+            </span>
+        </div>
+    </div>
+    <br>
+    
+    <strong>Privacy Settings</strong> 
+    <a href="" class="label label-primary" 
+           ng-if="!State.accountDataEditToggle.privacy"
+           ng-click="State.accountDataEditToggle.privacy=!State.accountDataEditToggle.privacy">
+        edit
+    </a>
+    <div ng-if="!State.accountDataEditToggle.privacy">
+        <div ng-if="Request.account.request.share_email">
+            Sharing email with friends
+        </div>
+        <div ng-if="Request.account.request.share_address">
+            Sharing full address with friends
+        </div>
+        <div ng-if="Request.account.request.share_phone">
+            Sharing phone number with friends
+        </div>
+    </div>
+    <div ng-if="State.accountDataEditToggle.privacy">
+        <div ng-if="Request.account.inputErrors.share_email" class="text-danger">
+            {{ Request.account.inputErrors.share_email[0] }}
+        </div>
+        <label>
+            <input name="share_email" type="checkbox" 
+                ng-model="Request.account.request.share_email"
+                ng-true-value="1" ng-false-value="0" />
+            Share email with friends
+        </label>
+        <br>
+        <div ng-if="Request.account.inputErrors.share_address" class="text-danger">
+            {{ Request.account.inputErrors.share_address[0] }}
+        </div>
+        <label>
+            <input name="share_email" type="checkbox" 
+                ng-model="Request.account.request.share_address"
+                ng-true-value="1" ng-false-value="0" />
+            Share full address with friends
+        </label>
+        <br>
+        <div ng-if="Request.account.inputErrors.share_phone" class="text-danger">
+            {{ Request.account.inputErrors.share_phone[0] }}
+        </div>
+        <label>
+            <input name="share_email" type="checkbox" 
+                ng-model="Request.account.request.share_phone"
+                ng-true-value="1" ng-false-value="0" />
+            Share phone number with friends
+        </label>
+        <br>
+        <button class="btn btn-primary" ng-click="submitForm()">Submit</button>
+        <button class="btn btn-warning" ng-click="cancelSubmit()">Cancel</button>
+    </div>
+    <br>
+    
+
+    <strong>Password</strong> 
+    <a href="" class="label label-primary" 
+           ng-if="!State.accountDataEditToggle.password"
+           ng-click="State.accountDataEditToggle.password=!State.accountDataEditToggle.password">
+        edit
+    </a>
+    <div ng-include="'templates/main/manage-password.html?v=1'"
+         ng-show="State.accountDataEditToggle.password"></div>
+    <br><br>
+    
+    <strong>Phone Number</strong> 
+    <a href="" class="label label-primary" 
+           ng-if="!State.accountDataEditToggle.phone"
+           ng-click="State.accountDataEditToggle.phone=!State.accountDataEditToggle.phone">
+        edit
+    </a>
+    <div ng-if="!State.accountDataEditToggle.phone">
+        {{Request.account.request.phone_number }} ({{Request.account.request.phone_type }})
+    </div>
+    <div ng-if="State.accountDataEditToggle.phone">
+        <div ng-if="Request.account.inputErrors.phone_number" class="text-danger">
+            {{ Request.account.inputErrors.phone_number[0] }}
+        </div>
+        <div ng-if="Request.account.inputErrors.phone_type" class="text-danger">
+            {{ Request.account.inputErrors.phone_type[0] }}
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Phone Number</span>
+            <input name="phone_number" class="form-control" type="text" 
+                           ng-model="Request.account.request.phone_number" 
+                           ng-required="Request.account.meta.phone_number.required"
+                           ng-minlength="{{Request.account.meta.phone_number.minlength}}"
+                           ng-maxlength="{{Request.account.meta.phone_number.maxlength}}"
+                           maxlength="{{Request.account.meta.phone_number.maxlength}}"
+                           ng-pattern="{{Request.account.meta.phone_number.pattern}}"
+                           />
+            <span class="input-group-addon">Phone Type</span>
+            <select name="phone_type" id="phone_type" class="form-control" 
+                    ng-model="Request.account.request.phone_type"
+                    ng-options="Request.account.meta.phone_type.options[option] for option in keyArray(Request.account.meta.phone_type.options)"
+                    ng-required="Request.account.meta.phone_type.required">
+                </select>
+            <span class="input-group-btn">
+                <button class="btn btn-primary" ng-click="submitForm()">Submit</button>
+                <button class="btn btn-warning" ng-click="cancelSubmit()">Cancel</button>
+            </span>
+        </div>
+    </div>
+    <br>
+    
+    <strong>Profile Picture</strong> 
+    <div>
+        <img alt="User Picture" ng-src="{{ imgLarge }}" width="150" height="150" />
+        <button href="" data-target="#myModal" data-toggle="modal">
+            Upload Picture
+        </button>
+    </div>
+    <br>
+    
+
+    
+</div>
+
+<!--
+        <div ng-controller="ManageAccountFormController" ng-init="loadForm()">
+            <div ng-if="Request.account" 
+                 vb-build-form 
+                 vb-request-object="Request.account"
+                 vb-submit="{val:'Save Changes', func:submitForm}" 
+                 vb-reset="{val:'Reset Form', func:resetForm}"></div>
+            <div ng-if="!Request.account">Form loading...</div>
+        </div>
+-->
+
+
+    
+
+
+

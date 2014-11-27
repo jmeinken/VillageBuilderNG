@@ -1,9 +1,10 @@
 This is account info view.
 
+{{ Request.createAccount.request.share_email }}
 
 <form name="form1" novalidate ng-controller="AccountInfoFormController"
       ng-if="Request.createAccount">
-    <div ng-include="'templates/forms/input-elements.html'"></div>
+    <div ng-include="'templates/_reusable/input-elements.html'"></div>
     <button ng-click="validateForm(form1.$valid)">Save and Continue</button>
 </form>
 <div ng-if="!Request.createAccount">Form loading...</div>

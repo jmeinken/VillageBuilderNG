@@ -31,6 +31,11 @@ app.controller('ManagePasswordFormController', function($scope, $location, $http
             $scope.showInputErrors = true;
         }
     }
+    
+    $scope.cancelSubmitPassword = function() {
+        Request.loadForm(form, getUrl, { user_id: State.userId });
+        State.accountDataEditToggle['password'] = false;
+    }
         
 
    
@@ -39,6 +44,8 @@ app.controller('ManagePasswordFormController', function($scope, $location, $http
         Request[form].formError = "";
         $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
+                alert('Password successfully changed.');
+                State.accountDataEditToggle['password'] = false;
                 State.debug = data;
             }).
             error(function(data, status, headers, config) {

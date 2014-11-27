@@ -51,7 +51,8 @@
                        data-match="request.request[request.meta[key].matches]" />
             </div>
             <div ng-switch-when="checkbox">
-                    <input name="{{key}}" type="checkbox" ng-model="request.request[key]" />
+                    <input name="{{key}}" type="checkbox" ng-model="request.request[key]" 
+                           ng-true-value="1" ng-false-value="0" />
             </div>
             <div ng-switch-when="select">
                 <select name="{{key}}" id="{{key}}" class="form-control" ng-model="request.request[key]"
