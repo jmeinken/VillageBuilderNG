@@ -142,6 +142,15 @@ class ApiAccount extends BaseController {
         return Response::json($response, self::STATUS_OK);
     }
     
+    public function deleteAccount() {
+        if (!Input::has('user_id')) {
+            return Response::json(['errorMessage' => "No account selected for deletion."], 
+                    self::STATUS_BAD_REQUEST);
+        }
+        AccountModel::deleteAccount(Input::get('user_id'));
+        return Response::json(['message' => 'Account deleted'], self::STATUS_OK);
+    }
+    
     private function postAccountValidator() {
         return array(
             'email' => 'required|email',

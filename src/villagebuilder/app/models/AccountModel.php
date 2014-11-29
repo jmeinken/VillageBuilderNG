@@ -10,6 +10,9 @@ class AccountModel {
         return (is_null($user) ? false : true);
     }
     
+    public static function deleteAccount($userId) {
+        DB::table('users')->where('id', $userId)->delete();
+    }
     
     //all values except code should be set in Input
     public static function createAccount($code) {

@@ -4,6 +4,7 @@ app.controller('ManageAccountFormController', function($scope, $location, $http,
     var form = 'account';
     var getUrl = Ajax.GET_ACCOUNT;
     var postUrl = Ajax.PUT_ACCOUNT;
+    var deleteUrl = Ajax.DELETE_ACCOUNT;
    
     $scope.loadForm = function() {
         Request.loadForm(form, getUrl, { user_id: State.currentUser.userId });
@@ -28,7 +29,17 @@ app.controller('ManageAccountFormController', function($scope, $location, $http,
     });
     */
     
-    
+    $scope.deleteAccount = function() {
+        $http.post(deleteUrl, {'user_id': State.currentUser.userId}).
+            success(function(data, status, headers, config) {
+                alert("Account successfully deleted");
+                $location.path( '/login' );
+            }).
+            error(function(data, status, headers, config) {
+                alert('There was a problem deleting your account.');
+                State.debug = data;
+            });
+    }
 
    
     $scope.submitForm = function() {

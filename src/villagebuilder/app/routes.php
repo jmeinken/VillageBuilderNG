@@ -46,6 +46,10 @@ Route::get('api/get-account', array(
     'as' => 'api-get-account',
     'uses' => 'ApiAccount@getAccount'
 ));
+Route::post('api/delete-account', array(
+    'as' => 'api-delete-account',
+    'uses' => 'ApiAccount@deleteAccount'
+));
 Route::get('api/get-password', array(
     'as' => 'api-get-password',
     'uses' => 'ApiAccount@getPassword'
