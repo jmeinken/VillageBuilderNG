@@ -10,6 +10,14 @@ app.controller('PersonalInfoFormController', function($scope, $location, $http, 
     $scope.$watch(function() {return Request.createAccount}, function() {
         $scope.request = Request.createAccount;
     });
+    
+    $scope.$watch(function() {return State.currentUser.profilePicFile}, function(value) {
+        Request[form].request.pic_large = State.currentUser.profilePicFile;
+    });
+    
+    $scope.$watch(function() {return State.currentUser.profilePicThumbFile}, function(value) {
+        Request[form].request.pic_small = State.currentUser.profilePicThumbFile;
+    });
 
     $scope.validateForm = function(isValid) {
         if (isValid) {
@@ -37,16 +45,27 @@ app.controller('PersonalInfoFormController', function($scope, $location, $http, 
                 $location.path( '/info' );
             }).
             error(function(data, status, headers, config) {
-                State.debug = data;
-                if (status == 400)  {  //bad request (validation failed)
-                    Request.createAccount.inputErrors = data;
-                } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
+                State.debug = status;
+                if (data.hasOwnProperty('inputErrors'))  {
+                    Request.createAccount.inputErrors = data.inputErrors;
+                    if ( data.inputErrors.hasOwnProperty('email') ||
+                         data.inputErrors.hasOwnProperty('password') ||
+                         data.inputErrors.hasOwnProperty('password_again') ||
+                         data.inputErrors.hasOwnProperty('first_name') ||
+                         data.inputErrors.hasOwnProperty('last_name') )
+                    {
+                        $location.path( '/create-account/account-info' );
+                    }
+                }
+                if (data.hasOwnProperty('errorMessage')) {
                     Request.createAccount.formError = data.errorMessage;
-                } else {  // token mismatch (500), unauthorized (401), etc.
+                }
+                if (!data.hasOwnProperty('errorMessage') && !data.hasOwnProperty('inputErrors')) {
+                    State.debug = data;
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
                     State.infoLinks = [
-                        {"link" : "#/login", "description": "Return to Login Page"}
+                        {"link" : "#/home", "description": "Return to Home Page"}
                     ];
                     $location.path( '/info' );
                 }

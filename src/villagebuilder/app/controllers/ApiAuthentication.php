@@ -6,6 +6,7 @@ class ApiAuthentication extends BaseController {
     const STATUS_FORBIDDEN = 403;
     const STATUS_BAD_REQUEST = 400;
     const STATUS_NOT_FOUND = 404;
+    const STATUS_INTERNAL_SERVER_ERROR = 500;
     
     
        
@@ -15,8 +16,30 @@ class ApiAuthentication extends BaseController {
             $response['logged_in'] = true;
             $response['user_type'] = 'member';
             //$response['_token'] = csrf_token();
-            $response['user_id'] = Auth::user()->id;
-            $response['user_email'] = Auth::user()->email;
+            $response['userId'] = Auth::user()->id;
+            $response['email'] = Auth::user()->email;
+            //send more data about user
+            $account = DB::table('users')
+            ->join('member', 'users.id', '=', 'member.user_id')
+            ->join('person', 'person.member_id', '=', 'member.member_id')
+            ->where('users.id', Auth::user()->id)->first();
+            $response['firstName'] = $account->first_name;
+            $response['lastName'] = $account->last_name;
+            if ($account->pic_large == "") {
+                $response['profilePicFile'] = "";
+                $response['profilePicUrl'] = "assets/images/generic-user.png";
+            } else {
+                $response['profilePicFile'] = $account->pic_large;
+                $response['profilePicUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_large;
+            }
+            if ($account->pic_small == "") {
+                $response['profilePicThumbFile'] = "";
+                $response['profilePicThumbUrl'] = "assets/images/generic-user.png";
+            } else {
+                $response['profilePicThumbFile'] = $account->pic_small;
+                $response['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_small;
+            }
+            ////////////////////////////
             return Response::json($response, self::STATUS_OK);
         } else {
             $response = [];
@@ -70,7 +93,7 @@ class ApiAuthentication extends BaseController {
         );
         if ($validator->fails()) {
             //redirect back to sign-in
-            return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
+            return Response::json(['inputErrors' => $validator->messages()], self::STATUS_BAD_REQUEST);
         } else {
             $remember = (Input::get('remember')=="true" ? true : false);
             //attempt user sign in
@@ -115,7 +138,7 @@ class ApiAuthentication extends BaseController {
         if($user->save()) {
             return Response::json(['message' => "account activated"], self::STATUS_OK);
         }
-        return Response::json("unknown error", self::STATUS_NOT_FOUND);
+        return Response::json(['error' => "unknown error"], self::STATUS_INTERNAL_SERVER_ERROR);
     }
     
     public function postActivateResetPassword() {
@@ -139,7 +162,7 @@ class ApiAuthentication extends BaseController {
         if ($user->save()) {
            return Response::json(['message' => "account activated"], self::STATUS_OK);
         } 
-        return Response::json("unknown error", self::STATUS_NOT_FOUND);
+        return Response::json(['error' => "unknown error"], self::STATUS_INTERNAL_SERVER_ERROR);
     }
     
     public function getResetPassword() {
@@ -155,7 +178,7 @@ class ApiAuthentication extends BaseController {
             'email' => 'required|email'
         ));
         if($validator->fails()) {
-            return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
+            return Response::json(['inputErrors' => $validator->messages()], self::STATUS_BAD_REQUEST);
         } else {
             //change password
             $user = User::where('email', '=', Input::get('email'));
@@ -192,7 +215,7 @@ class ApiAuthentication extends BaseController {
         return $values;
     }
     
-        private function getResetPasswordMeta() {
+    private function getResetPasswordMeta() {
         $meta = [];
         $meta['email'] = [
             'type' => 'string', 

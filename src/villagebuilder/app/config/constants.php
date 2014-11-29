@@ -3,10 +3,17 @@
 //get with Config::get('constants.some_key');
 
 return array( 
-    'assetPath' => '/home1/johnmein/public_html/vb-dev/src/villagebuilder/public/assets/',
-    'imagePath' => '/home1/johnmein/public_html/vb-dev/src/villagebuilder/public/assets/images/',
-    'assetUrlPath' => '/vb-dev/src/villagebuilder/public/assets/',
-    'imageUrlPath' => '/vb-dev/src/villagebuilder/public/assets/images/'
+    'assetFilePath' => '/home1/johnmein/public_html/vb-dev/src/villagebuilder/ng/assets/',
+    'imageFilePath' => '/home1/johnmein/public_html/vb-dev/src/villagebuilder/ng/assets/images/',
+    'profilePicFilePath' => '/home1/johnmein/public_html/vb-dev/src/villagebuilder/ng/assets/images/user_images/',
+    'itemPicFilePath' => '/home1/johnmein/public_html/vb-dev/src/villagebuilder/ng/assets/images/item_images/',
+    
+    'assetUrlPath' => 'assets/',
+    'imageUrlPath' => 'assets/images/',
+    'profilePicUrlPath' => 'assets/images/user_images/',
+    'itemPicUrlPath' => 'assets/images/item_images/'
+    
+    
         
     
     

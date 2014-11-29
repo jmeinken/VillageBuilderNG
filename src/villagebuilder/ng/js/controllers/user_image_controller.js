@@ -4,7 +4,6 @@ app.controller('UserImageController', function($scope, State, Request, Ajax, $ti
     //$scope.userImage;
     $scope.imageLoaded = 0;         //needs to be set using jquery and hidden input
     $scope.imageUploaded = false;
-    $scope.imgLarge = "assets/images/generic-user.png";
     
     //$scope.watch(function() {return Request.})
     
@@ -47,15 +46,13 @@ app.controller('UserImageController', function($scope, State, Request, Ajax, $ti
         boxWidth: 400,
         boxHeight: 400
     }
-    
-    
-
-    
+ 
     $scope.attachJcrop = function() {
         $('#image').Jcrop($scope.options, function(){$scope.api = this});
     }
     
     $scope.uploadImage = function() {
+        State.debug = "uploadImage function called";
         if (!$scope.api) {
             return;
         }
@@ -92,8 +89,11 @@ app.controller('UserImageController', function($scope, State, Request, Ajax, $ti
             success: function (data) {
                 $timeout( function() {
                     State.debug = data;
+                    State.currentUser.profilePicUrl = data.pic_large.path;
+                    State.currentUser.profilePicThumbUrl = data.pic_small.path;
+                    State.currentUser.profilePicThumbFile = data.pic_small.name;
+                    State.currentUser.profilePicFile = data.pic_large.name;
                     $scope.imageUploaded = true;
-                    $scope.imgLarge = "../public/assets/images/" + data.largeFileName;
                 }, 1000);
             }
         };

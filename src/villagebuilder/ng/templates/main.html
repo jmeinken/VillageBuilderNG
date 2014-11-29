@@ -18,7 +18,14 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">logged in as John Meinken {{ State.userId }}<b class="caret"></b></a>
+              <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                  <img alt="pic" ng-src="{{State.currentUser.profilePicThumbUrl}}" 
+                       width="25" height="25" />
+                  {{ State.currentUser.firstName }}
+                  {{ State.currentUser.lastName }}
+                  {{ State.currentUser.userId }}
+                  <b class="caret"></b>
+              </a>
               <ul class="dropdown-menu">
                 <li><a href="" ui-sref="main.manage-account">Account Settings</a></li>
                 <li><a href="" ng-click="State.signOut()">Log Out</a></li>

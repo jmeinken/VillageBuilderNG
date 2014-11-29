@@ -6,7 +6,7 @@ app.controller('AccountInfoFormController', function($scope, $location, State, R
 
     $scope.$watch(function() {return Request.createAccount}, function() {
         $scope.request = Request.createAccount;
-        $scope.inputFields = ['email','password','password_again','first_name','last_name'];
+        $scope.inputFields = ['email','first_name','last_name','password','password_again'];
     });
 
     $scope.validateForm = function(isValid) {

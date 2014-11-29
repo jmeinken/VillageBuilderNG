@@ -17,7 +17,14 @@ app.service("State", function($http, $location, Ajax) {
     this.intendedLocation = '/main/home';
     
     //user information
-    this.userId = "";
+    this.currentUser = {};
+    //this.currentUser.userId = "";
+    //this.currentUser.firstName = "";
+    //this.currentUser.lastName = "";
+    //this.currentUser.profilePicUrl = "assets/images/generic-user.png";
+    //this.currentUser.profilePicThumbUrl = "assets/images/generic-user.png";
+    //this.currentUser.profilePicFile = "";
+    //this.currentUser.profilePicThumbFile = "";
     
     //used by Manage Account view to show/hide editing for specific fields
     this.accountDataEditToggle = {}
@@ -33,7 +40,7 @@ app.service("State", function($http, $location, Ajax) {
         $http.get(Ajax.CHECK_LOGIN_STATUS).
             success(function(data, status, headers, config) {
                 self.authenticated = data.logged_in;
-                self.userId = data.user_id;
+                self.currentUser = data;
                 //self.debug = data;
             }).
             error(function(data, status, headers, config) {

@@ -6,17 +6,19 @@ class ApiAccount extends BaseController {
     const STATUS_FORBIDDEN = 403;
     const STATUS_BAD_REQUEST = 400;
     const STATUS_NOT_FOUND = 404;
+    const STATUS_INTERNAL_SERVER_ERROR = 500;
     
    
     public function postAccount() {
         //validate input
         $validator = Validator::make( Input::all(), $this->postAccountValidator() );
         if ($validator->fails()) {
-            return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
+            return Response::json(['inputErrors' => $validator->messages()], self::STATUS_BAD_REQUEST);
         }
         //return error if account already exists
         if ( AccountModel::accountExists('email', Input::get('email')) ) {
-            return Response::json(['errorMessage' => 'Email already taken'], self::STATUS_FORBIDDEN);
+            $inputErrors = ['email' => ['Email already in use.  Do you already have an account?']];
+            return Response::json(['inputErrors' => $inputErrors], self::STATUS_FORBIDDEN);
         }
         //insert record for user, member and person
         $code = str_random(60);
@@ -43,23 +45,23 @@ class ApiAccount extends BaseController {
         
         //return Response::json(['message' => $ct], self::STATUS_OK);
         if (Input::hasFile('thumb') && Input::hasFile('large')) {
-            $ct = $this->getNextNumber(Config::get('constants.imagePath') . 'count.txt');
+            $ct = $this->getNextNumber(Config::get('constants.profilePicFilePath') . 'count.txt');
             $thumbFileName = 'user_thumb' . $ct . '.jpg';
             $largeFileName = 'user_large' . $ct . '.jpg';
-            Input::file('thumb')->move(Config::get('constants.imagePath'), $thumbFileName);
-            Input::file('large')->move(Config::get('constants.imagePath'), $largeFileName);
+            Input::file('thumb')->move(Config::get('constants.profilePicFilePath'), $thumbFileName);
+            Input::file('large')->move(Config::get('constants.profilePicFilePath'), $largeFileName);
             return Response::json([
                     'pic_small' => [
                         'name' => $thumbFileName,
-                        'path' => Config::get('constants.imageUrlPath') . $thumbFileName
+                        'path' => Config::get('constants.profilePicUrlPath') . $thumbFileName
                     ],
                     'pic_large' => [
                         'name' => $largeFileName,
-                        'path' => Config::get('constants.imageUrlPath') . $largeFileName
+                        'path' => Config::get('constants.profilePicUrlPath') . $largeFileName
                     ]
                 ], self::STATUS_OK);
         } else {
-            return Response::json(['message' => 'photo not found'], self::STATUS_OK);
+            return Response::json(['errorMessage' => 'Photo not sent.  Please try again.'], self::STATUS_BAD_REQUEST);
         }
     }
     
@@ -106,14 +108,14 @@ class ApiAccount extends BaseController {
                 return Response::json(['errorMessage' => 'old password incorrect'], self::STATUS_NOT_FOUND);
             }
         }
-        return Response::json(['errorMessage' => 'failed'], self::STATUS_NOT_FOUND); 
+        return Response::json(['error' => 'query failed'], self::STATUS_INTERNAL_SERVER_ERROR); 
     }
     
     public function putAccount() {
         //validate input
         $validator = Validator::make( Input::all(), $this->putAccountValidator() );
         if ($validator->fails()) {
-            return Response::json($validator->messages(), self::STATUS_BAD_REQUEST);
+            return Response::json(['inputErrors' => $validator->messages()], self::STATUS_BAD_REQUEST);
         }
         //return error if account does not already exist
         if ( !AccountModel::accountExists('id', Input::get('user_id')) ) {
@@ -179,12 +181,14 @@ class ApiAccount extends BaseController {
             'type' => 'string', 
             'input_type' => 'password',
             'name' => 'New Password', 
+            'minlength' => 6,
             'required' => true
         ];
         $meta['new_password_again'] = [
             'type' => 'string', 
             'input_type' => 'password',
             'name' => 'Reenter New Password', 
+            'matches' => 'password',
             'required' => true
         ];
         $meta['_token'] = [
@@ -196,7 +200,7 @@ class ApiAccount extends BaseController {
     
     private function getAccountDefaultValues() {
         $values = [];
-        $values['email'] = "testellsofohio@hotmail.com";
+        $values['email'] = "";
         $values['password'] = "";
         $values['password_again'] = "";
         $values['first_name'] = '';
@@ -262,16 +266,16 @@ class ApiAccount extends BaseController {
             'type' => 'string', 
             'input_type' => 'text',
             'name' => 'Email', 
-            'required'=>true,
-            'minlength'=>10,
-            'maxlength'=>50,
-            'pattern'=>'/test/',
-            'pattern_error' => 'Toooooooo loooonnnnggg'
+            'pattern' => '/.+\@.+\..+/',
+            'pattern_error' => 'Please enter a valid email address.',
+            'required'=>true
         ];
         $meta['password'] = [
             'type' => 'string', 
             'input_type' => 'password',
-            'name' => 'Password', 
+            'name' => 'Password',
+            'description' => 'Must be at least 6 characters',
+            'minlength' => 6,
             'required' => true
         ];
         $meta['password_again'] = [
@@ -331,8 +335,7 @@ class ApiAccount extends BaseController {
                     'WV'=>'West Virginia', 'WI'=>'Wisconsin', 'WY'=>'Wyoming'
                 ],
             'name' => 'State',
-            'required' => true,
-            'maxLength' => 2
+            'required' => true
         ];
         $meta['zip_code'] = [
             'type' => 'string',

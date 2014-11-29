@@ -33,17 +33,19 @@ app.controller('LoginFormController', function($scope, $location, $http, Ajax, S
         $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
                 State.debug = status;
-                State.userId = data.user_id;
+                State.currentUser.userId = data.user_id;
                 State.authenticated = true;
             }).
             error(function(data, status, headers, config) {
                 State.debug = status;
-                if (status == 400)  {  //bad request (validation failed)
-                    Request.login.inputErrors = data;
-                } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
+                if (data.hasOwnProperty('inputErrors'))  {
+                    Request.login.inputErrors = data.inputErrors;
+                }
+                if (data.hasOwnProperty('errorMessage')) {
                     Request.login.formError = data.errorMessage;
-                    State.debug="error message found";
-                } else {  // token mismatch (500), unauthorized (401), etc.
+                }
+                if (!data.hasOwnProperty('errorMessage') && !data.hasOwnProperty('inputErrors')) {
+                    State.debug = data;
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
                     State.infoLinks = [

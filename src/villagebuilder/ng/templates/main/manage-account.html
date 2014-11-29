@@ -178,16 +178,28 @@
     
     <strong>Profile Picture</strong> 
     <div>
-        <img alt="User Picture" ng-src="{{ imgLarge }}" width="150" height="150" />
-        <button href="" data-target="#myModal" data-toggle="modal">
-            Upload Picture
-        </button>
+        <img alt="User Picture" ng-src="{{ State.currentUser.profilePicUrl }}" width="100" height="100" />
+        <span ng-show="!State.accountDataEditToggle.pic">   
+            <button href="" data-target="#myModal" data-toggle="modal"
+                    ng-click="State.accountDataEditToggle.pic=!State.accountDataEditToggle.pic">
+                Upload New Picture
+            </button>
+        </span>
+        <span ng-show="State.accountDataEditToggle.pic">
+            <button class="btn btn-primary" ng-click="submitForm()">Submit</button>
+            <button class="btn btn-warning" ng-click="cancelSubmit()">Cancel</button>
+        </span>
     </div>
     <br>
     
 
     
 </div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+     ng-controller="UserImageController"
+     aria-labelledby="myModalLabel" aria-hidden="true" 
+     ng-include="'templates/user-image.html'"></div>   
 
 <!--
         <div ng-controller="ManageAccountFormController" ng-init="loadForm()">

@@ -33,7 +33,7 @@ app.controller('ManagePasswordFormController', function($scope, $location, $http
     }
     
     $scope.cancelSubmitPassword = function() {
-        Request.loadForm(form, getUrl, { user_id: State.userId });
+        Request.loadForm(form, getUrl, { user_id: State.currentUser.userId });
         State.accountDataEditToggle['password'] = false;
     }
         
@@ -50,11 +50,14 @@ app.controller('ManagePasswordFormController', function($scope, $location, $http
             }).
             error(function(data, status, headers, config) {
                 State.debug = status;
-                if (status == 400)  {  //bad request (validation failed)
-                    Request.password.inputErrors = data;
-                } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
+                if (data.hasOwnProperty('inputErrors'))  {
+                    Request.password.inputErrors = data.inputErrors;
+                }
+                if (data.hasOwnProperty('errorMessage')) {
                     Request.password.formError = data.errorMessage;
-                } else {  // token mismatch (500), unauthorized (401), etc.
+                }
+                if (!data.hasOwnProperty('errorMessage') && !data.hasOwnProperty('inputErrors')) {
+                    State.debug = data;
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
                     State.infoLinks = [
