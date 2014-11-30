@@ -131,6 +131,11 @@ class ApiAccount extends BaseController {
        
     public function getAccount() {
         if (Input::has('user_id')) {
+            if (Input::get('user_id') != Auth::user()->id) {
+                return Response::json(['errorMessage' => 
+                    "The account you're trying to access and the account you're logged in under don't match."], 
+                    self::STATUS_BAD_REQUEST);
+            }
             $values = $this->getAccountCurrentValues(Input::get('user_id'));
         } else {
             $values = $this->getAccountDefaultValues();
@@ -147,7 +152,17 @@ class ApiAccount extends BaseController {
             return Response::json(['errorMessage' => "No account selected for deletion."], 
                     self::STATUS_BAD_REQUEST);
         }
-        AccountModel::deleteAccount(Input::get('user_id'));
+        if (Input::get('user_id') != Auth::user()->id) {
+                return Response::json(['errorMessage' => 
+                    "The account you're trying to access and the account you're logged in under don't match."], 
+                    self::STATUS_BAD_REQUEST);
+            }
+        $deleteStatus = AccountModel::deleteAccount(Input::get('user_id'));
+        if (!$deleteStatus) {
+            return Response::json(['errorMessage' => 
+                    "The account you're trying to delete doesn't exist."], 
+                    self::STATUS_NOT_FOUND);
+        }
         return Response::json(['message' => 'Account deleted'], self::STATUS_OK);
     }
     

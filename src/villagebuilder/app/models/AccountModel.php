@@ -11,7 +11,7 @@ class AccountModel {
     }
     
     public static function deleteAccount($userId) {
-        DB::table('users')->where('id', $userId)->delete();
+        return DB::table('users')->where('id', $userId)->delete();
     }
     
     //all values except code should be set in Input
