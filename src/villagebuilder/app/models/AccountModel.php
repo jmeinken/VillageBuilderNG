@@ -26,8 +26,14 @@ class AccountModel {
                        'active' => 0
                    )
                );
-               $memberId = DB::table('member')->insertGetId(
+               $participantId = DB::table('participant')->insertGetId(
                    array(
+                       'user_id' => $userId 
+                   )
+               );
+               DB::table('member')->insert(
+                   array(
+                       'member_id' => $participantId,
                        'full_address' => Input::get('full_address'), 
                        'address1' => Input::get('address1'), 
                        'address2' => Input::get('address2'), 
@@ -44,13 +50,12 @@ class AccountModel {
                        'share_address' => Input::get('share_address'), 
                        'share_phone' => Input::get('share_phone'), 
                        'pic_large' => Input::get('pic_large'), 
-                       'pic_small' => Input::get('pic_small'), 
-                       'user_id' => $userId 
+                       'pic_small' => Input::get('pic_small')
                    )
                );
                DB::table('person')->insert(
                    array(
-                       'member_id' => $memberId, 
+                       'person_id' => $participantId, 
                        'first_name' => Input::get('first_name'),
                        'last_name' => Input::get('last_name')
                    )
@@ -91,11 +96,10 @@ class AccountModel {
                         'share_address' => Input::get('share_address'), 
                         'share_phone' => Input::get('share_phone'), 
                         'pic_large' => Input::get('pic_large'), 
-                        'pic_small' => Input::get('pic_small'), 
-                        'user_id' => Input::get('user_id')
+                        'pic_small' => Input::get('pic_small')
                      ));
                 DB::table('person')
-                    ->where('member_id', Input::get('member_id'))
+                    ->where('person_id', Input::get('member_id'))
                     ->update(array(
                         'first_name' => Input::get('first_name'),
                         'last_name' => Input::get('last_name')

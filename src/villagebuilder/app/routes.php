@@ -44,6 +44,10 @@ Route::post('api/post-activate-reset-password', array(
 Route::get('api/test', array (
     'uses' => 'ApiAccount@getAccountCurrentValues'
 ));
+Route::post('api/post-user-image', array(
+    'as' => 'api-post-user-image',
+    'uses' => 'ApiAccount@postUserImage'
+));
 
 
 
@@ -74,10 +78,6 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('api/post-log-out', array(
         'as' => 'api-post-log-out',
         'uses' => 'ApiAuthentication@postLogOut'
-    ));
-    Route::post('api/post-user-image', array(
-        'as' => 'api-post-user-image',
-        'uses' => 'ApiAccount@postUserImage'
     ));
     Route::get('api/get-password', array(
         'as' => 'api-get-password',

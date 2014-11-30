@@ -252,8 +252,9 @@ class ApiAccount extends BaseController {
     
     private function getAccountCurrentValues($userId) {
         $account = DB::table('users')
-            ->join('member', 'users.id', '=', 'member.user_id')
-            ->join('person', 'person.member_id', '=', 'member.member_id')
+            ->join('participant', 'users.id', '=', 'participant.user_id')
+            ->join('member', 'participant.participant_id', '=', 'member.member_id')
+            ->join('person', 'person.person_id', '=', 'member.member_id')
             ->where('users.id', $userId)->first();
         $values = [];
         $values['user_id'] = $account->id;

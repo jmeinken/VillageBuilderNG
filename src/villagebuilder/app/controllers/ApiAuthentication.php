@@ -20,8 +20,9 @@ class ApiAuthentication extends BaseController {
             $response['email'] = Auth::user()->email;
             //send more data about user
             $account = DB::table('users')
-            ->join('member', 'users.id', '=', 'member.user_id')
-            ->join('person', 'person.member_id', '=', 'member.member_id')
+            ->join('participant', 'users.id', '=', 'participant.user_id')
+            ->join('member', 'participant.participant_id', '=', 'member.member_id')
+            ->join('person', 'person.person_id', '=', 'member.member_id')
             ->where('users.id', Auth::user()->id)->first();
             $response['firstName'] = $account->first_name;
             $response['lastName'] = $account->last_name;
