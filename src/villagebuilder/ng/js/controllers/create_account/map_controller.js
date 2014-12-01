@@ -1,5 +1,5 @@
 
-app.controller('MapController', function($scope, $interval, $location, State, Request) {
+app.controller('MapController', function($scope, $interval, $location, $state, State, Request) {
     
     $scope.userProvidedAddress = "";
     $scope.map;
@@ -80,34 +80,35 @@ app.controller('MapController', function($scope, $interval, $location, State, Re
     //selected address accessed as:
     //$scope.geocodeResults[$scope.addressIndex]
     
-    $scope.useSelectedGecodeResult = function() {
+    $scope.useSelectedGecodeResult = function(requestObject) {
         //State.debug = $scope.addressIndex;
         
         var selected = $scope.geocodeResults[$scope.addressIndex];
-        Request.createAccount.request.full_address = selected.formatted_address;
-        Request.createAccount.request.latitude = selected.geometry.location.k;
-        Request.createAccount.request.longitude = selected.geometry.location.B;
+        requestObject.request.full_address = selected.formatted_address;
+        requestObject.request.latitude = selected.geometry.location.k;
+        requestObject.request.longitude = selected.geometry.location.B;
         for (var i=0; i<selected.address_components.length; i++) {
             if ($.inArray("route", selected.address_components[i].types) != -1) {
                 State.debug = selected.address_components[i].short_name;
-                Request.createAccount.request.street = selected.address_components[i].short_name;
+                requestObject.request.street = selected.address_components[i].short_name;
             } 
             if ($.inArray("neighborhood", selected.address_components[i].types) != -1) {
-                Request.createAccount.request.neighborhood = selected.address_components[i].short_name;
+                requestObject.request.neighborhood = selected.address_components[i].short_name;
             }
             if ($.inArray("locality", selected.address_components[i].types) != -1) {
-                Request.createAccount.request.city = selected.address_components[i].short_name;
+                requestObject.request.city = selected.address_components[i].short_name;
             }
             if ($.inArray("administrative_area_level_1", selected.address_components[i].types) != -1) {
-                Request.createAccount.request.state = selected.address_components[i].short_name;
+                requestObject.request.state = selected.address_components[i].short_name;
             }
             if ($.inArray("postal_code", selected.address_components[i].types) != -1) {
-                Request.createAccount.request.zip_code = selected.address_components[i].short_name;
+                requestObject.request.zip_code = selected.address_components[i].short_name;
             }
         }
         State.debug = "yes it ran";
         $scope.completion['address'] = true;
-        $location.path( "/create-account/personal-info" );
+        //$location.path( "/create-account/personal-info" );
+        $state.go($scope.personalInfoView);
     }
   
 

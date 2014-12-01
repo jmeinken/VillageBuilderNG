@@ -3,7 +3,7 @@
 
 
 <form name="form1" novalidate ng-controller="PersonalInfoFormController"
-          ng-if="Request.createAccount">
+          ng-if="Request[form]">
     
 <div class="row">
     <div class="col-lg-3">  
@@ -12,7 +12,7 @@
             <div class="form-group">
                 <label for="inputEmail" class="control-label">Full Address <a href="">(edit)</a></label><br>
                 <textarea disabled="" class="form-control" rows="2" id="textArea"
-                          ng-model="Request.createAccount.request.full_address"></textarea>
+                          ng-model="Request[form].request.full_address"></textarea>
             </div>
 
                   <div ng-include="'templates/_reusable/input-elements.html'"
@@ -33,7 +33,7 @@
             <div ng-include="'templates/_reusable/input-elements.html?c=41'"
                        ng-controller="PersonalInfoFormFieldController2"></div>
             <div ng-include="'templates/_reusable/input-elements.html'"
-                 ng-show="Request.createAccount.request.share_phone"
+                 ng-show="Request[form].request.share_phone"
                        ng-controller="PersonalInfoFormFieldController3"></div>
           </fieldset>
     </div>
@@ -46,27 +46,27 @@
                 </td>
                 <td>
                     <div>
-                        {{ Request.createAccount.request.first_name }} 
-                        {{ Request.createAccount.request.last_name }}
+                        {{ Request[form].request.first_name }} 
+                        {{ Request[form].request.last_name }}
                     </div>
                     <div>
-                        {{ Request.createAccount.request.street }} 
-                        ({{ Request.createAccount.request.neighborhood || Request.createAccount.request.city }})
+                        {{ Request[form].request.street }} 
+                        ({{ Request[form].request.neighborhood || Request[form].request.city }})
                     </div>
                 </td>
             </tr>
         </table>    		
         <hr />
         <h3>Shared Only With Friends</h3>
-        <div ng-if="Request.createAccount.request.share_email">
-            <strong>email:</strong> {{ Request.createAccount.request.email }}
+        <div ng-if="Request[form].request.share_email">
+            <strong>email:</strong> {{ Request[form].request.email }}
         </div>
-        <div ng-if="Request.createAccount.request.share_address">
-            <strong>address:</strong> {{ Request.createAccount.request.full_address }}
+        <div ng-if="Request[form].request.share_address">
+            <strong>address:</strong> {{ Request[form].request.full_address }}
         </div>
-        <div ng-if="Request.createAccount.request.share_phone">
-            <strong>phone:</strong> {{ Request.createAccount.request.phone_number }}
-            ({{ Request.createAccount.request.phone_type }})
+        <div ng-if="Request[form].request.share_phone">
+            <strong>phone:</strong> {{ Request[form].request.phone_number }}
+            ({{ Request[form].request.phone_type }})
         </div>
     </div>
 </div>

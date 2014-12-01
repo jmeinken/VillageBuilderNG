@@ -1,11 +1,11 @@
-app.controller('AccountInfoFormController', function($scope, $location, $state, State, Request) {
+app.controller('GroupInfoFormController', function($scope, $location, $state, State, Request) {
     
     $scope.request = {};
     $scope.inputFields = [];
     $scope.showInputErrors = false;
 
-    $scope.$watch(function() {return Request[$scope.$parent.form]}, function() {
-        $scope.request = Request[$scope.$parent.form];
+    $scope.$watch(function() {return Request.createAccount}, function() {
+        $scope.request = Request.createGroup;
         State.debug = $state.current;
         if ($state.current.name == 'main.create-group.account-info') {
             $scope.inputFields = ['email','title','description'];

@@ -1,9 +1,9 @@
 
-app.controller('CreateAccountFormController', function($scope, $location, $http, $state, Ajax, State, Request) {
+app.controller('CreateGroupFormController', function($scope, $location, $http, $state, Ajax, State, Request) {
     
-    var form = 'createAccount';
-    var getUrl = Ajax.GET_ACCOUNT;
-    var postUrl = Ajax.POST_ACCOUNT;
+    var form = 'createGroup';
+    var getUrl = Ajax.GET_GROUP;
+    var postUrl = Ajax.POST_GROUP;
     
     $scope.form = form;
    
@@ -11,12 +11,10 @@ app.controller('CreateAccountFormController', function($scope, $location, $http,
     $scope.completion['account_info'] = false;
     $scope.completion['address'] = false;
     $scope.completion['personal_info'] = false;
-    
-    $scope.accountInfoView = "create-account.account-info";
-    $scope.mapView = "create-account.map";
-    $scope.personalInfoView = "create-account.personal-info";
 
-
+    $scope.accountInfoView = "main.create-group.account-info";
+    $scope.mapView = "main.create-group.map";
+    $scope.personalInfoView = "main.create-group.personal-info";
 
     $scope.loadForm = function() {
         Request.loadForm(form, getUrl);
@@ -26,9 +24,9 @@ app.controller('CreateAccountFormController', function($scope, $location, $http,
         Request.reset(form);
     }
 
-    $scope.validateAccountInfo = function() {
-        State.debug="it worked!";
-    }
+    //$scope.validateAccountInfo = function() {
+    //    State.debug="it worked!";
+    //}
     
     $scope.validateForm = function(isValid) {
         if (isValid) {
@@ -48,10 +46,10 @@ app.controller('CreateAccountFormController', function($scope, $location, $http,
         $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
                 State.debug = status;
-                State.infoTitle = "Almost There";
-                State.infoMessage = "Check your email to confirm account creation.";
+                State.infoTitle = "Group Created";
+                State.infoMessage = "Your group was successfully created.";
                 State.infoLinks = [
-                        {"link" : "#/login", "description": "Return to Login Page"}
+                        {"link" : "#/home", "description": "Return to Home Page"}
                     ];
                 $location.path( '/info' );
             }).
@@ -60,10 +58,8 @@ app.controller('CreateAccountFormController', function($scope, $location, $http,
                 if (data.hasOwnProperty('inputErrors'))  {
                     Request.createAccount.inputErrors = data.inputErrors;
                     if ( data.inputErrors.hasOwnProperty('email') ||
-                         data.inputErrors.hasOwnProperty('password') ||
-                         data.inputErrors.hasOwnProperty('password_again') ||
-                         data.inputErrors.hasOwnProperty('first_name') ||
-                         data.inputErrors.hasOwnProperty('last_name') )
+                         data.inputErrors.hasOwnProperty('title') ||
+                         data.inputErrors.hasOwnProperty('description') )
                     {
                         //$location.path( '/create-account/account-info' );
                         $state.go($scope.accountInfoView);

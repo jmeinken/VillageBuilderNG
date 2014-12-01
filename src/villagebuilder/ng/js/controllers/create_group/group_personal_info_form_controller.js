@@ -1,12 +1,12 @@
-app.controller('PersonalInfoFormController', function($scope, $location, $http, $state, Ajax, State, Request) {
+app.controller('GroupPersonalInfoFormController', function($scope, $location, $http, $state, Ajax, State, Request) {
     
 
     
     $scope.request = {};
     $scope.showInputErrors = false;
 
-    $scope.$watch(function() {return Request[$scope.$parent.form]}, function() {
-        $scope.request = Request[$scope.$parent.form];
+    $scope.$watch(function() {return Request.createAccount}, function() {
+        $scope.request = Request.createAccount;
     });
     
     $scope.$watch(function() {return State.currentUser.profilePicFile}, function(value) {

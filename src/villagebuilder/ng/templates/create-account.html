@@ -15,7 +15,7 @@
         
         <ul class="nav nav-pills nav-wizard">
             <li ng-class="{active: $state.includes('create-account.account-info'), disabled: !completion['account_info']}">
-                <a href="" ui-sref="create-account.account-info" ng-if="completion['account_info']">
+                <a href="" ui-sref="{{accountInfoView}}" ng-if="completion['account_info']">
                     Account Info
                 </a>
                 <a href="" ng-if="!completion['account_info']">
@@ -25,7 +25,7 @@
             </li>
             <li ng-class="{active: $state.includes('create-account.map'), disabled: !completion['account_info']}">
                 <div class="nav-wedge"></div>
-                <a href="" ui-sref="create-account.map" ng-if="completion['account_info']">
+                <a href="" ui-sref="{{mapView}}" ng-if="completion['account_info']">
                     Address
                 </a>
                 <a href="" ng-if="!completion['account_info']">
@@ -35,7 +35,7 @@
             </li>
             <li ng-class="{active: $state.includes('create-account.personal-info'), disabled: !completion['address']}">
                 <div class="nav-wedge"></div>
-                <a href="" ui-sref="create-account.personal-info" ng-if="completion['address']">
+                <a href="" ui-sref="{{personalInfoView}}" ng-if="completion['address']">
                     Personal Info and Privacy Settings
                 </a>
                 <a href="" ng-if="!completion['address']">

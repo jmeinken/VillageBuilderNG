@@ -27,6 +27,14 @@ app.service("Ajax", function() {
     this.POST_USER_IMAGE = root + 'post-user-image';
     
     /*
+     * Group API
+     */
+    this.GET_GROUP = root + 'get-group';
+    this.POST_GROUP = root + 'post-group';
+    this.PUT_GROUP = root + 'put-group';
+    this.DELETE_GROUP = root + 'delete-group';
+    
+    /*
      * Error Messages
      */
 

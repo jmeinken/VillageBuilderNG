@@ -41,6 +41,8 @@ class ApiAccount extends BaseController {
         return Response::json(['user' => Input::get('email')], self::STATUS_OK);
     }
     
+
+    
     public function postUserImage() {
         
         //return Response::json(['message' => $ct], self::STATUS_OK);
@@ -147,6 +149,7 @@ class ApiAccount extends BaseController {
         return Response::json($response, self::STATUS_OK);
     }
     
+      
     public function deleteAccount() {
         if (!Input::has('user_id')) {
             return Response::json(['errorMessage' => "No account selected for deletion."], 
@@ -250,12 +253,12 @@ class ApiAccount extends BaseController {
         return $values;
     }
     
-    private function getAccountCurrentValues($userId) {
+     private function getAccountCurrentValues($userId) {
         $account = DB::table('users')
-            ->join('participant', 'users.id', '=', 'participant.user_id')
-            ->join('member', 'participant.participant_id', '=', 'member.member_id')
-            ->join('person', 'person.person_id', '=', 'member.member_id')
-            ->where('users.id', $userId)->first();
+        ->join('participant', 'users.id', '=', 'participant.user_id')
+        ->join('member', 'participant.participant_id', '=', 'member.member_id')
+        ->join('person', 'person.person_id', '=', 'member.member_id')
+        ->where('users.id', $userId)->first();
         $values = [];
         $values['user_id'] = $account->id;
         $values['member_id'] = $account->member_id;
@@ -283,6 +286,7 @@ class ApiAccount extends BaseController {
         return $values;
     }
     
+ 
 
     
     private function getAccountMeta() {

@@ -1,0 +1,44 @@
+
+<div ng-controller="CreateGroupFormController" ng-init="loadForm()">
+This is create group view.
+
+<ul class="nav nav-pills nav-wizard">
+    <li ng-class="{active: $state.includes(accountInfoView), disabled: !completion['account_info']}">
+        <a href="" ui-sref="{{accountInfoView}}" ng-if="completion['account_info']">
+            Account Info
+        </a>
+        <a href="" ng-if="!completion['account_info']">
+            Account Info
+        </a>
+        <div class="nav-arrow"></div>
+    </li>
+    <li ng-class="{active: $state.includes(mapView), disabled: !completion['account_info']}">
+        <div class="nav-wedge"></div>
+        <a href="" ui-sref="{{mapView}}" ng-if="completion['account_info']">
+            Address
+        </a>
+        <a href="" ng-if="!completion['account_info']">
+            Address
+        </a>
+        <div class="nav-arrow"></div>
+    </li>
+    <li ng-class="{active: $state.includes(personalInfoView), disabled: !completion['address']}">
+        <div class="nav-wedge"></div>
+        <a href="" ui-sref="{{personalInfoView}}" ng-if="completion['address']">
+            Personal Info and Privacy Settings
+        </a>
+        <a href="" ng-if="!completion['address']">
+            Personal Info and Privacy Settings
+        </a>
+        <div class="nav-arrow"></div>
+    </li>
+    <li ng-class="{active: $state.includes('create-account.confirmation'), disabled: true}">
+        <div class="nav-wedge"></div>
+        <a href="">Confirmation</a>
+    </li>
+</ul>
+<hr>
+
+<div ui-view></div>
+
+</div>

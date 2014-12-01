@@ -71,6 +71,25 @@ app.config(function($stateProvider, $urlRouterProvider) {
             url: '/info',
             templateUrl: 'templates/main/main-info.html?x=5'
         })   
+        .state('main.create-group', {
+            url: '/create-group',
+            templateUrl: 'templates/main/create-group.html?j=8',
+            controller: 'LoggedInController'
+        })
+        .state('main.create-group.account-info', {
+            url: '/account-info',
+            templateUrl: 'templates/create-account/account-info.html?l=16',
+        })
+        .state('main.create-group.map', {
+            url: '/map',
+            templateUrl: 'templates/create-account/map.html?l=16',
+            controller: 'MapController'
+        })
+        .state('main.create-group.personal-info', {
+            url: '/personal-info',
+            templateUrl: 'templates/create-account/personal-info.html?m=17',
+            controller: 'UserImageController'
+        })
 });
 
 

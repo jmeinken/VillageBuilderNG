@@ -1,6 +1,14 @@
 <?php
 
 
+
+
+
+
+
+
+
+
 /*
  * SPECIAL SECURITY HANDLING
  * check if provided User ID and currently logged in User ID logged match
@@ -83,6 +91,14 @@ Route::group(array('before' => 'auth'), function() {
         'as' => 'api-get-password',
         'uses' => 'ApiAccount@getPassword'
     ));
+    Route::get('api/get-group', array(
+        'as' => 'api-get-group',
+        'uses' => 'ApiGroup@getGroup'
+    ));
+    Route::post('api/delete-group', array(
+        'as' => 'api-delete-group',
+        'uses' => 'ApiGroup@deleteGroup'
+    ));
     
     
     
@@ -104,6 +120,14 @@ Route::group(array('before' => 'auth'), function() {
         Route::post('api/put-password', array(
             'as' => 'api-put-password',
             'uses' => 'ApiAccount@putPassword'
+        ));
+        Route::post('api/post-group', array(
+            'as' => 'api-post-group',
+            'uses' => 'ApiGroup@postGroup'
+        ));
+        Route::post('api/put-group', array(
+            'as' => 'api-put-group',
+            'uses' => 'ApiGroup@putGroup'
         ));
         
         

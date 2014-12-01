@@ -1,9 +1,11 @@
-{{State.debug}}
+<div class="container">
 
-<h3>{{ State.infoTitle }}</h3>
+    <h3>{{ State.infoTitle }}</h3>
 
-<p ng-bind-html="State.infoMessage"></p>
+    <p ng-bind-html="State.infoMessage"></p>
 
-<a ng-href="{{link.link}}" ng-repeat="link in State.infoLinks"> 
-    {{ link.description }}
-</a>
+    <a ng-href="{{link.link}}" ng-repeat="link in State.infoLinks"> 
+        {{ link.description }}
+    </a>
+
+</div>
