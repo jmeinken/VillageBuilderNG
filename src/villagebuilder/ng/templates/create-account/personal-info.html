@@ -15,7 +15,7 @@
                           ng-model="Request[form].request.full_address"></textarea>
             </div>
 
-                  <div ng-include="'templates/_reusable/input-elements.html'"
+                  <div ng-include="'templates/_reusable/generic-form.html'"
                        ng-controller="PersonalInfoFormFieldController1"></div>
           </fieldset>
     </div>
@@ -30,9 +30,9 @@
                     </button>
                 </div>
             </div>
-            <div ng-include="'templates/_reusable/input-elements.html?c=41'"
+            <div ng-include="'templates/_reusable/generic-form.html?c=41'"
                        ng-controller="PersonalInfoFormFieldController2"></div>
-            <div ng-include="'templates/_reusable/input-elements.html'"
+            <div ng-include="'templates/_reusable/generic-form.html'"
                  ng-show="Request[form].request.share_phone"
                        ng-controller="PersonalInfoFormFieldController3"></div>
           </fieldset>

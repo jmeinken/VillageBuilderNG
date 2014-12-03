@@ -33,8 +33,10 @@ app.controller('ManagePasswordFormController', function($scope, $location, $http
     }
     
     $scope.cancelSubmitPassword = function() {
-        Request.loadForm(form, getUrl, { user_id: State.currentUser.userId });
-        State.accountDataEditToggle['password'] = false;
+        Request.loadForm(form, getUrl, { user_id: State.activeAccount.userId });
+        for (field in State.accountDataEditToggle) {
+            State.accountDataEditToggle[field] = false;
+        }
     }
         
 

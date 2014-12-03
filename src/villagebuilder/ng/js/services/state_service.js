@@ -17,17 +17,14 @@ app.service("State", function($http, $location, Ajax) {
     this.intendedLocation = '/main/home';
     
     //user information
-    this.currentUser = {};
-    //this.currentUser.userId = "";
-    //this.currentUser.firstName = "";
-    //this.currentUser.lastName = "";
-    //this.currentUser.profilePicUrl = "assets/images/generic-user.png";
-    //this.currentUser.profilePicThumbUrl = "assets/images/generic-user.png";
-    //this.currentUser.profilePicFile = "";
-    //this.currentUser.profilePicThumbFile = "";
+    this.currentUserAccounts = [];
+    this.activeAccount = {};
+    this.activeId = "";  //the active account is auto-updated when activeId is set
     
     //used by Manage Account view to show/hide editing for specific fields
     this.accountDataEditToggle = {}
+    
+
     
 
     
@@ -40,7 +37,12 @@ app.service("State", function($http, $location, Ajax) {
         $http.get(Ajax.CHECK_LOGIN_STATUS).
             success(function(data, status, headers, config) {
                 self.authenticated = data.logged_in;
-                self.currentUser = data;
+                self.currentUserAccounts[0] = data.personalAccount;
+                self.currentUserAccounts = self.currentUserAccounts.concat(data.groupAccounts);
+                if (self.activeId == "") {
+                    self.activeId = data.personalAccount.participantId;
+                    self.activeAccount = self.currentUserAccounts[0];
+                }
                 //self.debug = data;
             }).
             error(function(data, status, headers, config) {

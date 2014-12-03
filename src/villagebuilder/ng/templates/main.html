@@ -1,4 +1,4 @@
-<div ng-if="showPage">
+<div ng-if="showPage" ng-controller="MainController">
     <div class="navbar navbar-inverse">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
@@ -19,17 +19,38 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                  <img alt="pic" ng-src="{{State.currentUser.profilePicThumbUrl}}" 
+                  <img alt="pic" ng-src="{{State.activeAccount.profilePicThumbUrl}}" 
                        width="25" height="25" />
-                  {{ State.currentUser.firstName }}
-                  {{ State.currentUser.lastName }}
-                  {{ State.currentUser.userId }}
+                  <strong>
+                        {{ State.activeAccount.title }}
+                        {{ State.activeAccount.firstName }}
+                        {{ State.activeAccount.lastName }}
+                        {{ State.activeAccount.participantId }}
+                  </strong>
                   <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="" ui-sref="main.manage-account">Account Settings</a></li>
                 <li><a href="" ng-click="State.signOut()">Log Out</a></li>
-                <li><a href="" ui-sref="main.create-group.account-info">Create New Group</a></li>
+                <li><a href="" ui-sref="main.manage-account">
+                        Account Settings for {{ State.activeAccount.title }}
+                        {{ State.activeAccount.firstName }}
+                        {{ State.activeAccount.lastName }}
+                </a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Your Other Accounts</li>
+                <li ng-repeat="account in State.currentUserAccounts"
+                    ng-show="account != State.activeAccount">
+                    <a href="" ng-click="State.activeId=account.participantId">
+                        <img alt="pic" ng-src="{{account.profilePicThumbUrl}}" 
+                             width="25" height="25" /> 
+                        {{account.title}}
+                        {{account.firstName}}
+                        {{account.lastName}}
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Actions</li>
+                <li><a href="" ui-sref="main.create-group.account-info">Create a New Group</a></li>
               </ul>
             </li>
           </ul>

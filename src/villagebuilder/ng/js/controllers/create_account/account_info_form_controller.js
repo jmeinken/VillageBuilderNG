@@ -2,7 +2,7 @@ app.controller('AccountInfoFormController', function($scope, $location, $state, 
     
     $scope.request = {};
     $scope.inputFields = [];
-    $scope.showInputErrors = false;
+    
 
     $scope.$watch(function() {return Request[$scope.$parent.form]}, function() {
         $scope.request = Request[$scope.$parent.form];

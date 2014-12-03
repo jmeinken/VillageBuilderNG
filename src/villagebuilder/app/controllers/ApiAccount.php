@@ -132,13 +132,13 @@ class ApiAccount extends BaseController {
     
        
     public function getAccount() {
-        if (Input::has('user_id')) {
-            if (Input::get('user_id') != Auth::user()->id) {
+        if (Input::has('participant_id')) {
+            if (Input::get('participant_id') != Auth::user()->id) {
                 return Response::json(['errorMessage' => 
                     "The account you're trying to access and the account you're logged in under don't match."], 
                     self::STATUS_BAD_REQUEST);
             }
-            $values = $this->getAccountCurrentValues(Input::get('user_id'));
+            $values = $this->getAccountCurrentValues(Input::get('participant_id'));
         } else {
             $values = $this->getAccountDefaultValues();
         }

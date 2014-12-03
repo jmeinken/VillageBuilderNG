@@ -4,6 +4,8 @@ app.controller('CreateAccountFormController', function($scope, $location, $http,
     var form = 'createAccount';
     var getUrl = Ajax.GET_ACCOUNT;
     var postUrl = Ajax.POST_ACCOUNT;
+    $scope.showInputErrors = false;
+    $scope.showFormError = true;
     
     $scope.form = form;
    

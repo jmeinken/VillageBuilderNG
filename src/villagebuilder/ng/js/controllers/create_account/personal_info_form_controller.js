@@ -3,7 +3,6 @@ app.controller('PersonalInfoFormController', function($scope, $location, $http, 
 
     
     $scope.request = {};
-    $scope.showInputErrors = false;
 
     $scope.$watch(function() {return Request[$scope.$parent.form]}, function() {
         $scope.request = Request[$scope.$parent.form];

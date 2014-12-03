@@ -48,14 +48,14 @@
         </div>
         <div class="input-group">
             <span class="input-group-addon">First</span>
-            <input name="first_name" class="form-control" type="text" 
+            <div><input name="first_name" class="form-control" type="text" 
                            ng-model="Request.account.request.first_name" 
                            ng-required="Request.account.meta.first_name.required"
                            ng-minlength="{{Request.account.meta.first_name.minlength}}"
                            ng-maxlength="{{Request.account.meta.first_name.maxlength}}"
                            maxlength="{{Request.account.meta.first_name.maxlength}}"
                            ng-pattern="{{Request.account.meta.first_name.pattern}}"
-                           />
+                           /></div>
             <span class="input-group-addon">Last</span>
             <input name="last_name" class="form-control" type="text" 
                            ng-model="Request.account.request.last_name" 

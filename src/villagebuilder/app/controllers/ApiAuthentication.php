@@ -14,33 +14,67 @@ class ApiAuthentication extends BaseController {
         if (Auth::check()) {
             $response = [];
             $response['logged_in'] = true;
-            $response['user_type'] = 'member';
             //$response['_token'] = csrf_token();
             $response['userId'] = Auth::user()->id;
-            $response['email'] = Auth::user()->email;
+            //$response['email'] = Auth::user()->email;
             //send more data about user
-            $account = DB::table('users')
-            ->join('participant', 'users.id', '=', 'participant.user_id')
-            ->join('member', 'participant.participant_id', '=', 'member.member_id')
-            ->join('person', 'person.person_id', '=', 'member.member_id')
-            ->where('users.id', Auth::user()->id)->first();
-            $response['firstName'] = $account->first_name;
-            $response['lastName'] = $account->last_name;
+            //$account = DB::table('users')
+            //->join('participant', 'users.id', '=', 'participant.user_id')
+            //->join('member', 'participant.participant_id', '=', 'member.member_id')
+            //->join('person', 'person.person_id', '=', 'member.member_id')
+            //->where('users.id', Auth::user()->id)->first();
+            $account = DB::table('participant')
+                ->join('member', 'participant.participant_id', '=', 'member.member_id')
+                ->join('person', 'person.person_id', '=', 'member.member_id')
+                ->where('participant.user_id', Auth::user()->id)
+                ->first();
+            $response['personalAccount'] = [];
+            $response['personalAccount']['type'] = 'person';
+            $response['personalAccount']['participantId'] = $account->participant_id;
+            $response['personalAccount']['firstName'] = $account->first_name;
+            $response['personalAccount']['lastName'] = $account->last_name;
             if ($account->pic_large == "") {
-                $response['profilePicFile'] = "";
-                $response['profilePicUrl'] = "assets/images/generic-user.png";
+                $response['personalAccount']['profilePicFile'] = "";
+                $response['personalAccount']['profilePicUrl'] = "assets/images/generic-user.png";
             } else {
-                $response['profilePicFile'] = $account->pic_large;
-                $response['profilePicUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_large;
+                $response['personalAccount']['profilePicFile'] = $account->pic_large;
+                $response['personalAccount']['profilePicUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_large;
             }
             if ($account->pic_small == "") {
-                $response['profilePicThumbFile'] = "";
-                $response['profilePicThumbUrl'] = "assets/images/generic-user.png";
+                $response['personalAccount']['profilePicThumbFile'] = "";
+                $response['personalAccount']['profilePicThumbUrl'] = "assets/images/generic-user.png";
             } else {
-                $response['profilePicThumbFile'] = $account->pic_small;
-                $response['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_small;
+                $response['personalAccount']['profilePicThumbFile'] = $account->pic_small;
+                $response['personalAccount']['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_small;
             }
-            ////////////////////////////
+            $groups = DB::table('participant')
+                ->join('member', 'participant.participant_id', '=', 'member.member_id')
+                ->join('group', 'group.group_id', '=', 'member.member_id')
+                ->where('participant.user_id', Auth::user()->id)
+                ->get();
+            $response['groupAccounts'] = [];
+            $i = 0;
+            foreach ($groups as $group) {
+                $response['groupAccounts'][$i]['participantId'] = $group->participant_id;
+                $response['groupAccounts'][$i]['type'] = 'group';
+                $response['groupAccounts'][$i]['title'] = $group->title;
+                if ($group->pic_large == "") {
+                    $response['groupAccounts'][$i]['profilePicFile'] = "";
+                    $response['groupAccounts'][$i]['profilePicUrl'] = "assets/images/generic-user.png";
+                } else {
+                    $response['groupAccounts'][$i]['profilePicFile'] = $group->pic_large;
+                    $response['groupAccounts'][$i]['profilePicUrl'] = Config::get('constants.profilePicUrlPath') . $group->pic_large;
+                }
+                if ($group->pic_small == "") {
+                    $response['groupAccounts'][$i]['profilePicThumbFile'] = "";
+                    $response['groupAccounts'][$i]['profilePicThumbUrl'] = "assets/images/generic-user.png";
+                } else {
+                    $response['groupAccounts'][$i]['profilePicThumbFile'] = $group->pic_small;
+                    $response['groupAccounts'][$i]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $group->pic_small;
+                }
+                $i++;
+            }
+            //////////////////////////// 
             return Response::json($response, self::STATUS_OK);
         } else {
             $response = [];

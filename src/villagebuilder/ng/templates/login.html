@@ -36,7 +36,7 @@
                 <div class="panel-body">
                     <form name="form1" ng-controller="LoginFormController" novalidate
                         ng-init="loadForm()">
-                       <div ng-include="'templates/_reusable/input-elements.html'"></div>
+                       <div ng-include="'templates/_reusable/generic-form.html?v=2'"></div>
                        <button ng-click="validateForm(form1.$valid)">Login</button>
                     </form>
                     <br>

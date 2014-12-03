@@ -1,0 +1,40 @@
+
+<div ng-include="'form-error.html'"></div>
+
+<div ng-repeat="field in inputFields" ng-if="request.meta[field].input_type!='hidden'">
+    <div ng-class="{'form-group':true, 'has-error':request.inputErrors[field]}">
+        <div ng-include="'input-label.html'"></div>
+        <div ng-switch="request.meta[field].input_type">
+            <div ng-switch-when="number">
+                <div ng-include="'input-float.html'"></div>
+            </div>
+            <div ng-switch-when="integer">
+                <div ng-include="'input-integer.html'"></div>
+            </div>
+            <div ng-switch-when="text">
+                <div ng-include="'input-text.html'"></div>
+            </div>
+            <div ng-switch-when="password">
+                <div ng-include="'input-password.html'"></div>
+            </div>
+            <div ng-switch-when="password_confirm">
+                <div ng-include="'input-password-confirm.html'"></div>
+            </div>
+            <div ng-switch-when="checkbox">
+                <div ng-include="'input-checkbox.html'"></div>
+            </div>
+            <div ng-switch-when="select">
+                <div ng-include="'input-select.html'"></div>
+            </div>
+        </div>
+        <div ng-include="'input-description.html'"></div>
+        <!-- Input errors sent from backend -->
+        <div ng-include="'input-error.html'"></div>
+    </div>
+</div>
+
+
+
+
+
+

@@ -7,6 +7,7 @@ app.controller('LoginFormController', function($scope, $location, $http, Ajax, S
     $scope.request = {};
     $scope.inputFields = [];
     $scope.showInputErrors = false;
+    $scope.showFormError = true;
 
     $scope.$watch(function() {return Request[form]}, function() {
         $scope.request = Request[form];

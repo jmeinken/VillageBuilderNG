@@ -17,7 +17,7 @@ app.service("Request", function($http, State) {
                 //State.debug = status;
             }).
             error(function(data, status, headers, config) {
-                
+                State.debug = data;
             });
     }
     

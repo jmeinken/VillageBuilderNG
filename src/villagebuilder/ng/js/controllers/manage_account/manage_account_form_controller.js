@@ -2,16 +2,35 @@
 app.controller('ManageAccountFormController', function($scope, $location, $http, Ajax, State, Request) {
     
     var form = 'account';
-    var getUrl = Ajax.GET_ACCOUNT;
-    var postUrl = Ajax.PUT_ACCOUNT;
-    var deleteUrl = Ajax.DELETE_ACCOUNT;
+    if (State.activeAccount.type == 'person') {
+        var getUrl = Ajax.GET_ACCOUNT;
+        var postUrl = Ajax.PUT_ACCOUNT;
+        var deleteUrl = Ajax.DELETE_ACCOUNT;
+    } else {
+        var getUrl = Ajax.GET_GROUP;
+        var postUrl = Ajax.PUT_GROUP;
+        var deleteUrl = Ajax.DELETE_GROUP;
+    }
+    
+    $scope.$watch(function() {return State.activeAccount}, function(value) {
+        if (State.activeAccount.type == 'person') {
+            getUrl = Ajax.GET_ACCOUNT;
+            postUrl = Ajax.PUT_ACCOUNT;
+            deleteUrl = Ajax.DELETE_ACCOUNT;
+        } else {
+            getUrl = Ajax.GET_GROUP;
+            postUrl = Ajax.PUT_GROUP;
+            deleteUrl = Ajax.DELETE_GROUP;
+        }
+        Request.loadForm(form, getUrl, { participant_id: State.activeAccount.participantId });
+    });
    
     $scope.loadForm = function() {
-        Request.loadForm(form, getUrl, { user_id: State.currentUser.userId });
+        Request.loadForm(form, getUrl, { participant_id: State.activeAccount.participantId });
     }
     
     $scope.cancelSubmit = function() {
-        Request.loadForm(form, getUrl, { user_id: State.currentUser.userId });
+        Request.loadForm(form, getUrl, { participant_id: State.activeAccount.participantId });
         for (field in State.accountDataEditToggle) {
             State.accountDataEditToggle[field] = false;
         }

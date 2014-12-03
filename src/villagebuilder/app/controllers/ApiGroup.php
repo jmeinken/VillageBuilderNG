@@ -44,13 +44,13 @@ class ApiGroup extends BaseController {
     
        
     public function getGroup() {
-        if (Input::has('member_id')) {
+        if (Input::has('participant_id')) {
             //if (Input::get('member_id') != Auth::user()->id) {
             //    return Response::json(['errorMessage' => 
             //        "The account you're trying to access and the account you're logged in under don't match."], 
             //        self::STATUS_BAD_REQUEST);
             //}
-            $values = $this->getGroupCurrentValues(Input::get('member_id'));
+            $values = $this->getGroupCurrentValues(Input::get('participant_id'));
         } else {
             $values = $this->getGroupDefaultValues();
         }
@@ -126,7 +126,7 @@ class ApiGroup extends BaseController {
     private function getGroupCurrentValues($memberId) {
         $account = DB::table('member')
         ->join('group', 'group.group_id', '=', 'member.member_id')
-        ->where('member.id', $memberId)->first();
+        ->where('member.member_id', $memberId)->first();
         $values = [];
         $values['member_id'] = $memberId;
         $values['email'] = $account->email;
