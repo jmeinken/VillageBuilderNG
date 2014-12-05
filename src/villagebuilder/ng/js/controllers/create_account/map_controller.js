@@ -35,6 +35,7 @@ app.controller('MapController', function($scope, $interval, $location, $state, S
     //run.  I use $interval combined with a checkStatus() function
     //to run every second until geocodeResults is set.
     $scope.lookupAddress = function() {
+        State.changedAddress = false;
         initializeMap();
         if (!$scope.addressSubmissionComplete) {
             return;
@@ -53,7 +54,7 @@ app.controller('MapController', function($scope, $interval, $location, $state, S
                     return;
                 }
                 if (results.length > 0) {
-                    $scope.geocodeResults = results;
+                    $scope.geocodeResults = results.slice(0,10);
                     $scope.addressSubmissionComplete = true;
                     $scope.map.setCenter(results[0].geometry.location);
                     $scope.map.setZoom(15);
@@ -96,6 +97,11 @@ app.controller('MapController', function($scope, $interval, $location, $state, S
         requestObject.request.full_address = selected.formatted_address;
         requestObject.request.latitude = selected.geometry.location.k;
         requestObject.request.longitude = selected.geometry.location.B;
+        requestObject.request.street = "";
+        requestObject.request.neighborhood = "";
+        requestObject.request.city = "";
+        requestObject.request.state = "";
+        requestObject.request.zip_code = "";
         for (var i=0; i<selected.address_components.length; i++) {
             if ($.inArray("route", selected.address_components[i].types) != -1) {
                 State.debug = selected.address_components[i].short_name;

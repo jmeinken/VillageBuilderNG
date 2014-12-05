@@ -4,25 +4,37 @@
         <h4 class="modal-title" id="myModalLabel">Select Address</h4>
     </div>
     <div class="modal-body" style="background: #fff">
-        <style type="text/css">
-            #map-canvas { height: 300px; width: 500px; margin: 0; padding: 0;}
-        </style>
-        {{State.changedAddress}}<br>
-        <input type="text" size="100" ng-model="$parent.userProvidedAddress" />
-        <button ng-click="lookupAddress()">Lookup Address</button>
-        <br><br>
-
-        <div id="map-canvas""></div>
-
-        <div ng-repeat="result in geocodeResults">
-        <label>
-            <input type="radio" ng-model="$parent.addressIndex" value="{{$index}}" ng-change='redrawMap($index)'> {{ result.formatted_address }}
-        </label>
+        <div class="row">
+            <div class="col-lg-12">
+                Address:
+                <input type="text" size="100" ng-model="$parent.userProvidedAddress" />
+                <button ng-click="lookupAddress()">Lookup Address</button>
+                <br><br>
+            </div>
         </div>
-        <button ng-show="resultExists" ng-click="useSelectedGecodeResult(request)">Use Selected Address</button>
-
-
-
+        <div class="row">
+            <div class="col-lg-6">
+                <style type="text/css">
+                    #map-canvas { height: 300px; width: 400px; margin: 0; padding: 0;}
+                </style>
+                <div id="map-canvas""></div>
+            </div>
+            <div class="col-lg-6">
+                <div ng-repeat="result in geocodeResults">
+                    <label>
+                        <input type="radio" ng-model="$parent.addressIndex" 
+                               value="{{$index}}" ng-change='redrawMap($index)'> 
+                        {{ result.formatted_address }}
+                    </label>
+                </div>
+                <button ng-show="resultExists" ng-click="useSelectedGecodeResult(request)">Use Selected Address</button>
+                <br><br><div ng-show="State.changedAddress">
+                    <button class="btn btn-success btn-lg" type="button" data-dismiss="modal">
+                        Close Window
+                    </button>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

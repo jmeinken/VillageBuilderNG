@@ -127,6 +127,9 @@ app.controller('ManageAccountInputPrivacyController', function($scope) {
 app.controller('ManageAccountInputPhoneController', function($scope) {
     $scope.inputFields = ['phone_number', 'phone_type'];
 });
+app.controller('ManageAccountInputAddressController', function($scope) {
+    $scope.inputFields = ['street', 'city', 'neighborhood'];
+});
 
 
 

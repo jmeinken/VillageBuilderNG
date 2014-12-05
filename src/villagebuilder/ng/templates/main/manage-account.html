@@ -113,7 +113,7 @@
     </div>
     <br>
     
-        <div ng-controller="ManageAccountInputPhoneController">
+    <div ng-controller="ManageAccountInputPhoneController">
         <strong>Phone Number</strong> 
         <a href="" class="label label-primary" 
                ng-if="!State.accountDataEditToggle.phone"
@@ -149,19 +149,54 @@
     
     
     <strong>Profile Picture</strong> 
+    <a href="" class="label label-primary"data-target="#myModal" data-toggle="modal">
+        Upload
+    </a>
     <div>
         <img alt="User Picture" ng-src="{{ request.request.pic_large_url }}" width="100" height="100" /> 
-            <button href="" data-target="#myModal" data-toggle="modal">
-                Upload New Picture
-            </button>
+            
     </div>
     <br>
     
-    <button href="" data-target="#map-modal" data-toggle="modal">
-                Change Address
-            </button>
+    <strong>Address</strong> 
+    <a href="" class="label label-primary" data-target="#map-modal" data-toggle="modal">
+        edit
+    </a>
+    <div>
+        {{request.request.full_address }}
+    </div>
+    <br>
     
-    <br><br>
+    <div ng-controller="ManageAccountInputAddressController">
+        <strong>Display Address</strong> 
+        <a href="" class="label label-primary" 
+               ng-if="!State.accountDataEditToggle.address"
+               ng-click="State.accountDataEditToggle.address=!State.accountDataEditToggle.address">
+            edit
+        </a>
+        <div ng-if="!State.accountDataEditToggle.address">
+            {{ request.request.street }} ({{ request.request.neighborhood || request.request.city }})
+        </div>
+        <div ng-if="State.accountDataEditToggle.address">
+            
+            <div ng-repeat="field in inputFields">
+                <div class="input-group">
+                    <span class="input-group-addon">{{request.meta[field].name}}</span>
+                    <div ng-include="'input.html'"></div>   
+                </div>
+                <div ng-include="'input-description.html'"></div> 
+                <div ng-include="'input-error.html'"></div> 
+                <br>
+            </div>
+            <button class="btn btn-primary" ng-click="validateForm(form1.$valid)">Submit</button>
+            <button class="btn btn-warning" ng-click="cancelSubmit()">Cancel</button>
+            
+        </div>
+    </div>
+    <br>
+    
+    
+
     
     <button ng-click="deleteAccount()">Delete Account</button>
  
