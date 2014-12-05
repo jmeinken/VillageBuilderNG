@@ -6,7 +6,7 @@ class GroupModel {
         $group = DB::table('group')
             ->where($field, '=', $value)
             ->first();
-        return (is_null($user) ? false : true);
+        return (is_null($group) ? false : true);
     }
     
     public static function deleteGroup($participantId) {

@@ -30,7 +30,6 @@
                   <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="" ng-click="State.signOut()">Log Out</a></li>
                 <li><a href="" ui-sref="main.manage-account">
                         Account Settings for {{ State.activeAccount.title }}
                         {{ State.activeAccount.firstName }}
@@ -51,6 +50,7 @@
                 <li class="divider"></li>
                 <li class="dropdown-header">Actions</li>
                 <li><a href="" ui-sref="main.create-group.account-info">Create a New Group</a></li>
+                <li><a href="" ng-click="State.signOut()">Log Out</a></li>
               </ul>
             </li>
           </ul>

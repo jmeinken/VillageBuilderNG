@@ -1,0 +1,28 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-header" style="background: #fff">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select Address</h4>
+    </div>
+    <div class="modal-body" style="background: #fff">
+        <style type="text/css">
+            #map-canvas { height: 300px; width: 500px; margin: 0; padding: 0;}
+        </style>
+        {{State.changedAddress}}<br>
+        <input type="text" size="100" ng-model="$parent.userProvidedAddress" />
+        <button ng-click="lookupAddress()">Lookup Address</button>
+        <br><br>
+
+        <div id="map-canvas""></div>
+
+        <div ng-repeat="result in geocodeResults">
+        <label>
+            <input type="radio" ng-model="$parent.addressIndex" value="{{$index}}" ng-change='redrawMap($index)'> {{ result.formatted_address }}
+        </label>
+        </div>
+        <button ng-show="resultExists" ng-click="useSelectedGecodeResult(request)">Use Selected Address</button>
+
+
+
+
+    </div>
+</div>

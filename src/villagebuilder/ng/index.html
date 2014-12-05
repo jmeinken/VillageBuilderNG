@@ -47,7 +47,6 @@
 
     <code>
         {{ State.debug }} | 
-        {{State.activeId}}
     </code>
 
 <div ui-view></div>
@@ -90,6 +89,9 @@
 <script src="js/controllers/debug/tester_controller.js"></script>
 
 <!-- Form Templates -->
+<script type="text/ng-template" id="testing.html">
+    It worked.
+</script>
 <script type="text/ng-template" id="form-error.html">
     <div class="alert alert-danger" ng-if="request.formError && showFormError">
         {{ request.formError }}
@@ -164,6 +166,33 @@
 
 <script type="text/ng-template" id="input-textarea.html">
     
+</script>
+
+<script type="text/ng-template" id="input.html">
+    <span ng-switch="request.meta[field].input_type">
+        <span ng-switch="request.meta[field].input_type">
+        <span ng-switch-when="number">
+            <span ng-include="'input-float.html'"></span>
+        </span>
+        <span ng-switch-when="integer">
+            <span ng-include="'input-integer.html'"></span>
+        </span>
+        <span ng-switch-when="text">
+            <span ng-include="'input-text.html'"></span>
+        </span>
+        <span ng-switch-when="password">
+            <span ng-include="'input-password.html'"></span>
+        </span>
+        <span ng-switch-when="password_confirm">
+            <span ng-include="'input-password-confirm.html'"></span>
+        </span>
+        <span ng-switch-when="checkbox">
+            <span ng-include="'input-checkbox.html'"></span>
+        </span>
+        <span ng-switch-when="select">
+            <span ng-include="'input-select.html'"></span>
+        </span>
+    </span>
 </script>
 
 <script type="text/ng-template" id="input-error.html">

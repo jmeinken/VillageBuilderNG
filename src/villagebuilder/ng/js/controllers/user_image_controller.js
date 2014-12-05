@@ -28,8 +28,6 @@ app.controller('UserImageController', function($scope, State, Request, Ajax, $ti
             var imageLoaded = $('#imageLoaded');
             imageLoaded.val('1');
             imageLoaded.trigger('input');
-            //$('#imageLoaded').val(1);
-            //$('#imageLoaded').triggerHandler("change");
             if (img) {//valid file
                 if (img.width < 300 || img.height < 300) {
                     alert('The image width and height must be over or equal to 300!')
@@ -89,10 +87,12 @@ app.controller('UserImageController', function($scope, State, Request, Ajax, $ti
             success: function (data) {
                 $timeout( function() {
                     State.debug = data;
-                    State.currentUser.profilePicUrl = data.pic_large.path;
-                    State.currentUser.profilePicThumbUrl = data.pic_small.path;
-                    State.currentUser.profilePicThumbFile = data.pic_small.name;
-                    State.currentUser.profilePicFile = data.pic_large.name;
+                    State.uploadedImageData = {};
+                    State.uploadedImageData.url = data.pic_large.path;
+                    State.uploadedImageData.thumbUrl = data.pic_small.path;
+                    State.uploadedImageData.thumbFile = data.pic_small.name;
+                    State.uploadedImageData.file = data.pic_large.name;
+                    $scope.imageLoaded = 0; 
                     $scope.imageUploaded = true;
                 }, 1000);
             }

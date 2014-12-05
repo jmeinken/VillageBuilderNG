@@ -11,7 +11,9 @@ return array(
     'assetUrlPath' => 'assets/',
     'imageUrlPath' => 'assets/images/',
     'profilePicUrlPath' => 'assets/images/user_images/',
-    'itemPicUrlPath' => 'assets/images/item_images/'
+    'itemPicUrlPath' => 'assets/images/item_images/',
+    
+    'genericProfilePicUrl' => 'assets/images/generic-user.png'
     
     
         

@@ -1,7 +1,7 @@
 
 app.controller('MapController', function($scope, $interval, $location, $state, State, Request) {
     
-    $scope.userProvidedAddress = "";
+    $scope.userProvidedAddress = "test";
     $scope.map;
     $scope.marker;
     $scope.geocoder = new google.maps.Geocoder();
@@ -14,12 +14,20 @@ app.controller('MapController', function($scope, $interval, $location, $state, S
     $scope.addressSubmissionComplete = true;
 
     $scope.initializeMap = function () {
-      var mapOptions = {
-        center: { lat: 39.83, lng: -98.58},
-        zoom: 4
-      };
-      $scope.map = new google.maps.Map(document.getElementById('map-canvas'),
-          mapOptions);
+        initializeMap();
+        //this code makes the map show correctly inside Bootstrap modal
+        //$("#map-modal").on("shown.bs.modal", function () {
+        //    google.maps.event.trigger($scope.map, "resize");
+        //});
+    }
+    
+    function initializeMap() {
+        var mapOptions = {
+          center: { lat: 39.83, lng: -98.58},
+          zoom: 4
+        };
+        $scope.map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
     }
     
     //For some reason, the results function from geocode can run operations
@@ -27,6 +35,7 @@ app.controller('MapController', function($scope, $interval, $location, $state, S
     //run.  I use $interval combined with a checkStatus() function
     //to run every second until geocodeResults is set.
     $scope.lookupAddress = function() {
+        initializeMap();
         if (!$scope.addressSubmissionComplete) {
             return;
         }
@@ -36,6 +45,7 @@ app.controller('MapController', function($scope, $interval, $location, $state, S
         var geocoderRequest = {
             address: $scope.userProvidedAddress
         }
+        State.debug = $scope.userProvidedAddress;
         $scope.promise = $interval(function() {
             $scope.geocoder.geocode(geocoderRequest, function(results, status) {
                 if(results == null){
@@ -81,8 +91,7 @@ app.controller('MapController', function($scope, $interval, $location, $state, S
     //$scope.geocodeResults[$scope.addressIndex]
     
     $scope.useSelectedGecodeResult = function(requestObject) {
-        //State.debug = $scope.addressIndex;
-        
+        State.changedAddress = false;
         var selected = $scope.geocodeResults[$scope.addressIndex];
         requestObject.request.full_address = selected.formatted_address;
         requestObject.request.latitude = selected.geometry.location.k;
@@ -106,9 +115,8 @@ app.controller('MapController', function($scope, $interval, $location, $state, S
             }
         }
         State.debug = "yes it ran";
-        $scope.completion['address'] = true;
-        //$location.path( "/create-account/personal-info" );
-        $state.go($scope.personalInfoView);
+        State.changedAddress = true;
+        
     }
   
 

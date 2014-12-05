@@ -119,6 +119,8 @@ class ApiGroup extends BaseController {
         $values['share_phone'] = "0";
         $values['pic_large'] = '';
         $values['pic_small'] = '';
+        $values['pic_large_url'] = Config::get('constants.genericProfilePicUrl');
+        $values['pic_small_url'] = Config::get('constants.genericProfilePicUrl');
         $values['_token'] = csrf_token();
         return $values;
     }
@@ -149,6 +151,18 @@ class ApiGroup extends BaseController {
         $values['share_phone'] = $account->share_phone;
         $values['pic_large'] = $account->pic_large;
         $values['pic_small'] = $account->pic_small;
+        if ($account->pic_large) {
+            $values['pic_large_url'] = Config::get('constants.profilePicUrlPath') 
+                    . $account->pic_large;
+        } else {
+            $values['pic_large_url'] = Config::get('constants.genericProfilePicUrl');
+        }   
+        if ($account->pic_small) {
+            $values['pic_small_url'] = Config::get('constants.profilePicUrlPath') 
+                    . $account->pic_small;
+        } else {
+            $values['pic_small_url'] = Config::get('constants.genericProfilePicUrl');
+        }
         $values['_token'] = csrf_token();
         return $values;
     }

@@ -17,6 +17,18 @@ app.controller('CreateAccountFormController', function($scope, $location, $http,
     $scope.accountInfoView = "create-account.account-info";
     $scope.mapView = "create-account.map";
     $scope.personalInfoView = "create-account.personal-info";
+    
+    $scope.$watch(function() {return State.uploadedImageData.complete}, function(value) {
+        Request[form].request.pic_large = State.uploadedImageData.file;
+        Request[form].request.pic_small = State.uploadedImageData.thumbFile;
+        Request[form].request.pic_large_url = State.uploadedImageData.url;
+        Request[form].request.pic_small_url = State.uploadedImageData.thumbUrl;
+    });
+    $scope.$watch(function() {return State.changedAddress}, function(value) {
+        if (State.changedAddress) {
+            $state.go($scope.personalInfoView);
+        }
+    });
 
 
 

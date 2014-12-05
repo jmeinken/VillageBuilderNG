@@ -22,7 +22,12 @@ app.service("State", function($http, $location, Ajax) {
     this.activeId = "";  //the active account is auto-updated when activeId is set
     
     //used by Manage Account view to show/hide editing for specific fields
-    this.accountDataEditToggle = {}
+    this.accountDataEditToggle = {};
+    
+    //used to store info about most recently uploaded image
+    this.uploadedImageData = {};
+    
+    this.changedAddress = false;
     
 
     
@@ -37,12 +42,18 @@ app.service("State", function($http, $location, Ajax) {
         $http.get(Ajax.CHECK_LOGIN_STATUS).
             success(function(data, status, headers, config) {
                 self.authenticated = data.logged_in;
+                self.currentUserAccounts = [];
                 self.currentUserAccounts[0] = data.personalAccount;
                 self.currentUserAccounts = self.currentUserAccounts.concat(data.groupAccounts);
                 if (self.activeId == "") {
                     self.activeId = data.personalAccount.participantId;
-                    self.activeAccount = self.currentUserAccounts[0];
                 }
+                for (var i=0; i<self.currentUserAccounts.length; i++) {
+                    if (self.currentUserAccounts[i].participantId == self.activeId) {
+                        self.activeAccount = self.currentUserAccounts[i];
+                    }
+                }
+                
                 //self.debug = data;
             }).
             error(function(data, status, headers, config) {
