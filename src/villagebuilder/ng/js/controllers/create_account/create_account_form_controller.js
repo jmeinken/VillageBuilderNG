@@ -18,7 +18,7 @@ app.controller('CreateAccountFormController', function($scope, $location, $http,
     $scope.mapView = "create-account.map";
     $scope.personalInfoView = "create-account.personal-info";
     
-    $scope.$watch(function() {return State.uploadedImageData.complete}, function(value) {
+    $scope.$watch(function() {return State.uploadedImageData}, function(value) {
         Request[form].request.pic_large = State.uploadedImageData.file;
         Request[form].request.pic_small = State.uploadedImageData.thumbFile;
         Request[form].request.pic_large_url = State.uploadedImageData.url;

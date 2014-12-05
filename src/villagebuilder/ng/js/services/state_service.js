@@ -64,6 +64,9 @@ app.service("State", function($http, $location, Ajax) {
     this.signOut = function() {   
         $http.get(Ajax.POST_LOG_OUT).
             success(function(data, status, headers, config) {
+                self.activeId = "";
+                self.currentUserAccounts = [];
+                self.activeAccount = {};
                 self.authenticated = false;
             }).
             error(function(data, status, headers, config) {

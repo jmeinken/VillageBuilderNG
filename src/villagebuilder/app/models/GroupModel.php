@@ -10,7 +10,7 @@ class GroupModel {
     }
     
     public static function deleteGroup($participantId) {
-        return DB::table('participant')->where('id', $participantId)->delete();
+        return DB::table('participant')->where('participant_id', $participantId)->delete();
     }
     
     //all values except code should be set in Input

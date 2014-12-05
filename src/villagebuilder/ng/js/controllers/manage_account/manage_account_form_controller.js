@@ -57,10 +57,15 @@ app.controller('ManageAccountFormController', function($scope, $location, $timeo
     }
     
     $scope.deleteAccount = function() {
-        $http.post(deleteUrl, {'user_id': State.currentUser.userId}).
+        $http.post(deleteUrl, {'participant_id': State.activeAccount.participantId}).
             success(function(data, status, headers, config) {
                 alert("Account successfully deleted");
-                $location.path( '/login' );
+                if (State.activeAccount.type=='person') {
+                    $location.path( '/login' );
+                } else {
+                    //State.authenticate(); this doesn't do what I expect
+                    $location.path( '/main/home' );
+                }
             }).
             error(function(data, status, headers, config) {
                 alert('There was a problem deleting your account.');

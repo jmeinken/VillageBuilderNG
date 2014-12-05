@@ -4,9 +4,11 @@
 
 <form name="form1" novalidate ng-controller="PersonalInfoFormController"
           ng-if="Request[form]">
-    
+{{request.request}}    <br>
+{{State.uploadedImageData    }}
 <div class="row">
     <div class="col-lg-3">  
+        
           <fieldset>
               <button ng-click="validateForm(form1.$valid)">Save and Continue</button>
             <div class="form-group">
@@ -42,7 +44,7 @@
         <table>
             <tr>
                 <td>
-                    <img alt="User Picture" ng-src="{{ State.currentUser.profilePicUrl }}" width="55" height="55" />
+                    <img alt="User Picture" ng-src="{{ request.request.pic_large_url }}" width="55" height="55" />
                 </td>
                 <td>
                     <div>

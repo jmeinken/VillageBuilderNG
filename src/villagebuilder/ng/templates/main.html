@@ -1,5 +1,5 @@
 <div ng-if="showPage" ng-controller="MainController">
-    <div class="navbar navbar-inverse">
+    <div ng-class="{'navbar':true, 'navbar-inverse':State.activeAccount.type=='person', 'navbar-default':State.activeAccount.type!='person'}">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
             <span class="icon-bar"></span>
@@ -35,8 +35,10 @@
                         {{ State.activeAccount.firstName }}
                         {{ State.activeAccount.lastName }}
                 </a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Your Other Accounts</li>
+                <li class="divider" ng-if="State.currentUserAccounts.length>1"></li>
+                <li class="dropdown-header" ng-if="State.currentUserAccounts.length>1">
+                    Your Other Accounts
+                </li>
                 <li ng-repeat="account in State.currentUserAccounts"
                     ng-show="account != State.activeAccount">
                     <a href="" ng-click="State.activeId=account.participantId">
