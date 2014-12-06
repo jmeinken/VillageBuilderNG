@@ -1,5 +1,5 @@
 
-app.service("State", function($http, $location, Ajax) {
+app.service("State", function($http, $location, $state, $window, Ajax) {
     
     this.debug = "no messages";
     this.showPage = false;
@@ -64,10 +64,9 @@ app.service("State", function($http, $location, Ajax) {
     this.signOut = function() {   
         $http.get(Ajax.POST_LOG_OUT).
             success(function(data, status, headers, config) {
-                self.activeId = "";
-                self.currentUserAccounts = [];
-                self.activeAccount = {};
-                self.authenticated = false;
+                //reload will erase all stored data and will also redirect to
+                //login since the user is now signed out
+                $window.location.reload();
             }).
             error(function(data, status, headers, config) {
                 self.debug = "log out failed";
