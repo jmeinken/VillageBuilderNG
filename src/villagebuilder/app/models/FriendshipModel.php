@@ -38,5 +38,22 @@ class FriendshipModel {
                 , array($personId, $personId));
     }
     
+    public static function getNearbyPeople($personId) {
+        //also need to exclude current friends
+        return DB::select('SELECT F.member_id, person.first_name, person.last_name, ' .
+                'F.street, F.neighborhood, F.city, F.pic_small, ' .
+                'SQRT(POW(P.longitude-F.longitude,2)+POW(P.latitude-F.latitude,2)) AS distance ' .
+                'FROM member AS P, member AS F INNER JOIN person on F.member_id = person.person_id ' .
+                'WHERE P.member_id = ? AND F.member_id <> ? ' .
+                'ORDER BY distance LIMIT 100 '
+                , array($personId, $personId));
+
+    }
+    
+    public static function getFriendsOfFriends($personId) {
+        
+    }
+        
+    
     
 }

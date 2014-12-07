@@ -20,6 +20,19 @@ class ApiFriendship extends BaseController {
         
     }
     
+    public function getCollectionNearbyPeople() {
+        if (!Input::has('person_id')) {
+            return Response::json(['errorMessage' => 'Query missing required value'], 
+                    self::STATUS_BAD_REQUEST);
+        }
+        $result = FriendshipModel::getNearbyPeople(Input::get('person_id'));
+        //if the transaction failed, return error
+        if (!$result) {
+            return Response::json('query failed', 500);
+        }
+        return Response::json($result, self::STATUS_OK);
+    }
+    
     public function postFriendship() {
         if (!Input::has('person_id') || !Input::has('friend_id')) {
             return Response::json(['errorMessage' => 'Query missing required value'], 

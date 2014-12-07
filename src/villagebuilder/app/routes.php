@@ -2,7 +2,7 @@
 
 
 
-
+    
 
 
 
@@ -99,6 +99,11 @@ Route::group(array('before' => 'auth'), function() {
         'as' => 'api-delete-group',
         'uses' => 'ApiGroup@deleteGroup'
     ));
+    Route::get('api/get-collection-nearby-people', array(
+        'as' => 'api-get-collection-nearby-people',
+        'uses' => 'ApiFriendship@getCollectionNearbyPeople'
+    ));
+
     
     
     

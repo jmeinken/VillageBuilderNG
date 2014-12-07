@@ -35,6 +35,11 @@ app.service("Ajax", function() {
     this.DELETE_GROUP = root + 'delete-group';
     
     /*
+     * Friendship API
+     */
+    this.GET_COLLECTION_NEARBY_PEOPLE = root + 'get-collection-nearby-people';
+    
+    /*
      * Error Messages
      */
 

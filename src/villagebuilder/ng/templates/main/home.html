@@ -39,6 +39,8 @@
                 </div>
                 <hr>
                 <h4>Find Local People and Groups</h4>
+                <div ng-include="'templates/user-list.html'" ng-controller="NearbyPeopleController"
+                     ng-init="loadCollection()"></div>
             </div>
         </div>
         <div class="row" id="footer">
