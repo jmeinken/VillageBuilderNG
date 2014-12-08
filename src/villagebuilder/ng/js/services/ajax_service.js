@@ -38,6 +38,8 @@ app.service("Ajax", function() {
      * Friendship API
      */
     this.GET_COLLECTION_NEARBY_PEOPLE = root + 'get-collection-nearby-people';
+    this.POST_FRIENDSHIP = root + 'post-friendship';
+    this.GET_COLLECTION_FRIENDSHIP = root + 'get-collection-friendship';
     
     /*
      * Error Messages

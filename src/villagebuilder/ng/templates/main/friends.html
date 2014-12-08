@@ -1,0 +1,9 @@
+<div ng-controller="FriendsController">
+    
+    
+    <h3>Here are all your friends</h3>
+    <div ng-repeat="friend in friendCollection">
+        {{ friend.person_id }} {{ friend.first_name }} {{ friend.last_name }}
+    </div>
+    
+</div>

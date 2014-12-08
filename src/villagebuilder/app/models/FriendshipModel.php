@@ -18,7 +18,9 @@ class FriendshipModel {
     
     public static function getFriends($personId) {
         return DB::table('friendship')
-                ->where('person_id', $personId)
+                ->join('person', 'person.person_id', '=', 'friendship.friend_id')
+                ->join('member', 'person.person_id', '=', 'member.member_id')
+                ->where('friendship.person_id', $personId)
                 ->get();
     }
     

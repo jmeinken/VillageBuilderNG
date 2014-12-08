@@ -59,6 +59,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
             url: '/home',
             templateUrl: 'templates/main/home.html?x=2'
         })
+        .state('main.friends', {
+            url: '/friends',
+            templateUrl: 'templates/main/friends.html?q=2'
+        })
         .state('main.manage-account', {
             url: '/manage-account',
             templateUrl: 'templates/main/manage-account.html?x=8'

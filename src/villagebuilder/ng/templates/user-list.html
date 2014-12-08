@@ -1,5 +1,13 @@
 <div ng-repeat="member in memberCollection">
-    <img  ng-src="{{ 'assets/images/user_images/' + member.pic_small }}"
+    <img  ng-src="{{ member.profilePicThumbUrl }}"
           width="60" height="60">
     {{member.first_name}} {{member.last_name}}
+    <div class="btn-group">
+      <a aria-expanded="false" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        &raquo;
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="" ng-click="addFriend(member.member_id)">{{member.member_id}} Add to friend list</a></li>
+       </ul>
+    </div>
 </div>

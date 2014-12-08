@@ -13,7 +13,24 @@ class ApiFriendship extends BaseController {
     const STATUS_INTERNAL_SERVER_ERROR = 500;
     
     public function getCollectionFriendship() {
-        
+        if (!Input::has('person_id')) {
+            return Response::json(['errorMessage' => 'Query missing required value'], 
+                    self::STATUS_BAD_REQUEST);
+        }
+        $result = FriendshipModel::getFriends(Input::get('person_id'));
+        //if the transaction failed, return error
+        if (!$result) {
+            return Response::json('query failed', 500);
+        }
+        foreach($result as $row) {
+            if ($row->pic_small) {
+                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
+                        $row->pic_small;
+            } else {
+                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
+            }
+        }
+        return Response::json($result, self::STATUS_OK);
     }
     
     public function getCollectionFriendRequests() {
@@ -29,6 +46,14 @@ class ApiFriendship extends BaseController {
         //if the transaction failed, return error
         if (!$result) {
             return Response::json('query failed', 500);
+        }
+        foreach($result as $row) {
+            if ($row->pic_small) {
+                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
+                        $row->pic_small;
+            } else {
+                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
+            }
         }
         return Response::json($result, self::STATUS_OK);
     }

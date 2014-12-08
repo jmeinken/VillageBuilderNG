@@ -53,6 +53,8 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
                         self.activeAccount = self.currentUserAccounts[i];
                     }
                 }
+                //this should be the last thing that happens since it will trigger
+                //other events that depend on this data
                 
                 //self.debug = data;
             }).

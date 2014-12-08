@@ -2,7 +2,14 @@
 
 
 
-    
+Route::post('api/post-friendship', array(
+    'as' => 'api-post-friendship',
+    'uses' => 'ApiFriendship@postFriendship'
+));
+Route::get('api/get-collection-friendship', array(
+    'as' => 'api-get-collection-friendship',
+    'uses' => 'ApiFriendship@getCollectionFriendship'
+));
 
 
 
