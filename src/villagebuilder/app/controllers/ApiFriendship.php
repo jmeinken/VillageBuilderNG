@@ -22,14 +22,6 @@ class ApiFriendship extends BaseController {
         if (!$result) {
             return Response::json('query failed', 500);
         }
-        foreach($result as $row) {
-            if ($row->pic_small) {
-                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
-                        $row->pic_small;
-            } else {
-                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
-            }
-        }
         return Response::json($result, self::STATUS_OK);
     }
     
@@ -46,14 +38,6 @@ class ApiFriendship extends BaseController {
         //if the transaction failed, return error
         if (!$result) {
             return Response::json('query failed', 500);
-        }
-        foreach($result as $row) {
-            if ($row->pic_small) {
-                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
-                        $row->pic_small;
-            } else {
-                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
-            }
         }
         return Response::json($result, self::STATUS_OK);
     }

@@ -39,6 +39,7 @@ app.service("Ajax", function() {
      */
     this.GET_COLLECTION_NEARBY_PEOPLE = root + 'get-collection-nearby-people';
     this.POST_FRIENDSHIP = root + 'post-friendship';
+    this.DELETE_FRIENDSHIP = root + 'delete-friendship';
     this.GET_COLLECTION_FRIENDSHIP = root + 'get-collection-friendship';
     
     /*

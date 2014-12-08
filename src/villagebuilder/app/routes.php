@@ -10,6 +10,10 @@ Route::get('api/get-collection-friendship', array(
     'as' => 'api-get-collection-friendship',
     'uses' => 'ApiFriendship@getCollectionFriendship'
 ));
+Route::post('api/delete-friendship', array(
+    'as' => 'api-delete-friendship',
+    'uses' => 'ApiFriendship@deleteFriendship'
+));
 
 
 

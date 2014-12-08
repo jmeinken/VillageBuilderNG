@@ -14,20 +14,13 @@ class ApiAuthentication extends BaseController {
         if (Auth::check()) {
             $response = [];
             $response['logged_in'] = true;
-            //$response['_token'] = csrf_token();
             $response['userId'] = Auth::user()->id;
-            //$response['email'] = Auth::user()->email;
-            //send more data about user
-            //$account = DB::table('users')
-            //->join('participant', 'users.id', '=', 'participant.user_id')
-            //->join('member', 'participant.participant_id', '=', 'member.member_id')
-            //->join('person', 'person.person_id', '=', 'member.member_id')
-            //->where('users.id', Auth::user()->id)->first();
             $account = DB::table('participant')
                 ->join('member', 'participant.participant_id', '=', 'member.member_id')
                 ->join('person', 'person.person_id', '=', 'member.member_id')
                 ->where('participant.user_id', Auth::user()->id)
                 ->first();
+            //return data for user's personal account
             $response['personalAccount'] = [];
             $response['personalAccount']['type'] = 'person';
             $response['personalAccount']['participantId'] = $account->participant_id;
@@ -47,6 +40,8 @@ class ApiAuthentication extends BaseController {
                 $response['personalAccount']['profilePicThumbFile'] = $account->pic_small;
                 $response['personalAccount']['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_small;
             }
+            $response['personalAccount']['friendCollection'] = FriendshipModel::getFriends($account->participant_id);
+            //return data for all groups that user owns
             $groups = DB::table('participant')
                 ->join('member', 'participant.participant_id', '=', 'member.member_id')
                 ->join('group', 'group.group_id', '=', 'member.member_id')
@@ -72,6 +67,8 @@ class ApiAuthentication extends BaseController {
                     $response['groupAccounts'][$i]['profilePicThumbFile'] = $group->pic_small;
                     $response['groupAccounts'][$i]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $group->pic_small;
                 }
+                //do groups even have friends?
+                //$response['groupAccounts'][$i]['friendCollection'] = FriendshipModel::getFriends($group->participant_id);
                 $i++;
             }
             //////////////////////////// 
