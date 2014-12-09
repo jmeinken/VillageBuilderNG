@@ -4,10 +4,10 @@ class AlertModel {
     public static function registerEvent($table, $pK) {
         if ($table == 'friendship') {
             //get data about person
-            $person = DB::table('member')
-            ->join('person', 'person.person_id', '=', 'member.member_id')
-            ->where('member_id', '=', $pK['person_id'])
-            ->first();
+            //$person = DB::table('member')
+            //->join('person', 'person.person_id', '=', 'member.member_id')
+            //->where('member_id', '=', $pK['person_id'])
+            //->first();
             // check if reciprocal friendship already exists
             $friendCheck = DB::table('friendship')
             ->where('person_id', '=', $pK['friend_id'])
@@ -19,19 +19,16 @@ class AlertModel {
                 $alertType = "friend confirmation";
             }
             //add record to alert table
-            if ($person->pic_small) {
-                $person->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
-                        $person->pic_small;
-            } else {
-                $person->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
-            }
+            //if ($person->pic_small) {
+            //    $person->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
+            //            $person->pic_small;
+            //} else {
+            //    $person->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
+            //}
             $json = json_encode(
                 array(
                     'relatedTable' => $table,
-                    'relatedRecord' => $pK,
-                    'firstName' => $person->first_name,
-                    'lastName' => $person->last_name,
-                    'profilePicThumbUrl' => $person->profilePicThumbUrl
+                    'relatedRecord' => $pK
                 )
             );
             DB::table('alert')->insert(
@@ -49,8 +46,18 @@ class AlertModel {
         
     }
     
-    public static function getAlerts() {
-        
+    public static function getAlerts($participantId) {
+        $alerts = DB::table('alert')
+            ->where('participant_id', '=', $participantId)
+            ->get();
+        $results = [];
+        $i = 0;
+        foreach ($alerts as $alert) {
+            //do processing
+            
+            $i++;
+        }
+        return $alerts;
     }
     
     /*

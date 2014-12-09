@@ -36,9 +36,6 @@ class ApiFriendship extends BaseController {
         }
         $result = FriendshipModel::getNearbyPeople(Input::get('person_id'));
         //if the transaction failed, return error
-        if (!$result) {
-            return Response::json('query failed', 500);
-        }
         return Response::json($result, self::STATUS_OK);
     }
     

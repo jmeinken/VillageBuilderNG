@@ -14,6 +14,10 @@ Route::post('api/delete-friendship', array(
     'as' => 'api-delete-friendship',
     'uses' => 'ApiFriendship@deleteFriendship'
 ));
+Route::get('api/get-collection-alert', array(
+    'as' => 'api-get-collection-alert',
+    'uses' => 'ApiAlert@getCollectionAlert'
+));
 
 
 
