@@ -16,6 +16,7 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
         $http.post(Ajax.POST_FRIENDSHIP, {'person_id': $participantId, 'friend_id': $friendId }).
             success(function(data, status, headers, config) {
                 State.debug = data;
+                State.authenticate();
             }).
             error(function(data, status, headers, config) {
                 State.debug = data;
@@ -38,6 +39,7 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
         $http.post(Ajax.DELETE_FRIENDSHIP, {'person_id': $participantId, 'friend_id': $friendId }).
             success(function(data, status, headers, config) {
                 State.debug = data;
+                State.authenticate();
             }).
             error(function(data, status, headers, config) {
                 State.debug = data;

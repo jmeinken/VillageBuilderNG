@@ -100,10 +100,12 @@ app.controller('ManageAccountFormController', function($scope, $location, $timeo
                 if (data.hasOwnProperty('inputErrors'))  {
                     Request.account.inputErrors = data.inputErrors;
                 }
-                if (data.hasOwnProperty('errorMessage')) {
+                else if (data.hasOwnProperty('errorMessage')) {
                     Request.account.formError = data.errorMessage;
-                }
-                if (!data.hasOwnProperty('errorMessage') && !data.hasOwnProperty('inputErrors')) {
+                } else if (data=="Unauthorized") {
+                    State.intendedLocation = "main/manage-account";
+                    State.authenticate();
+                } else {
                     State.debug = data;
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
