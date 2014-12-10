@@ -46,7 +46,7 @@
 <body ng-cloak  ng-controller="GlobalController"  ng-init="State.authenticate()">
 
     <code>
-        {{ State.debug }} | {{State.activeAccount.participantId}}
+        {{ State.debug }} | {{State.tester}}
     </code>
 
 <div ui-view></div>
@@ -73,6 +73,7 @@
 <script src="js/controllers/main_controller.js"></script>
 <script src="js/controllers/user_image_controller.js"></script>
 <script src="js/controllers/login_form_controller.js"></script>
+<script src="js/controllers/alert_controller.js"></script>
 <!-- Create Account Controllers-->
 <script src="js/controllers/create_account/create_account_form_controller.js"></script>
 <script src="js/controllers/create_account/account_info_form_controller.js"></script>

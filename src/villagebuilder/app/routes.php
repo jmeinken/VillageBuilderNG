@@ -18,6 +18,10 @@ Route::get('api/get-collection-alert', array(
     'as' => 'api-get-collection-alert',
     'uses' => 'ApiAlert@getCollectionAlert'
 ));
+Route::post('api/post-reset-unviewed-alert-count', array(
+    'as' => 'api-post-reset-unviewed-alert-count',
+    'uses' => 'ApiAlert@postResetUnviewedAlertCount'
+));
 
 
 

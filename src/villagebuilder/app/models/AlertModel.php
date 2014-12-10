@@ -54,10 +54,40 @@ class AlertModel {
         $i = 0;
         foreach ($alerts as $alert) {
             //do processing
-            
+            $json = json_decode($alert->json, true);
+            if ($json['relatedTable'] == "friendship") {
+                //get supplementary info
+                $record = DB::table('friendship')
+                    ->join('person', 'person.person_id', '=', 'friendship.person_id')
+                    ->join('member', 'member.member_id', '=', 'person.person_id')
+                    ->where('friendship.person_id', '=', $json['relatedRecord']['person_id'])
+                    ->where('friendship.friend_id', '=', $json['relatedRecord']['friend_id'])
+                    ->first();
+                if (!$record) {
+                    continue;
+                }
+                //check if there is a reciprocal friendship
+                $reciprocal = DB::table('friendship')
+                    ->where('friendship.person_id', '=', $json['relatedRecord']['friend_id'])
+                    ->where('friendship.friend_id', '=', $json['relatedRecord']['person_id'])
+                    ->first();
+                $results[$i]['type'] = ($reciprocal ? "friend_confirmation" : "friend_request");
+                //append supplementary info to output
+                $results[$i]['viewed'] = $alert->viewed;
+                $results[$i]['eventDate'] = $alert->created_on;
+                $results[$i]['firstName'] = $record->first_name;
+                $results[$i]['lastName'] = $record->last_name;
+                $results[$i]['firstName'] = $record->first_name;
+                if ($record->pic_small) {
+                   $results[$i]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . 
+                            $record->pic_small;
+                } else {
+                    $results[$i]['profilePicThumbUrl'] = Config::get('constants.genericProfilePicUrl');
+                }
+            }
             $i++;
         }
-        return $alerts;
+        return $results;
     }
     
     /*
@@ -67,8 +97,13 @@ class AlertModel {
      *
      */
     
-    public static function markAlertsViewed() {
-        
+    public static function markAlertsViewed($participantId) {
+        return DB::table('alert')
+            ->where('participant_id', $participantId)
+            ->update(array(
+                'viewed' => 1
+            )
+        );
     }
     
     

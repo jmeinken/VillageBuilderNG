@@ -43,6 +43,12 @@ app.service("Ajax", function() {
     this.GET_COLLECTION_FRIENDSHIP = root + 'get-collection-friendship';
     
     /*
+     * Alert API
+     */
+    this.GET_COLLECTION_ALERT = root + 'get-collection-alert';
+    this.POST_RESET_UNVIEWED_ALERT_COUNT = root + 'post-reset-unviewed-alert-count';
+    
+    /*
      * Error Messages
      */
 

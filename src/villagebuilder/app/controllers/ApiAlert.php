@@ -17,6 +17,15 @@ class ApiAlert extends BaseController {
         return Response::json($result, self::STATUS_OK);
     }
     
+    public function postResetUnviewedAlertCount() {
+        if (!Input::has('participant_id')) {
+            return Response::json(['errorMessage' => 'Query missing required value'], 
+                    self::STATUS_BAD_REQUEST);
+        }
+        $result = AlertModel::markAlertsViewed(Input::get('participant_id'));
+        return Response::json($result, self::STATUS_OK);
+    }
+    
     
     
     
