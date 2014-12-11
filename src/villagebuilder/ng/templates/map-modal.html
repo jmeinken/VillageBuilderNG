@@ -1,6 +1,6 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-header" style="background: #fff">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal" ng-click="resetChangedAddress()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title" id="myModalLabel">Select Address</h4>
     </div>
     <div class="modal-body" style="background: #fff">
@@ -29,7 +29,8 @@
                 </div>
                 <button ng-show="resultExists" ng-click="useSelectedGecodeResult(request)">Use Selected Address</button>
                 <br><br><div ng-show="State.changedAddress">
-                    <button class="btn btn-success btn-lg" type="button" data-dismiss="modal">
+                    <button class="btn btn-success btn-lg" type="button" data-dismiss="modal"
+                            ng-click="resetChangedAddress()">
                         Close Window
                     </button>
                 </div>

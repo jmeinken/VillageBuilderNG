@@ -121,7 +121,7 @@ class ApiAccount extends BaseController {
         }
         //return error if account does not already exist
         if ( !AccountModel::accountExists('id', Input::get('user_id')) ) {
-            return Response::json(['message' => 'user not found'], self::STATUS_BAD_REQUEST);
+            return Response::json(['message' => 'user not found for ' . Input::get('user_id')], self::STATUS_BAD_REQUEST);
         }
         $success = AccountModel::updateAccount();
         if ($success !== true) {

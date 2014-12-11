@@ -19,12 +19,17 @@ app.controller('ManageAccountFormController', function($scope, $location, $timeo
         $scope.inputFields = Utilities.keyArray(Request[form].request);
     });
     
-     $scope.$watch(function() {return State.uploadedImageData}, function(value) {
-        Request[form].request.pic_large = State.uploadedImageData.file;
-        Request[form].request.pic_small = State.uploadedImageData.thumbFile;
-        Request[form].request.pic_large_url = State.uploadedImageData.url;
-        Request[form].request.pic_small_url = State.uploadedImageData.thumbUrl;
-        submitForm();
+    //very important: State.uploadedImageData and State.changed address
+    //MUST be reset to {} and false respectively after being used.
+    //Otherwise, submitForm() will be triggered when it shouldn't
+    $scope.$watch(function() {return State.uploadedImageData}, function(value) {
+        if (State.uploadedImageData.hasOwnProperty('file')) {
+            Request[form].request.pic_large = State.uploadedImageData.file;
+            Request[form].request.pic_small = State.uploadedImageData.thumbFile;
+            Request[form].request.pic_large_url = State.uploadedImageData.url;
+            Request[form].request.pic_small_url = State.uploadedImageData.thumbUrl;
+            submitForm();
+        }
     });
     $scope.$watch(function() {return State.changedAddress}, function(value) {
         if (State.changedAddress) {
@@ -92,6 +97,8 @@ app.controller('ManageAccountFormController', function($scope, $location, $timeo
                 for (field in State.accountDataEditToggle) {
                     State.accountDataEditToggle[field] = false;
                 }
+                State.uploadedImageData = {};
+                //State.changedAddress = false;
                 State.debug = data;
                 State.authenticate();
             }).

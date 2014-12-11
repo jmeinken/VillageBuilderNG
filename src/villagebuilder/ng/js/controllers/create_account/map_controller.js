@@ -21,6 +21,10 @@ app.controller('MapController', function($scope, $interval, $location, $state, S
         //});
     }
     
+    $scope.resetChangedAddress = function() {
+        State.changedAddress = false;
+    }
+    
     function initializeMap() {
         var mapOptions = {
           center: { lat: 39.83, lng: -98.58},

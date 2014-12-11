@@ -25,6 +25,7 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
     
     $scope.changeActiveParticipant = function(participantId) {
         State.activeParticipantId = participantId;
+        State.activeParticipant = State.allParticipants[participantId];
         State.participantDataChanged++;
         $state.go('main.home');
     }

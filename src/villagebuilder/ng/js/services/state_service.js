@@ -2,6 +2,7 @@
 app.service("State", function($http, $location, $state, $window, Ajax) {
     
     this.debug = "no messages";
+    this.tester = "";
     this.showPage = false;
     
     //used by '#/info' view to give simple message to user
@@ -51,25 +52,21 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
             success(function(data, status, headers, config) {
                 self.authenticated = data.logged_in;
                 self.userId = data.userId;
-                self.allParticipants = [];
-                self.allParticipants[0] = data.personalAccount;
-                self.allParticipants = self.allParticipants.concat(data.groupAccounts);
+                self.allParticipants = data.participant;
+                var i = 0;
                 if (self.activeParticipantId == "") {
-                    self.activeParticipantId = data.personalAccount.participantId;
-                }
-                for (var i=0; i<self.allParticipants.length; i++) {
-                    if (self.allParticipants[i].participantId == self.activeParticipantId) {
-                        self.activeParticipant = self.allParticipants[i];
+                    for (participantId in self.allParticipants) {
+                        if (self.allParticipants[participantId].type == "person") {
+                            self.activeParticipantId = participantId;
+                            self.activeParticipant = self.allParticipants[participantId];
+                        }
                     }
                 }
-                //this should be the last thing that happens since it will trigger
-                //other events that depend on this data
                 self.participantDataChanged++;
                 self.userDataChanged++;
-                //self.debug = data;
             }).
             error(function(data, status, headers, config) {
-                //self.debug = data;
+                self.debug = data;
             });
     };
 

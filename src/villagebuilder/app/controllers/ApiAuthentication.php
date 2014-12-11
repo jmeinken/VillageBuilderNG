@@ -21,55 +21,54 @@ class ApiAuthentication extends BaseController {
                 ->where('participant.user_id', Auth::user()->id)
                 ->first();
             //return data for user's personal account
-            $response['personalAccount'] = [];
-            $response['personalAccount']['type'] = 'person';
-            $response['personalAccount']['participantId'] = $account->participant_id;
-            $response['personalAccount']['firstName'] = $account->first_name;
-            $response['personalAccount']['lastName'] = $account->last_name;
+            $participantId = $account->participant_id;
+            $response['participant'][$participantId] = [];
+            $response['participant'][$participantId]['type'] = 'person';
+            $response['participant'][$participantId]['participantId'] = $account->participant_id;
+            $response['participant'][$participantId]['firstName'] = $account->first_name;
+            $response['participant'][$participantId]['lastName'] = $account->last_name;
             if ($account->pic_large == "") {
-                $response['personalAccount']['profilePicFile'] = "";
-                $response['personalAccount']['profilePicUrl'] = "assets/images/generic-user.png";
+                $response['participant'][$participantId]['profilePicFile'] = "";
+                $response['participant'][$participantId]['profilePicUrl'] = "assets/images/generic-user.png";
             } else {
-                $response['personalAccount']['profilePicFile'] = $account->pic_large;
-                $response['personalAccount']['profilePicUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_large;
+                $response['participant'][$participantId]['profilePicFile'] = $account->pic_large;
+                $response['participant'][$participantId]['profilePicUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_large;
             }
             if ($account->pic_small == "") {
-                $response['personalAccount']['profilePicThumbFile'] = "";
-                $response['personalAccount']['profilePicThumbUrl'] = "assets/images/generic-user.png";
+                $response['participant'][$participantId]['profilePicThumbFile'] = "";
+                $response['participant'][$participantId]['profilePicThumbUrl'] = "assets/images/generic-user.png";
             } else {
-                $response['personalAccount']['profilePicThumbFile'] = $account->pic_small;
-                $response['personalAccount']['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_small;
+                $response['participant'][$participantId]['profilePicThumbFile'] = $account->pic_small;
+                $response['participant'][$participantId]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_small;
             }
-            $response['personalAccount']['friendCollection'] = FriendshipModel::getFriends($account->participant_id);
+            $response['participant'][$participantId]['friendCollection'] = FriendshipModel::getFriends($account->participant_id);
             //return data for all groups that user owns
             $groups = DB::table('participant')
                 ->join('member', 'participant.participant_id', '=', 'member.member_id')
                 ->join('group', 'group.group_id', '=', 'member.member_id')
                 ->where('participant.user_id', Auth::user()->id)
                 ->get();
-            $response['groupAccounts'] = [];
-            $i = 0;
             foreach ($groups as $group) {
-                $response['groupAccounts'][$i]['participantId'] = $group->participant_id;
-                $response['groupAccounts'][$i]['type'] = 'group';
-                $response['groupAccounts'][$i]['title'] = $group->title;
+                $participantId = $group->participant_id;
+                $response['participant'][$participantId]['participantId'] = $group->participant_id;
+                $response['participant'][$participantId]['type'] = 'group';
+                $response['participant'][$participantId]['title'] = $group->title;
                 if ($group->pic_large == "") {
-                    $response['groupAccounts'][$i]['profilePicFile'] = "";
-                    $response['groupAccounts'][$i]['profilePicUrl'] = "assets/images/generic-user.png";
+                    $response['participant'][$participantId]['profilePicFile'] = "";
+                    $response['participant'][$participantId]['profilePicUrl'] = "assets/images/generic-user.png";
                 } else {
-                    $response['groupAccounts'][$i]['profilePicFile'] = $group->pic_large;
-                    $response['groupAccounts'][$i]['profilePicUrl'] = Config::get('constants.profilePicUrlPath') . $group->pic_large;
+                    $response['participant'][$participantId]['profilePicFile'] = $group->pic_large;
+                    $response['participant'][$participantId]['profilePicUrl'] = Config::get('constants.profilePicUrlPath') . $group->pic_large;
                 }
                 if ($group->pic_small == "") {
-                    $response['groupAccounts'][$i]['profilePicThumbFile'] = "";
-                    $response['groupAccounts'][$i]['profilePicThumbUrl'] = "assets/images/generic-user.png";
+                    $response['participant'][$participantId]['profilePicThumbFile'] = "";
+                    $response['participant'][$participantId]['profilePicThumbUrl'] = "assets/images/generic-user.png";
                 } else {
-                    $response['groupAccounts'][$i]['profilePicThumbFile'] = $group->pic_small;
-                    $response['groupAccounts'][$i]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $group->pic_small;
+                    $response['participant'][$participantId]['profilePicThumbFile'] = $group->pic_small;
+                    $response['participant'][$participantId]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $group->pic_small;
                 }
                 //do groups even have friends?
                 //$response['groupAccounts'][$i]['friendCollection'] = FriendshipModel::getFriends($group->participant_id);
-                $i++;
             }
             //////////////////////////// 
             return Response::json($response, self::STATUS_OK);

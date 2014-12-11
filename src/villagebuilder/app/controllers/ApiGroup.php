@@ -33,7 +33,7 @@ class ApiGroup extends BaseController {
         }
         //return error if account does not already exist
         if ( !GroupModel::groupExists('group_id', Input::get('member_id')) ) {
-            return Response::json(['message' => 'group not found'], self::STATUS_BAD_REQUEST);
+            return Response::json(['message' => 'group not found for ' . Input::get('member_id')], self::STATUS_BAD_REQUEST);
         }
         $success = GroupModel::updateGroup();
         if ($success !== true) {
