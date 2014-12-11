@@ -3,6 +3,19 @@
 class AccountModel {
     
     
+    public static function getParticipantsForUser($userId) {
+        $participants = DB::table('users')
+            ->join('participant', 'users.id', '=', 'participant.user_id')
+            ->where('users.id', '=', $userId)
+            ->select('participant.participant_id')
+            ->get();
+        foreach ($participants as $participant) {
+            $arr[] = (int) $participant->participant_id;
+        }
+        return $arr;
+    }
+    
+    
     public static function accountExists($field, $value) {
         $user = DB::table('users')
             ->where($field, '=', $value)

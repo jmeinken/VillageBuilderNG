@@ -9,11 +9,16 @@ class ApiAlert extends BaseController {
     const STATUS_INTERNAL_SERVER_ERROR = 500;
     
     public function getCollectionAlert() {
-        if (!Input::has('participant_id')) {
+        if (!Input::has('user_id')) {
             return Response::json(['errorMessage' => 'Query missing required value'], 
                     self::STATUS_BAD_REQUEST);
         }
-        $result = AlertModel::getAlerts(Input::get('participant_id'));
+        //get participants for user
+        $participants = AccountModel::getParticipantsForUser(Input::get('user_id'));
+        $result = array();
+        foreach ($participants as $participant) {
+            $result[$participant] = AlertModel::getAlerts($participant);
+        }
         return Response::json($result, self::STATUS_OK);
     }
     

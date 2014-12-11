@@ -52,7 +52,7 @@ class ApiFriendship extends BaseController {
             return Response::json('query failed', 500);
         }
         //register event with Alert Model
-        AlertModel::registerEvent('friendship', array('person_id' => Input::get('person_id'),
+        AlertModel::registerEvent('friendship', array('person_id' => Input::get('participant_id'),
             'friend_id' => Input::get('friend_id')));
         return Response::json(['message' => 'Friendship Created'], self::STATUS_OK);
     }

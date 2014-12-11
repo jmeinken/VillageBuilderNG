@@ -50,6 +50,7 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
         $http.get(Ajax.CHECK_LOGIN_STATUS).
             success(function(data, status, headers, config) {
                 self.authenticated = data.logged_in;
+                self.userId = data.userId;
                 self.allParticipants = [];
                 self.allParticipants[0] = data.personalAccount;
                 self.allParticipants = self.allParticipants.concat(data.groupAccounts);
