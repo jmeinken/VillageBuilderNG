@@ -1,4 +1,4 @@
-<div ng-repeat="member in memberCollection">
+<div ng-repeat="member in memberCollection" ng-if="State.activeParticipant.type=='person'">
     <img  ng-src="{{ member.profilePicThumbUrl }}"
           width="60" height="60">
     {{member.first_name}} {{member.last_name}} {{ alreadyFriends(member.member_id) }}

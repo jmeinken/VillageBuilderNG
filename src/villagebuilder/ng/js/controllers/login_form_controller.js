@@ -33,9 +33,7 @@ app.controller('LoginFormController', function($scope, $location, $http, Ajax, S
         Request[form].formError = "";
         $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
-                State.debug = status;
-                State.currentUser.userId = data.user_id;
-                State.authenticated = true;
+                State.authenticate();
             }).
             error(function(data, status, headers, config) {
                 State.debug = status;

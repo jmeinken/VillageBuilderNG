@@ -9,13 +9,7 @@ app.controller('GroupPersonalInfoFormController', function($scope, $location, $h
         $scope.request = Request.createAccount;
     });
     
-    //$scope.$watch(function() {return State.currentUser.profilePicFile}, function(value) {
-    //    Request[form].request.pic_large = State.currentUser.profilePicFile;
-    //});
-    
-    //$scope.$watch(function() {return State.currentUser.profilePicThumbFile}, function(value) {
-    //    Request[form].request.pic_small = State.currentUser.profilePicThumbFile;
-    //});
+
 
     
     

@@ -11,15 +11,23 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
 
     //true/false if user logged in/out; undefined if check has not been performed
     this.authenticated; 
+    //increments each time authentication is run (used by $scope.$watch to 
+    //update related data
+    
+    
+    this.userDataChanged = 0;
+    this.participantDataChanged = 0;
+    
+    this.userId = "";
     
     //if user tries to access a protected page and is forced to log in, they
     // will be redirected back to the page set here after successful login
     this.intendedLocation = '/main/home';
     
     //user information
-    this.currentUserAccounts = [];
-    this.activeAccount = {};
-    this.activeId = "";  //the active account is auto-updated when activeId is set
+    this.allParticipants = [];
+    this.activeParticipant = {};
+    this.activeParticipantId = "";  //the active account is auto-updated when activeParticipantId is set
     
     //used by Manage Account view to show/hide editing for specific fields
     this.accountDataEditToggle = {};
@@ -42,20 +50,21 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
         $http.get(Ajax.CHECK_LOGIN_STATUS).
             success(function(data, status, headers, config) {
                 self.authenticated = data.logged_in;
-                self.currentUserAccounts = [];
-                self.currentUserAccounts[0] = data.personalAccount;
-                self.currentUserAccounts = self.currentUserAccounts.concat(data.groupAccounts);
-                if (self.activeId == "") {
-                    self.activeId = data.personalAccount.participantId;
+                self.allParticipants = [];
+                self.allParticipants[0] = data.personalAccount;
+                self.allParticipants = self.allParticipants.concat(data.groupAccounts);
+                if (self.activeParticipantId == "") {
+                    self.activeParticipantId = data.personalAccount.participantId;
                 }
-                for (var i=0; i<self.currentUserAccounts.length; i++) {
-                    if (self.currentUserAccounts[i].participantId == self.activeId) {
-                        self.activeAccount = self.currentUserAccounts[i];
+                for (var i=0; i<self.allParticipants.length; i++) {
+                    if (self.allParticipants[i].participantId == self.activeParticipantId) {
+                        self.activeParticipant = self.allParticipants[i];
                     }
                 }
                 //this should be the last thing that happens since it will trigger
                 //other events that depend on this data
-                
+                self.participantDataChanged++;
+                self.userDataChanged++;
                 //self.debug = data;
             }).
             error(function(data, status, headers, config) {

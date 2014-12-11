@@ -12,8 +12,8 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
     $scope.keyArray = Utilities.keyArray;
     
     $scope.addFriend = function($friendId) {
-        $participantId = State.activeAccount.participantId;
-        $http.post(Ajax.POST_FRIENDSHIP, {'person_id': $participantId, 'friend_id': $friendId }).
+        $participantId = State.activeParticipant.participantId;
+        $http.post(Ajax.POST_FRIENDSHIP, {'participant_id': $participantId, 'friend_id': $friendId }).
             success(function(data, status, headers, config) {
                 State.debug = data;
                 State.authenticate();
@@ -23,11 +23,17 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
             });
     }
     
+    $scope.changeActiveParticipant = function(participantId) {
+        State.activeParticipantId = participantId;
+        State.participantDataChanged++;
+        $state.go('main.home');
+    }
+    
     //this can be more efficient
     $scope.alreadyFriends = function(friendId) {
         friend = false;
-        for (var i=0; i<State.activeAccount.friendCollection.length; i++) {
-            if (friendId == State.activeAccount.friendCollection[i].friend_id) {
+        for (var i=0; i<State.activeParticipant.friendCollection.length; i++) {
+            if (friendId == State.activeParticipant.friendCollection[i].friend_id) {
                 friend = true;
             }
         }
@@ -35,8 +41,8 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
     }
     
     $scope.deleteFriend = function($friendId) {
-        $participantId = State.activeAccount.participantId;
-        $http.post(Ajax.DELETE_FRIENDSHIP, {'person_id': $participantId, 'friend_id': $friendId }).
+        $participantId = State.activeParticipant.participantId;
+        $http.post(Ajax.DELETE_FRIENDSHIP, {'participant_id': $participantId, 'friend_id': $friendId }).
             success(function(data, status, headers, config) {
                 State.debug = data;
                 State.authenticate();

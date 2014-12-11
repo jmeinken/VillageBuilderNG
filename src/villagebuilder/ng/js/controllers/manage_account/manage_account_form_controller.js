@@ -2,7 +2,7 @@
 app.controller('ManageAccountFormController', function($scope, $location, $timeout, $http, Ajax, State, Request) {
     
     var form = 'account';
-    if (State.activeAccount.type == 'person') {
+    if (State.activeParticipant.type == 'person') {
         var getUrl = Ajax.GET_ACCOUNT;
         var postUrl = Ajax.PUT_ACCOUNT;
         var deleteUrl = Ajax.DELETE_ACCOUNT;
@@ -32,8 +32,8 @@ app.controller('ManageAccountFormController', function($scope, $location, $timeo
         }
     });
     
-    $scope.$watch(function() {return State.activeAccount}, function(value) {
-        if (State.activeAccount.type == 'person') {
+    $scope.$watch(function() {return State.activeParticipant}, function(value) {
+        if (State.activeParticipant.type == 'person') {
             getUrl = Ajax.GET_ACCOUNT;
             postUrl = Ajax.PUT_ACCOUNT;
             deleteUrl = Ajax.DELETE_ACCOUNT;
@@ -42,25 +42,25 @@ app.controller('ManageAccountFormController', function($scope, $location, $timeo
             postUrl = Ajax.PUT_GROUP;
             deleteUrl = Ajax.DELETE_GROUP;
         }
-        Request.loadForm(form, getUrl, { participant_id: State.activeAccount.participantId });
+        Request.loadForm(form, getUrl, { participant_id: State.activeParticipant.participantId });
     });
    
     $scope.loadForm = function() {
-        Request.loadForm(form, getUrl, { participant_id: State.activeAccount.participantId });
+        Request.loadForm(form, getUrl, { participant_id: State.activeParticipant.participantId });
     }
     
     $scope.cancelSubmit = function() {
-        Request.loadForm(form, getUrl, { participant_id: State.activeAccount.participantId });
+        Request.loadForm(form, getUrl, { participant_id: State.activeParticipant.participantId });
         for (field in State.accountDataEditToggle) {
             State.accountDataEditToggle[field] = false;
         }
     }
     
     $scope.deleteAccount = function() {
-        $http.post(deleteUrl, {'participant_id': State.activeAccount.participantId}).
+        $http.post(deleteUrl, {'participant_id': State.activeParticipant.participantId}).
             success(function(data, status, headers, config) {
                 alert("Account successfully deleted");
-                if (State.activeAccount.type=='person') {
+                if (State.activeParticipant.type=='person') {
                     $location.path( '/login' );
                 } else {
                     //State.authenticate(); this doesn't do what I expect

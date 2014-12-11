@@ -13,11 +13,11 @@ class ApiFriendship extends BaseController {
     const STATUS_INTERNAL_SERVER_ERROR = 500;
     
     public function getCollectionFriendship() {
-        if (!Input::has('person_id')) {
+        if (!Input::has('participant_id')) {
             return Response::json(['errorMessage' => 'Query missing required value'], 
                     self::STATUS_BAD_REQUEST);
         }
-        $result = FriendshipModel::getFriends(Input::get('person_id'));
+        $result = FriendshipModel::getFriends(Input::get('participant_id'));
         //if the transaction failed, return error
         if (!$result) {
             return Response::json('query failed', 500);
@@ -30,21 +30,21 @@ class ApiFriendship extends BaseController {
     }
     
     public function getCollectionNearbyPeople() {
-        if (!Input::has('person_id')) {
+        if (!Input::has('participant_id')) {
             return Response::json(['errorMessage' => 'Query missing required value'], 
                     self::STATUS_BAD_REQUEST);
         }
-        $result = FriendshipModel::getNearbyPeople(Input::get('person_id'));
+        $result = FriendshipModel::getNearbyPeople(Input::get('participant_id'));
         //if the transaction failed, return error
         return Response::json($result, self::STATUS_OK);
     }
     
     public function postFriendship() {
-        if (!Input::has('person_id') || !Input::has('friend_id')) {
+        if (!Input::has('participant_id') || !Input::has('friend_id')) {
             return Response::json(['errorMessage' => 'Query missing required value'], 
                     self::STATUS_BAD_REQUEST);
         }
-        $success = FriendshipModel::createFriendship(Input::get('person_id'), 
+        $success = FriendshipModel::createFriendship(Input::get('participant_id'), 
                 Input::get('friend_id')
         );
         //if the transaction failed, return error
@@ -58,11 +58,11 @@ class ApiFriendship extends BaseController {
     }
     
     public function deleteFriendship() {
-        if (!Input::has('person_id') || !Input::has('friend_id')) {
+        if (!Input::has('participant_id') || !Input::has('friend_id')) {
             return Response::json(['errorMessage' => 'Query missing required value'], 
                     self::STATUS_BAD_REQUEST);
         }
-        $deleteStatus = FriendshipModel::deleteFriendship(Input::get('person_id'), 
+        $deleteStatus = FriendshipModel::deleteFriendship(Input::get('participant_id'), 
                 Input::get('friend_id')
         );
         if (!$deleteStatus) {

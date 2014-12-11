@@ -1,5 +1,5 @@
 <div ng-if="showPage" ng-controller="MainController">
-    <div ng-class="{'navbar':true, 'navbar-inverse':State.activeAccount.type=='person', 'navbar-default':State.activeAccount.type!='person'}">
+    <div ng-class="{'navbar':true, 'navbar-inverse':State.activeParticipant.type=='person', 'navbar-default':State.activeParticipant.type!='person'}">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
             <span class="icon-bar"></span>
@@ -8,7 +8,7 @@
           </button>
           <a class="navbar-brand" href="#">VillageBuilder</a>
         </div>
-        <div class="navbar-collapse collapse navbar-inverse-collapse">
+        <div class="navbar-collapse collapse navbar-inverse-collapse" ng-controller="AlertController">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#">My Listings</a></li>
@@ -16,15 +16,17 @@
             <li><a href="#">Messages [0]</a></li>
             <li class="dropdown">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown"
-                   ng-controller="AlertController" ng-click="alertsViewed()">
+                   ng-click="alertsViewed()">
                     Alerts [{{ newAlertCount }}]
                     <b class="caret"></b>
                 </a>
-                <ul class="dropdown-menu" ng-controller="AlertController">
-                    <li ng-repeat="alert in alertCollection">
-                        <img ng-src="{{alert.profilePicThumbUrl}}" width="60" height="60" />
-                        {{alert.firstName}} {{alert.lastName}}<br>
-                        {{ alert.type }} | viewed: {{ alert.viewed }}
+                <ul class="dropdown-menu">
+                    <li ng-repeat="i in [0,1,2,3]" ng-if="alertCollection[i]">
+                        <a href="">
+                            <img ng-src="{{alertCollection[i].profilePicThumbUrl}}" width="60" height="60" />
+                            {{alertCollection[i].firstName}} {{alertCollection[i].lastName}}<br>
+                            {{ alertCollection[i].type }} | viewed: {{ alertCollection[i].viewed }}
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -33,29 +35,29 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                  <img alt="pic" ng-src="{{State.activeAccount.profilePicThumbUrl}}" 
+                  <img alt="pic" ng-src="{{State.activeParticipant.profilePicThumbUrl}}" 
                        width="25" height="25" />
                   <strong>
-                        {{ State.activeAccount.title }}
-                        {{ State.activeAccount.firstName }}
-                        {{ State.activeAccount.lastName }}
-                        {{ State.activeAccount.participantId }}
+                        {{ State.activeParticipant.title }}
+                        {{ State.activeParticipant.firstName }}
+                        {{ State.activeParticipant.lastName }}
+                        {{ State.activeParticipant.participantId }}
                   </strong>
                   <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
                 <li><a href="" ui-sref="main.manage-account">
-                        Account Settings for {{ State.activeAccount.title }}
-                        {{ State.activeAccount.firstName }}
-                        {{ State.activeAccount.lastName }}
+                        Account Settings for {{ State.activeParticipant.title }}
+                        {{ State.activeParticipant.firstName }}
+                        {{ State.activeParticipant.lastName }}
                 </a></li>
-                <li class="divider" ng-if="State.currentUserAccounts.length>1"></li>
-                <li class="dropdown-header" ng-if="State.currentUserAccounts.length>1">
+                <li class="divider" ng-if="State.allParticipants.length>1"></li>
+                <li class="dropdown-header" ng-if="State.allParticipants.length>1">
                     Your Other Accounts
                 </li>
-                <li ng-repeat="account in State.currentUserAccounts"
-                    ng-show="account != State.activeAccount">
-                    <a href="" ng-click="State.activeId=account.participantId">
+                <li ng-repeat="account in State.allParticipants"
+                    ng-show="account != State.activeParticipant">
+                    <a href="" ng-click="changeActiveParticipant(account.participantId)">
                         <img alt="pic" ng-src="{{account.profilePicThumbUrl}}" 
                              width="25" height="25" /> 
                         {{account.title}}

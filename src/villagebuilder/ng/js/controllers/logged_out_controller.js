@@ -8,11 +8,10 @@ app.controller('LoggedOutController', function($scope, $location, State) {
     $scope.$watch(function() {return State.authenticated}, function (value) {
             //do if logged in
             if (typeof value !== 'undefined' && value === true) {
-                State.authenticate();
+                //State.authenticate();
                 $location.path( State.intendedLocation );
             //do if logged out    
             } else if (typeof value !== 'undefined' && value === false){
-                State.currentUser = {};
                 $scope.showPage = true;
             }
     });
