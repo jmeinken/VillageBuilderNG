@@ -41,6 +41,7 @@ app.service("Ajax", function() {
     this.POST_FRIENDSHIP = root + 'post-friendship';
     this.DELETE_FRIENDSHIP = root + 'delete-friendship';
     this.GET_COLLECTION_FRIENDSHIP = root + 'get-collection-friendship';
+    this.GET_COLLECTION_SEARCH_PARTICIPANTS = root + 'get-collection-search-participants';
     
     /*
      * Alert API

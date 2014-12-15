@@ -18,6 +18,7 @@ app.service("Request", function($http, State) {
             }).
             error(function(data, status, headers, config) {
                 State.debug = data;
+                State.authenticate();
             });
     }
     

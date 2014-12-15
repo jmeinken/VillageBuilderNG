@@ -30,16 +30,19 @@
                     </li>
                 </ul>-->
                 <ul class="dropdown-menu">
-                    <li class="dropdown-header" ng-repeat-start="participant in keyArray(alertCollection)">
-                        {{ participant }}
+                    <li class="dropdown-header" ng-repeat-start="participantId in keyArray(alertCollection)">
+                        for {{ State.allParticipants[participantId].firstName }}
+                        {{ State.allParticipants[participantId].lastName }}
+                        {{ State.allParticipants[participantId].title }}
                     </li>
-                    <li ng-repeat="alert in alertCollection[participant]" ng-repeat-end>
+                    <li ng-repeat="alert in alertCollection[participantId]" ng-repeat-end>
                         <a href="">
                             <img ng-src="{{alert.profilePicThumbUrl}}" width="60" height="60" />
                             {{alert.firstName}} {{alert.lastName}}<br>
                             {{alert.type}} | viewed {{alert.viewed}}
                         </a>
                     </li>
+                    
 
                 </ul>
 

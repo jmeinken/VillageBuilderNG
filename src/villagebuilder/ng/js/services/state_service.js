@@ -28,7 +28,7 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
     //user information
     this.allParticipants = [];
     this.activeParticipant = {};
-    this.activeParticipantId = "";  //the active account is auto-updated when activeParticipantId is set
+    //this.activeParticipantId = "";  //the active account is auto-updated when activeParticipantId is set
     
     //used by Manage Account view to show/hide editing for specific fields
     this.accountDataEditToggle = {};
@@ -46,6 +46,14 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
     
     //used by success and error functions to access this Data object
     var self = this;
+    
+    function isEmpty(obj) {
+        for(var prop in obj) {
+            if(obj.hasOwnProperty(prop))
+                return false;
+        }
+        return true;
+    }
 
     this.authenticate = function() {   
         $http.get(Ajax.CHECK_LOGIN_STATUS).
@@ -54,10 +62,10 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
                 self.userId = data.userId;
                 self.allParticipants = data.participant;
                 var i = 0;
-                if (self.activeParticipantId == "") {
+                if (isEmpty(self.activeParticipant)) {
                     for (participantId in self.allParticipants) {
                         if (self.allParticipants[participantId].type == "person") {
-                            self.activeParticipantId = participantId;
+                            //self.activeParticipantId = participantId;
                             self.activeParticipant = self.allParticipants[participantId];
                         }
                     }

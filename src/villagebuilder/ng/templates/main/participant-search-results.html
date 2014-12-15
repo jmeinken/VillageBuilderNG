@@ -1,0 +1,14 @@
+
+<h3>Search Results</h3>
+
+{{ State.participantSearchString }}
+
+{{ State.participantSearchResults }}
+
+<div ng-repeat="participant in State.participantSearchResults">
+    <img  ng-src="{{ participant.profilePicThumbUrl }}"
+          width="60" height="60">
+    {{ participant.first_name }}
+    {{ participant.last_name }}
+    {{ participant.title }}
+</div>

@@ -22,6 +22,10 @@ Route::post('api/post-reset-unviewed-alert-count', array(
     'as' => 'api-post-reset-unviewed-alert-count',
     'uses' => 'ApiAlert@postResetUnviewedAlertCount'
 ));
+Route::get('api/get-collection-search-participants', array(
+    'as' => 'api-get-collection-search-participants',
+    'uses' => 'ApiFriendship@getCollectionSearchParticipants'
+));
 
 
 

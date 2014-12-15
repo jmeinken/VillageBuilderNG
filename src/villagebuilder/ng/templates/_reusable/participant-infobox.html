@@ -1,0 +1,19 @@
+<img  ng-src="{{ participant.profilePicThumbUrl }}"
+          width="60" height="60">
+{{participant.first_name}} {{participant.last_name}} {{ alreadyFriends(participant.id) }}
+<div class="btn-group">
+  <a aria-expanded="false" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    &raquo;
+  </a>
+  <ul class="dropdown-menu">
+    <li><a href="" ng-if="!alreadyFriends(participant.id)" 
+           ng-click="addFriend(member.member_id)">
+            {{participant.id}} Add to friend list
+        </a>
+        <a href="" ng-if="alreadyFriends(participant.id)" 
+           ng-click="deleteFriend(member.member_id)">
+            {{participant.id}} Remove from friend list
+        </a>
+    </li>
+   </ul>
+</div>

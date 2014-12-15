@@ -8,7 +8,7 @@ app.controller('AlertController', function($scope, $state, $http, $timeout, Ajax
         parameters = { 'user_id' : State.userId };
         $http.get(Ajax.GET_COLLECTION_ALERT, {params: parameters}).
             success(function(data, status, headers, config){
-                State.debug = data;
+                //State.debug = data;
                 $scope.alertCollection = data;
                 $scope.newAlertCount = 0;
                 for (var participant in data) {

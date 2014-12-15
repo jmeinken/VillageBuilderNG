@@ -39,6 +39,16 @@ class ApiFriendship extends BaseController {
         return Response::json($result, self::STATUS_OK);
     }
     
+    public function getCollectionSearchParticipants() {
+        if (!Input::has('search_string')) {
+            return Response::json(['errorMessage' => 'Query missing required value'], 
+                    self::STATUS_BAD_REQUEST);
+        }
+        $result = FriendshipModel::searchParticipants(Input::get('search_string'));
+        //if the transaction failed, return error
+        return Response::json($result, self::STATUS_OK);
+    }
+    
     public function postFriendship() {
         if (!Input::has('participant_id') || !Input::has('friend_id')) {
             return Response::json(['errorMessage' => 'Query missing required value'], 

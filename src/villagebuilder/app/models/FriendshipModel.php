@@ -70,6 +70,45 @@ class FriendshipModel {
 
     }
     
+    public static function searchParticipants($searchString) {
+        $searchArray = explode(" ", $searchString);
+        //$sql  = "SELECT member.member_id, person.first_name, person.last_name, ";
+        //$sql .= "member.street, member.neighborhood, member.city, member.pic_small ";
+        //$sql .= "FROM member INNER JOIN person on member.member_id = person.person_id ";
+        //$sql .= "WHERE ";
+        $result1 = DB::table('member')
+                ->join('person', 'person.person_id', '=', 'member.member_id')
+                ->whereIn('person.first_name', $searchArray)
+                ->whereIn('person.last_name', $searchArray)
+                ->get();
+        /*
+        $result2 = DB::table('member')
+                ->join('person', 'person.person_id', '=', 'member.member_id')
+                ->whereIn('person.first_name', $searchArray)
+                ->orWhere(function($query)
+                {
+                    $query->whereIn('person.last_name', $searchArray);
+                })
+                ->get();
+         * 
+         */
+        //group search needs to be more flexible
+        $result3 = DB::table('member')
+                ->join('group', 'group.group_id', '=', 'member.member_id')
+                ->where('group.title', "=", $searchString)
+                ->get();
+        $result = array_merge($result1, $result3);
+        foreach($result as $row) {
+            if ($row->pic_small) {
+                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
+                        $row->pic_small;
+            } else {
+                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
+            }
+        }
+        return $result;
+    }
+    
     public static function getFriendsOfFriends($personId) {
         
     }

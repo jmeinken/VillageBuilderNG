@@ -82,7 +82,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
         .state('main.create-group.account-info', {
             url: '/account-info',
-            templateUrl: 'templates/create-account/account-info.html?l=16',
+            templateUrl: 'templates/create-account/account-info.html?l=16'
         })
         .state('main.create-group.map', {
             url: '/map',
@@ -93,6 +93,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             url: '/personal-info',
             templateUrl: 'templates/create-account/personal-info.html?m=17',
             controller: 'UserImageController'
+        })
+        .state('main.participant-search-results', {
+            url: '/participant-search-results',
+            templateUrl: 'templates/main/participant-search-results.html?m=17',
+            controller: 'SearchParticipantsController'
         })
 });
 

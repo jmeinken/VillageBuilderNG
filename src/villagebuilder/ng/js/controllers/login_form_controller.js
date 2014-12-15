@@ -39,11 +39,12 @@ app.controller('LoginFormController', function($scope, $location, $http, Ajax, S
                 State.debug = status;
                 if (data.hasOwnProperty('inputErrors'))  {
                     Request.login.inputErrors = data.inputErrors;
-                }
-                if (data.hasOwnProperty('errorMessage')) {
+                } else if (data.hasOwnProperty('errorMessage')) {
                     Request.login.formError = data.errorMessage;
                 }
-                if (!data.hasOwnProperty('errorMessage') && !data.hasOwnProperty('inputErrors')) {
+                else if (data == "Unauthorized") {
+                    State.authenticate();
+                } else {
                     State.debug = data;
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;

@@ -82,11 +82,9 @@ app.controller('CreateAccountFormController', function($scope, $location, $http,
                         //$location.path( '/create-account/account-info' );
                         $state.go($scope.accountInfoView);
                     }
-                }
-                if (data.hasOwnProperty('errorMessage')) {
+                } else if (data.hasOwnProperty('errorMessage')) {
                     Request.createAccount.formError = data.errorMessage;
-                }
-                if (!data.hasOwnProperty('errorMessage') && !data.hasOwnProperty('inputErrors')) {
+                } else {
                     State.debug = data;
                     State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
                     State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
