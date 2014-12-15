@@ -46,7 +46,8 @@
 <body ng-cloak  ng-controller="GlobalController"  ng-init="State.authenticate()">
 
     <code>
-        {{ State.debug }} | {{State.tester}} | {{State.changedAddress}}
+        {{ State.debug }} | {{State.tester}} | {{State.activeParticipant.friendCollection.length}} |
+        {{State.allParticipants[6].friendCollection.length}}
     </code>
 
 <div ui-view></div>

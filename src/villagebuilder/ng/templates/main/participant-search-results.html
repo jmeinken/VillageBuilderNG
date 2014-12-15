@@ -12,3 +12,9 @@
     {{ participant.last_name }}
     {{ participant.title }}
 </div>
+
+<hr>
+
+<div ng-repeat="participant in State.participantSearchResults">
+    <div ng-include="'templates/_reusable/participant-infobox.html?k=1'"></div>
+</div>

@@ -81,6 +81,9 @@ class FriendshipModel {
                 ->whereIn('person.first_name', $searchArray)
                 ->whereIn('person.last_name', $searchArray)
                 ->get();
+        foreach($result1 as $row) {
+            $row->type = "person";
+        }
         /*
         $result2 = DB::table('member')
                 ->join('person', 'person.person_id', '=', 'member.member_id')
@@ -97,6 +100,9 @@ class FriendshipModel {
                 ->join('group', 'group.group_id', '=', 'member.member_id')
                 ->where('group.title', "=", $searchString)
                 ->get();
+        foreach($result3 as $row) {
+            $row->type = "group";
+        }
         $result = array_merge($result1, $result3);
         foreach($result as $row) {
             if ($row->pic_small) {

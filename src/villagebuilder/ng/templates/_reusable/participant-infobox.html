@@ -1,19 +1,47 @@
-<img  ng-src="{{ participant.profilePicThumbUrl }}"
-          width="60" height="60">
-{{participant.first_name}} {{participant.last_name}} {{ alreadyFriends(participant.id) }}
-<div class="btn-group">
-  <a aria-expanded="false" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    &raquo;
-  </a>
-  <ul class="dropdown-menu">
-    <li><a href="" ng-if="!alreadyFriends(participant.id)" 
-           ng-click="addFriend(member.member_id)">
-            {{participant.id}} Add to friend list
-        </a>
-        <a href="" ng-if="alreadyFriends(participant.id)" 
-           ng-click="deleteFriend(member.member_id)">
-            {{participant.id}} Remove from friend list
-        </a>
-    </li>
-   </ul>
+
+{{ participant.id = participant.participant_id || 
+        participant.member_id || 
+        participant.person_id || 
+        participant.group_id }}
+<div ng-if="participant.type=='person'">
+    <img  ng-src="{{ participant.profilePicThumbUrl }}"
+              width="60" height="60">
+    {{participant.first_name}} {{participant.last_name}} {{ alreadyFriends(participant.id) }}
+    <div class="btn-group">
+      <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        &raquo;
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="" ng-if="!alreadyFriends(participant.id)" 
+               ng-click="addFriend(participant.id)">
+                {{participant.id}} Add to friend list
+            </a>
+            <a href="" ng-if="alreadyFriends(participant.id)" 
+               ng-click="deleteFriend(participant.id)">
+                {{participant.id}} Remove from friend list
+            </a>
+        </li>
+       </ul>
+    </div>
+</div>
+<div ng-if="participant.type=='group'">
+    <img  ng-src="{{ participant.profilePicThumbUrl }}"
+              width="60" height="60">
+    {{participant.title}} {{ alreadyFriends(participant.id) }}
+    <div class="btn-group">
+      <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        &raquo;
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="" ng-if="!alreadyMember(participant.id)" 
+               ng-click="joinGroup(participant.id)">
+                {{participant.id}} Become a Member
+            </a>
+            <a href="" ng-if="alreadyMember(participant.id)" 
+               ng-click="unjoinGroup(participant.id)">
+                {{participant.id}} Unjoin this group
+            </a>
+        </li>
+       </ul>
+    </div>
 </div>

@@ -22,25 +22,6 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
                 State.debug = data;
             });
     }
-    
-    $scope.changeActiveParticipant = function(participantId) {
-        //State.activeParticipantId = participantId;
-        State.activeParticipant = State.allParticipants[participantId];
-        State.participantDataChanged++;
-        $state.go('main.home');
-    }
-    
-    //this can be more efficient
-    $scope.alreadyFriends = function(friendId) {
-        friend = false;
-        for (var i=0; i<State.activeParticipant.friendCollection.length; i++) {
-            if (friendId == State.activeParticipant.friendCollection[i].friend_id) {
-                friend = true;
-            }
-        }
-        return friend;
-    }
-    
     $scope.deleteFriend = function($friendId) {
         $participantId = State.activeParticipant.participantId;
         $http.post(Ajax.DELETE_FRIENDSHIP, {'participant_id': $participantId, 'friend_id': $friendId }).
@@ -52,6 +33,37 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
                 State.debug = data;
             });
     }
+    $scope.joinGroup = function($groupId) {
+        alert("join group");
+    }
+    $scope.unjoinGroup = function($groupId) {
+        alert("unjoin group");
+    }
+    
+    $scope.changeActiveParticipant = function(participantId) {
+        //State.activeParticipantId = participantId;
+        State.activeParticipant = State.allParticipants[participantId];
+        State.participantDataChanged++;
+        $state.go('main.home');
+    }
+    
+    //this can be more efficient
+    $scope.alreadyFriends = function(friendId) {
+        //State.tester += friendId + " ";
+        friend = false;
+        for (var i=0; i<State.activeParticipant.friendCollection.length; i++) {
+            if (friendId == State.activeParticipant.friendCollection[i].friend_id) {
+                friend = true;
+            }
+        }
+        return friend;
+    }
+    $scope.alreadyMember = function(groupId) {
+        return false;
+    }
+
+    
+    
     
    
     

@@ -62,13 +62,18 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
                 self.userId = data.userId;
                 self.allParticipants = data.participant;
                 var i = 0;
+                //set the active participant to the person if not yet set
                 if (isEmpty(self.activeParticipant)) {
                     for (participantId in self.allParticipants) {
                         if (self.allParticipants[participantId].type == "person") {
-                            //self.activeParticipantId = participantId;
                             self.activeParticipant = self.allParticipants[participantId];
                         }
                     }
+                //otherwise set the active participant to the current active participant
+                //(this is required for changes in active participant data to be visible)
+                } else {
+                    var participantId = self.activeParticipant.participantId;
+                    self.activeParticipant = self.allParticipants[participantId];
                 }
                 self.participantDataChanged++;
                 self.userDataChanged++;
