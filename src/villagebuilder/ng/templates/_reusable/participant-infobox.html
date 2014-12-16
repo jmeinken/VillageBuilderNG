@@ -11,13 +11,19 @@
       <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         &raquo;
       </a>
-      <ul class="dropdown-menu">
-        <li><a href="" ng-if="!alreadyFriends(participant.id)" 
-               ng-click="addFriend(participant.id)">
+      <ul class="dropdown-menu" ng-if="!alreadyFriends(participant.id)">
+        <li>
+            <a href="" ng-click="addFriend(participant.id)">
                 {{participant.id}} Add to friend list
             </a>
-            <a href="" ng-if="alreadyFriends(participant.id)" 
-               ng-click="deleteFriend(participant.id)">
+        </li>
+       </ul>
+       <ul class="dropdown-menu" ng-if="alreadyFriends(participant.id)">
+        <li>
+            <span ng-if="alreadyFriends(participant.id)"> &#10004; Friends</span>
+        </li>
+        <li>
+            <a href=""  ng-click="deleteFriend(participant.id)">
                 {{participant.id}} Remove from friend list
             </a>
         </li>
@@ -32,14 +38,25 @@
       <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         &raquo;
       </a>
-      <ul class="dropdown-menu">
-        <li><a href="" ng-if="!alreadyMember(participant.id)" 
-               ng-click="joinGroup(participant.id)">
-                {{participant.id}} Become a Member
+       <ul class="dropdown-menu">
+        <li>
+            <a href="" ng-click="joinGroup(participant.id)">
+                {{participant.id}} Join this group (requires approval)
             </a>
-            <a href="" ng-if="alreadyMember(participant.id)" 
-               ng-click="unjoinGroup(participant.id)">
+        </li>
+        <li>
+            <a href="" ng-click="watchGroup(participant.id)">
+                {{participant.id}} Watch this group
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="unwatchOrUnjoinGroup(participant.id)">
                 {{participant.id}} Unjoin this group
+            </a>
+        </li>
+        <li>
+            <a href="" ng-click="unwatchOrUnjoinGroup(participant.id)">
+                {{participant.id}} Unwatch this group
             </a>
         </li>
        </ul>

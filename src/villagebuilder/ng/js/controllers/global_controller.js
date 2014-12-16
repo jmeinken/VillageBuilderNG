@@ -34,10 +34,40 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
             });
     }
     $scope.joinGroup = function($groupId) {
-        alert("join group");
+        $participantId = State.activeParticipant.participantId;
+        $http.post(Ajax.POST_GROUP_MEMBERSHIP, 
+            {'participant_id': $participantId, 'group_id': $groupId, 'watching_only': 0 }).
+            success(function(data, status, headers, config) {
+                State.debug = data;
+                State.authenticate();
+            }).
+            error(function(data, status, headers, config) {
+                State.debug = data;
+            });
     }
-    $scope.unjoinGroup = function($groupId) {
-        alert("unjoin group");
+    $scope.watchGroup = function($groupId) {
+        $participantId = State.activeParticipant.participantId;
+        $http.post(Ajax.POST_GROUP_MEMBERSHIP, 
+            {'participant_id': $participantId, 'group_id': $groupId, 'watching_only': 1 }).
+            success(function(data, status, headers, config) {
+                State.debug = data;
+                State.authenticate();
+            }).
+            error(function(data, status, headers, config) {
+                State.debug = data;
+            });
+    }
+    $scope.unwatchOrUnjoinGroup = function($groupId) {
+        $participantId = State.activeParticipant.participantId;
+        $http.post(Ajax.DELETE_GROUP_MEMBERSHIP, 
+            {'participant_id': $participantId, 'group_id': $groupId }).
+            success(function(data, status, headers, config) {
+                State.debug = data;
+                State.authenticate();
+            }).
+            error(function(data, status, headers, config) {
+                State.debug = data;
+            });
     }
     
     $scope.changeActiveParticipant = function(participantId) {

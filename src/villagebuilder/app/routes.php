@@ -26,7 +26,14 @@ Route::get('api/get-collection-search-participants', array(
     'as' => 'api-get-collection-search-participants',
     'uses' => 'ApiFriendship@getCollectionSearchParticipants'
 ));
-
+Route::post('api/post-group-membership', array(
+    'as' => 'api-post-group-membership',
+    'uses' => 'ApiGroupMember@postMembership'
+));
+Route::post('api/delete-group-membership', array(
+    'as' => 'api-delete-group-membership',
+    'uses' => 'ApiGroupMember@deleteMembership'
+));
 
 
 
