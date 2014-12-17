@@ -38,8 +38,8 @@ app.controller('AlertController', function($scope, $state, $http, $timeout, Ajax
     
     $scope.alertsViewed = function() {
         State.debug = "alerts viewed";
-        $participantId = State.activeParticipant.participantId;
-        $http.post(Ajax.POST_RESET_UNVIEWED_ALERT_COUNT, {'participant_id': $participantId}).
+        $userId = State.userId;
+        $http.post(Ajax.POST_RESET_UNVIEWED_ALERT_COUNT, {'user_id': $userId}).
             success(function(data, status, headers, config) {
                 //reset the state in order to update alert info after 30 seconds
                 $timeout(function() { State.authenticate(); }, 5000);

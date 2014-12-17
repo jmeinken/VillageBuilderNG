@@ -28,10 +28,8 @@ class ApiGroupMember extends BaseController {
             return Response::json('query failed', 500);
         }
         //register event with Alert Model
-        //if (!Input::get('watching_only')) {
-        //    AlertModel::registerEvent('membership', array('person_id' => Input::get('participant_id'),
-        //        'group_id' => Input::get('group_id')));
-        //}
+        AlertModel::registerEvent('group_member', array('person_id' => Input::get('participant_id'),
+            'group_id' => Input::get('group_id')));
         return Response::json(['message' => 'Group Membership Created'], self::STATUS_OK);
     }
     
