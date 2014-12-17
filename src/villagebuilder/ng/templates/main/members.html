@@ -1,0 +1,13 @@
+<div ng-controller="MemberController">
+    
+    
+    <h3>Here are all your Members</h3>
+    <div ng-repeat="member in memberCollection">
+        {{ member.person_id }} {{ member.first_name }} {{ member.last_name }}
+    </div>
+    <h3>Here are all your Watchers</h3>
+    <div ng-repeat="watcher in watcherCollection">
+        {{ watcher.person_id }} {{ watcher.first_name }} {{ watcher.last_name }}
+    </div>
+    
+</div>

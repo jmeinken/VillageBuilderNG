@@ -68,7 +68,8 @@ class ApiAuthentication extends BaseController {
                     $response['participant'][$participantId]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $group->pic_small;
                 }
                 //do groups even have friends?
-                //$response['groupAccounts'][$i]['friendCollection'] = FriendshipModel::getFriends($group->participant_id);
+               $response['participant'][$participantId]['memberCollection'] = GroupMemberModel::getMembers($group->participant_id);
+               $response['participant'][$participantId]['watcherCollection'] = GroupMemberModel::getWatchers($group->participant_id);
             }
             //////////////////////////// 
             return Response::json($response, self::STATUS_OK);

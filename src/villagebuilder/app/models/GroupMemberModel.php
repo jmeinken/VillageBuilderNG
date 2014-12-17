@@ -38,11 +38,34 @@ class GroupMemberModel {
 
 
     
-    public static function getFriends($personId) {
-        $result = DB::table('friendship')
-                ->join('person', 'person.person_id', '=', 'friendship.friend_id')
+    public static function getMembers($groupId) {
+        $result = DB::table('group_member')
+                ->join('person', 'person.person_id', '=', 'group_member.person_id')
                 ->join('member', 'person.person_id', '=', 'member.member_id')
-                ->where('friendship.person_id', $personId)
+                ->where('group_member.group_id', $groupId)
+                ->where('group_member.watching_only', 0)
+                ->where('group_member.approved', 1)
+                ->get();
+        foreach($result as $row) {
+            if ($row->pic_small) {
+                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
+                        $row->pic_small;
+            } else {
+                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
+            }
+        }
+        return $result;
+    }
+    public static function getWatchers($groupId) {
+        $result = DB::table('group_member')
+                ->join('person', 'person.person_id', '=', 'group_member.person_id')
+                ->join('member', 'person.person_id', '=', 'member.member_id')
+                ->where('group_member.group_id', $groupId)
+                ->where(function($query)
+                    {
+                        $query->where('group_member.watching_only', 1)
+                              ->orWhere('group_member.approved', 0);
+                    })
                 ->get();
         foreach($result as $row) {
             if ($row->pic_small) {
