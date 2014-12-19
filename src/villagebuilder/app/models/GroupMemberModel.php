@@ -39,13 +39,28 @@ class GroupMemberModel {
 
     
     public static function getMembers($groupId) {
-        $result = DB::table('group_member')
-                ->join('person', 'person.person_id', '=', 'group_member.person_id')
-                ->join('member', 'person.person_id', '=', 'member.member_id')
-                ->where('group_member.group_id', $groupId)
-                ->where('group_member.watching_only', 0)
-                ->where('group_member.approved', 1)
-                ->get();
+        $result1 = DB::select("SELECT person.person_id, person.first_name, person.last_name, member.pic_small, " .
+                "'member' AS `relationship_type` " . 
+                "FROM group_member INNER JOIN person ON group_member.person_id = person.person_id " .
+                "INNER JOIN member ON member.member_id = person.person_id " .
+                "WHERE group_member.group_id = ? " . 
+                "AND group_member.watching_only = 0 " . 
+                "AND group_member.approved = 1", array($groupId));
+        $result2 = DB::select("SELECT person.person_id, person.first_name, person.last_name, member.pic_small, " .
+                "'watcher' AS `relationship_type` " . 
+                "FROM group_member INNER JOIN person ON group_member.person_id = person.person_id " .
+                "INNER JOIN member ON member.member_id = person.person_id " .
+                "WHERE group_member.group_id = ? " . 
+                "AND group_member.watching_only = 1 " . 
+                "", array($groupId));
+        $result3 = DB::select("SELECT person.person_id, person.first_name, person.last_name, member.pic_small, " .
+                "'unconfirmed' AS `relationship_type` " . 
+                "FROM group_member INNER JOIN person ON group_member.person_id = person.person_id " .
+                "INNER JOIN member ON member.member_id = person.person_id " .
+                "WHERE group_member.group_id = ? " . 
+                "AND group_member.watching_only = 0 " . 
+                "AND group_member.approved = 0", array($groupId));
+        $result = array_merge($result1, $result2, $result3);
         foreach($result as $row) {
             if ($row->pic_small) {
                 $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
@@ -55,6 +70,9 @@ class GroupMemberModel {
             }
         }
         return $result;
+    }
+    public static function getMemberships($personId) {
+        
     }
     public static function getWatchers($groupId) {
         $result = DB::table('group_member')

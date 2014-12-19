@@ -3,34 +3,129 @@
         participant.member_id || 
         participant.person_id || 
         participant.group_id }}
-<div ng-if="participant.type=='person'">
+<div ng-if="participant.type=='person' && State.activeParticipant.type=='person'">
     <img  ng-src="{{ participant.profilePicThumbUrl }}"
               width="60" height="60">
-    {{participant.first_name}} {{participant.last_name}} {{ alreadyFriends(participant.id) }}
+    {{participant.first_name}} {{participant.last_name}} {{ friendStatus(participant.id) }}
     <div class="btn-group">
-      <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        &raquo;
-      </a>
-      <ul class="dropdown-menu" ng-if="!alreadyFriends(participant.id)">
-        <li>
-            <a href="" ng-click="addFriend(participant.id)">
-                {{participant.id}} Add to friend list
-            </a>
-        </li>
-       </ul>
-       <ul class="dropdown-menu" ng-if="alreadyFriends(participant.id)">
-        <li>
-            <span ng-if="alreadyFriends(participant.id)"> &#10004; Friends</span>
-        </li>
-        <li>
-            <a href=""  ng-click="deleteFriend(participant.id)">
-                {{participant.id}} Remove from friend list
-            </a>
-        </li>
-       </ul>
+        <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          &raquo;
+        </a>
+        <ul class="dropdown-menu" ng-if="friendStatus(participant.id)=='none'">
+            <li>
+                <a href="" ng-click="addFriend(participant.id)">
+                    {{participant.id}} Add to friend list
+                </a>
+            </li>
+        </ul>
+        <ul class="dropdown-menu" ng-if="friendStatus(participant.id)=='requested'">
+            <li>
+                &#10004; Added you as friend
+            </li>
+            <li>
+                <a href="" ng-click="addFriend(participant.id)">
+                    {{participant.id}} Confirm friend request
+                </a>
+            </li>
+        </ul>
+        <ul class="dropdown-menu" ng-if="friendStatus(participant.id)=='unconfirmed'">
+            <li>
+                &#10004; Friendship requested
+            </li>
+            <li>
+                <a href=""  ng-click="deleteFriend(participant.id)">
+                    {{participant.id}} Cancel friend request
+                </a>
+            </li>
+        </ul>
+        <ul class="dropdown-menu" ng-if="friendStatus(participant.id)=='reciprocated'">
+            <li>
+                &#10004; Friends
+            </li>
+            <li>
+                <a href=""  ng-click="deleteFriend(participant.id)">
+                    {{participant.id}} Remove from friend list
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
-<div ng-if="participant.type=='group'">
+<div ng-if="participant.type=='group' && State.activeParticipant.type=='person'">
+    <img  ng-src="{{ participant.profilePicThumbUrl }}"
+              width="60" height="60">
+    {{participant.title}} {{ memberStatus(participant.id) }}
+    <div class="btn-group">
+        <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          &raquo;
+        </a>
+        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='none'">
+            <li>
+                <a href="" ng-click="joinGroup(participant.id)">
+                    {{participant.id}} Join this group (requires approval)
+                </a>
+            </li>
+        </ul>
+        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='member'">
+            <li>
+                &#10004; Member
+            </li>
+            <li>
+                <a href="" ng-click="unjoinGroup(participant.id)">
+                    {{participant.id}} Unjoin this group
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+        
+<div ng-if="participant.type=='person' && State.activeParticipant.type=='group'">
+    <img  ng-src="{{ participant.profilePicThumbUrl }}"
+              width="60" height="60">
+    {{participant.first_name}} {{participant.last_name}} {{ memberStatus(participant.id) }}
+    <div class="btn-group">
+        <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          &raquo;
+        </a>
+        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='none'">
+            <li>
+                <a href="" ng-click="joinGroup(participant.id)">
+                    {{participant.id}} Invite to join
+                </a>
+            </li>
+        </ul>
+        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='member'">
+            <li>
+                &#10004; Member
+            </li>
+            <li>
+                <a href="" ng-click="unjoinGroup(participant.id)">
+                    {{participant.id}} Delete from group
+                </a>
+            </li>
+        </ul>
+        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='watcher'">
+            <li>
+                &#10004; Watching your group
+            </li>
+            <li>
+                <a href="" ng-click="unjoinGroup(participant.id)">
+                    {{participant.id}} Invite to join
+                </a>
+            </li>
+        </ul>
+        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='unconfirmed'">
+            <li>
+                &#10004; Membership requested
+            </li>
+            <li>
+                <a href="" ng-click="unjoinGroup(participant.id)">
+                    {{participant.id}} Confirm membership
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div ng-if="participant.type=='group' && State.activeParticipant.type=='group'">
     <img  ng-src="{{ participant.profilePicThumbUrl }}"
               width="60" height="60">
     {{participant.title}} {{ alreadyFriends(participant.id) }}
@@ -38,27 +133,5 @@
       <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
         &raquo;
       </a>
-       <ul class="dropdown-menu">
-        <li>
-            <a href="" ng-click="joinGroup(participant.id)">
-                {{participant.id}} Join this group (requires approval)
-            </a>
-        </li>
-        <li>
-            <a href="" ng-click="watchGroup(participant.id)">
-                {{participant.id}} Watch this group
-            </a>
-        </li>
-        <li>
-            <a href="" ng-click="unwatchOrUnjoinGroup(participant.id)">
-                {{participant.id}} Unjoin this group
-            </a>
-        </li>
-        <li>
-            <a href="" ng-click="unwatchOrUnjoinGroup(participant.id)">
-                {{participant.id}} Unwatch this group
-            </a>
-        </li>
-       </ul>
     </div>
 </div>

@@ -17,11 +17,32 @@ class FriendshipModel {
     }
     
     public static function getFriends($personId) {
-        $result = DB::table('friendship')
-                ->join('person', 'person.person_id', '=', 'friendship.friend_id')
-                ->join('member', 'person.person_id', '=', 'member.member_id')
-                ->where('friendship.person_id', $personId)
-                ->get();
+        //make 3 sets: reciprocated, requested, unconfirmed
+        $sql = "SELECT person.person_id, member.pic_small, person.first_name, person.last_name, " .
+                "'reciprocated' AS `relationship_type` " .
+        "FROM friendship INNER JOIN person ON friendship.friend_id = person.person_id " .
+                "INNER JOIN member ON member.member_id = person.person_id " .
+        "WHERE friendship.person_id = ? " .
+                "AND friendship.friend_id IN (SELECT person_id FROM friendship F " .
+                    "WHERE F.friend_id = ?) ";
+        $result1 = DB::select($sql, array($personId, $personId));
+        $sql = "SELECT person.person_id, member.pic_small, person.first_name, person.last_name, " .
+                "'unconfirmed' AS `relationship_type` " .
+        "FROM friendship INNER JOIN person ON friendship.friend_id = person.person_id " .
+                "INNER JOIN member ON member.member_id = person.person_id " .
+        "WHERE friendship.person_id = ? " .
+                "AND friendship.friend_id NOT IN (SELECT person_id FROM friendship F " .
+                    "WHERE F.friend_id = ?) ";
+        $result2 = DB::select($sql, array($personId, $personId));
+        $sql = "SELECT person.person_id, member.pic_small, person.first_name, person.last_name, " .
+                "'requested' AS `relationship_type` " .
+        "FROM friendship INNER JOIN person ON friendship.person_id = person.person_id " .
+                "INNER JOIN member ON member.member_id = person.person_id " .
+        "WHERE friendship.friend_id = ? " .
+                "AND friendship.person_id NOT IN (SELECT friend_id FROM friendship F " .
+                    "WHERE F.person_id = ?) ";
+        $result3 = DB::select($sql, array($personId, $personId));
+        $result = array_merge($result1, $result2, $result3);
         foreach($result as $row) {
             if ($row->pic_small) {
                 $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
@@ -52,7 +73,7 @@ class FriendshipModel {
     public static function getNearbyPeople($personId) {
         //also need to exclude current friends
         $result =  DB::select('SELECT F.member_id, person.first_name, person.last_name, ' .
-                'F.street, F.neighborhood, F.city, F.pic_small, ' .
+                "F.street, F.neighborhood, F.city, F.pic_small, 'person' AS `type`, " .
                 'SQRT(POW(P.longitude-F.longitude,2)+POW(P.latitude-F.latitude,2)) AS distance ' .
                 'FROM member AS P, member AS F INNER JOIN person on F.member_id = person.person_id ' .
                 'WHERE P.member_id = ? AND F.member_id <> ? ' .

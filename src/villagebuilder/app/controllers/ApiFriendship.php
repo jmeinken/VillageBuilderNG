@@ -19,7 +19,7 @@ class ApiFriendship extends BaseController {
         }
         $result = FriendshipModel::getFriends(Input::get('participant_id'));
         //if the transaction failed, return error
-        if (!$result) {
+        if ($result === false) {
             return Response::json('query failed', 500);
         }
         return Response::json($result, self::STATUS_OK);

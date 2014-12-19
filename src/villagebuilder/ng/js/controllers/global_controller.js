@@ -78,18 +78,64 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
     }
     
     //this can be more efficient
+    /*
     $scope.alreadyFriends = function(friendId) {
         //State.tester += friendId + " ";
         friend = false;
         for (var i=0; i<State.activeParticipant.friendCollection.length; i++) {
-            if (friendId == State.activeParticipant.friendCollection[i].friend_id) {
+            if (friendId == State.activeParticipant.friendCollection[i].person_id) {
                 friend = true;
             }
         }
         return friend;
     }
-    $scope.alreadyMember = function(groupId) {
-        return false;
+    */
+    
+    //this can be more efficient
+    $scope.friendStatus = function(friendId) {
+        //State.tester += friendId + " ";
+        var status = "none";
+        for (var i=0; i<State.activeParticipant.friendCollection.length; i++) {
+            if (friendId == State.activeParticipant.friendCollection[i].person_id) {
+                status = State.activeParticipant.friendCollection[i].relationship_type;
+            }
+        }
+        return status;
+    }
+    
+    
+    //this will be different based on whether a person is logged in or a group
+    //is logged in
+    $scope.memberStatus = function(groupId) {
+        var status = "none";
+        for (var i=0; i<State.activeParticipant.memberCollection.length; i++) {
+            if (groupId == State.activeParticipant.memberCollection[i].person_id) {
+                status = State.activeParticipant.memberCollection[i].relationship_type;
+            }
+        }
+        return status;
+    }
+    $scope.inviteMember = function($friendId) {
+        $participantId = State.activeParticipant.participantId;
+        $http.post(Ajax.POST_FRIENDSHIP, {'participant_id': $participantId, 'friend_id': $friendId }).
+            success(function(data, status, headers, config) {
+                State.debug = data;
+                State.authenticate();
+            }).
+            error(function(data, status, headers, config) {
+                State.debug = data;
+            });
+    }
+    $scope.removeMember = function($friendId) {
+        $participantId = State.activeParticipant.participantId;
+        $http.post(Ajax.DELETE_FRIENDSHIP, {'participant_id': $participantId, 'friend_id': $friendId }).
+            success(function(data, status, headers, config) {
+                State.debug = data;
+                State.authenticate();
+            }).
+            error(function(data, status, headers, config) {
+                State.debug = data;
+            });
     }
 
     

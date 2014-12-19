@@ -69,7 +69,6 @@ class ApiAuthentication extends BaseController {
                 }
                 //do groups even have friends?
                $response['participant'][$participantId]['memberCollection'] = GroupMemberModel::getMembers($group->participant_id);
-               $response['participant'][$participantId]['watcherCollection'] = GroupMemberModel::getWatchers($group->participant_id);
             }
             //////////////////////////// 
             return Response::json($response, self::STATUS_OK);
