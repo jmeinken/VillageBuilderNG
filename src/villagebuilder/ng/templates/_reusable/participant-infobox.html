@@ -53,25 +53,45 @@
 <div ng-if="participant.type=='group' && State.activeParticipant.type=='person'">
     <img  ng-src="{{ participant.profilePicThumbUrl }}"
               width="60" height="60">
-    {{participant.title}} {{ memberStatus(participant.id) }}
+    {{participant.title}} {{ membershipStatus(participant.id) }}
     <div class="btn-group">
         <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
           &raquo;
         </a>
-        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='none'">
+        <ul class="dropdown-menu" ng-if="membershipStatus(participant.id)=='none'">
             <li>
                 <a href="" ng-click="joinGroup(participant.id)">
-                    {{participant.id}} Join this group (requires approval)
+                    {{participant.id}} Become a member (requires approval)
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='member'">
+        <ul class="dropdown-menu" ng-if="membershipStatus(participant.id)=='member'">
             <li>
                 &#10004; Member
             </li>
             <li>
                 <a href="" ng-click="unjoinGroup(participant.id)">
                     {{participant.id}} Unjoin this group
+                </a>
+            </li>
+        </ul>
+        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='watcher'">
+            <li>
+                &#10004; Watching
+            </li>
+            <li>
+                <a href="" ng-click="unjoinGroup(participant.id)">
+                    {{participant.id}} Become a member (requires approval)
+                </a>
+            </li>
+        </ul>
+        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='unconfirmed'">
+            <li>
+                &#10004; Awaiting membership approval
+            </li>
+            <li>
+                <a href="" ng-click="unjoinGroup(participant.id)">
+                    {{participant.id}} Cancel request to become member
                 </a>
             </li>
         </ul>

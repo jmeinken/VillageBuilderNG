@@ -42,6 +42,7 @@ class ApiAuthentication extends BaseController {
                 $response['participant'][$participantId]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_small;
             }
             $response['participant'][$participantId]['friendCollection'] = FriendshipModel::getFriends($account->participant_id);
+            $response['participant'][$participantId]['membershipCollection'] = GroupMemberModel::getMemberships($account->participant_id);
             //return data for all groups that user owns
             $groups = DB::table('participant')
                 ->join('member', 'participant.participant_id', '=', 'member.member_id')

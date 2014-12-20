@@ -35,6 +35,40 @@ class GroupMemberModel {
             ->where('person_id', $personId)
             ->where('group_id', $groupId);
     }
+    
+    public static function getMemberships($personId) {
+        $result1 = DB::select("SELECT `group`.group_id, `group`.title, member.pic_small, " .
+                "'member' AS `relationship_type` " . 
+                "FROM group_member INNER JOIN `group` ON group_member.group_id = `group`.group_id " .
+                "INNER JOIN member ON member.member_id = `group`.group_id " .
+                "WHERE group_member.person_id = ? " . 
+                "AND group_member.watching_only = 0 " . 
+                "AND group_member.approved = 1", array($personId));
+        $result2 = DB::select("SELECT `group`.group_id, `group`.title, member.pic_small, " .
+                "'member' AS `relationship_type` " . 
+                "FROM group_member INNER JOIN `group` ON group_member.group_id = `group`.group_id " .
+                "INNER JOIN member ON member.member_id = `group`.group_id " .
+                "WHERE group_member.person_id = ? " . 
+                "AND group_member.watching_only = 1 " . 
+                "", array($personId));
+        $result3 = DB::select("SELECT `group`.group_id, `group`.title, member.pic_small, " .
+                "'member' AS `relationship_type` " . 
+                "FROM group_member INNER JOIN `group` ON group_member.group_id = `group`.group_id " .
+                "INNER JOIN member ON member.member_id = `group`.group_id " .
+                "WHERE group_member.person_id = ? " . 
+                "AND group_member.watching_only = 0 " . 
+                "AND group_member.approved = 0", array($personId));
+        $result = array_merge($result1, $result2, $result3);
+        foreach($result as $row) {
+            if ($row->pic_small) {
+                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
+                        $row->pic_small;
+            } else {
+                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
+            }
+        }
+        return $result;
+    }
 
 
     
@@ -71,9 +105,7 @@ class GroupMemberModel {
         }
         return $result;
     }
-    public static function getMemberships($personId) {
-        
-    }
+
     public static function getWatchers($groupId) {
         $result = DB::table('group_member')
                 ->join('person', 'person.person_id', '=', 'group_member.person_id')

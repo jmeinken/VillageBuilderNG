@@ -104,17 +104,29 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
     }
     
     
-    //this will be different based on whether a person is logged in or a group
-    //is logged in
-    $scope.memberStatus = function(groupId) {
+    //look up whether a person belongs to current group
+    $scope.memberStatus = function(personId) {
         var status = "none";
         for (var i=0; i<State.activeParticipant.memberCollection.length; i++) {
-            if (groupId == State.activeParticipant.memberCollection[i].person_id) {
+            if (personId == State.activeParticipant.memberCollection[i].person_id) {
                 status = State.activeParticipant.memberCollection[i].relationship_type;
             }
         }
         return status;
     }
+    
+    //look up whether current person belongs to group
+    $scope.membershipStatus = function(groupId) {
+        var status = "none";
+        for (var i=0; i<State.activeParticipant.membershipCollection.length; i++) {
+            if (groupId == State.activeParticipant.membershipCollection[i].group_id) {
+                status = State.activeParticipant.membershipCollection[i].relationship_type;
+            }
+        }
+        return status;
+    }
+    
+    
     $scope.inviteMember = function($friendId) {
         $participantId = State.activeParticipant.participantId;
         $http.post(Ajax.POST_FRIENDSHIP, {'participant_id': $participantId, 'friend_id': $friendId }).
