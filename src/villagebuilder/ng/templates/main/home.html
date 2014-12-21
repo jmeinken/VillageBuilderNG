@@ -40,10 +40,6 @@
                 <hr>
                 <h4>Find People You Know</h4>
                 <hr>
-                <h5>People Near You</h5>
-                <div ng-include="'templates/user-list.html?e=1'" 
-                     ng-controller="NearbyPeopleController"></div>
-                <hr>
                 <div class="form-group" ng-controller="SearchParticipantsController">
                     <label class="control-label">Search for People and Groups</label>
                     <input class="form-control" id="focusedInput" 
@@ -51,6 +47,14 @@
                            ng-model="State.participantSearchString">
                     <button ng-click="searchParticipants()">Search</button>
                 </div>
+                <hr>
+                <h5>People Near You</h5>
+                <div ng-controller="NearbyPeopleController">
+                    <div ng-repeat="participant in nearbyPeopleCollection"  ng-if="State.activeParticipant.type=='person'">
+                        <div ng-include="'templates/_reusable/participant-infobox.html?o=1'"></div>
+                    </div>
+                </div>
+                
             </div>
         </div>
         <div class="row" id="footer">

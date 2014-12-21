@@ -1,8 +1,10 @@
 
-{{ participant.id = participant.participant_id || 
+<span ng-show="false">
+    {{ participant.id = participant.participant_id || 
         participant.member_id || 
         participant.person_id || 
         participant.group_id }}
+</span>
 <div ng-if="participant.type=='person' && State.activeParticipant.type=='person'">
     <img  ng-src="{{ participant.profilePicThumbUrl }}"
               width="60" height="60">

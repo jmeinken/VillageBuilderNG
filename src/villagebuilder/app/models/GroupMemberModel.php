@@ -38,21 +38,21 @@ class GroupMemberModel {
     
     public static function getMemberships($personId) {
         $result1 = DB::select("SELECT `group`.group_id, `group`.title, member.pic_small, " .
-                "'member' AS `relationship_type` " . 
+                "'member' AS `relationship_type`, 'group' as `type` " . 
                 "FROM group_member INNER JOIN `group` ON group_member.group_id = `group`.group_id " .
                 "INNER JOIN member ON member.member_id = `group`.group_id " .
                 "WHERE group_member.person_id = ? " . 
                 "AND group_member.watching_only = 0 " . 
                 "AND group_member.approved = 1", array($personId));
         $result2 = DB::select("SELECT `group`.group_id, `group`.title, member.pic_small, " .
-                "'watcher' AS `relationship_type` " . 
+                "'watcher' AS `relationship_type`, 'group' as `type` " . 
                 "FROM group_member INNER JOIN `group` ON group_member.group_id = `group`.group_id " .
                 "INNER JOIN member ON member.member_id = `group`.group_id " .
                 "WHERE group_member.person_id = ? " . 
                 "AND group_member.watching_only = 1 " . 
                 "", array($personId));
         $result3 = DB::select("SELECT `group`.group_id, `group`.title, member.pic_small, " .
-                "'unconfirmed' AS `relationship_type` " . 
+                "'unconfirmed' AS `relationship_type`, 'group' as `type` " . 
                 "FROM group_member INNER JOIN `group` ON group_member.group_id = `group`.group_id " .
                 "INNER JOIN member ON member.member_id = `group`.group_id " .
                 "WHERE group_member.person_id = ? " . 
@@ -74,21 +74,21 @@ class GroupMemberModel {
     
     public static function getMembers($groupId) {
         $result1 = DB::select("SELECT person.person_id, person.first_name, person.last_name, member.pic_small, " .
-                "'member' AS `relationship_type` " . 
+                "'member' AS `relationship_type`, 'person' as `type` " . 
                 "FROM group_member INNER JOIN person ON group_member.person_id = person.person_id " .
                 "INNER JOIN member ON member.member_id = person.person_id " .
                 "WHERE group_member.group_id = ? " . 
                 "AND group_member.watching_only = 0 " . 
                 "AND group_member.approved = 1", array($groupId));
         $result2 = DB::select("SELECT person.person_id, person.first_name, person.last_name, member.pic_small, " .
-                "'watcher' AS `relationship_type` " . 
+                "'watcher' AS `relationship_type`, 'person' as `type` " . 
                 "FROM group_member INNER JOIN person ON group_member.person_id = person.person_id " .
                 "INNER JOIN member ON member.member_id = person.person_id " .
                 "WHERE group_member.group_id = ? " . 
                 "AND group_member.watching_only = 1 " . 
                 "", array($groupId));
         $result3 = DB::select("SELECT person.person_id, person.first_name, person.last_name, member.pic_small, " .
-                "'unconfirmed' AS `relationship_type` " . 
+                "'unconfirmed' AS `relationship_type`, 'person' as `type` " . 
                 "FROM group_member INNER JOIN person ON group_member.person_id = person.person_id " .
                 "INNER JOIN member ON member.member_id = person.person_id " .
                 "WHERE group_member.group_id = ? " . 

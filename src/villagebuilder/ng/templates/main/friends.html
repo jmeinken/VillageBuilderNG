@@ -2,15 +2,13 @@
     
     
     <h3>Here are all your friends</h3>
-    <div ng-repeat="friend in friendCollection">
-        {{ friend.person_id }} {{ friend.first_name }} {{ friend.last_name }} | 
-        {{ friend.relationship_type }}
+    <div ng-repeat="participant in friendCollection">
+        <div ng-include="'templates/_reusable/participant-infobox.html?k=1'"></div>
     </div>
     
     <h3>Here are all your groups</h3>
-    <div ng-repeat="group in membershipCollection">
-        {{ group.group_id }} {{ group.title }} | 
-        {{ group.relationship_type }}
+    <div ng-repeat="participant in membershipCollection">
+        <div ng-include="'templates/_reusable/participant-infobox.html?k=1'"></div>
     </div>
     
 </div>
