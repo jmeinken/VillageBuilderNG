@@ -10,11 +10,11 @@
         </div>
         <div class="navbar-collapse collapse navbar-inverse-collapse" ng-controller="AlertController">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">Home</a></li>
             <li><a href="#">My Listings</a></li>
             <li ng-if="State.activeParticipant.type=='person'">
                 <a href="" ui-sref="main.friends">
-                    My Friends
+                    Friends/Groups
                 </a>
             </li>
             <li ng-if="State.activeParticipant.type=='group'">
@@ -72,13 +72,15 @@
                   <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="" ui-sref="main.manage-account">
-                        Account Settings for {{ State.activeParticipant.title }}
+                <li>
+                    <a href="" ui-sref="main.manage-account">
+                        View/edit account settings for {{ State.activeParticipant.title }}
                         {{ State.activeParticipant.firstName }}
                         {{ State.activeParticipant.lastName }}
-                </a></li>
-                <li class="divider" ng-if="State.allParticipants.length>1"></li>
-                <li class="dropdown-header" ng-if="State.allParticipants.length>1">
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li class="dropdown-header">
                     Your Other Accounts
                 </li>
                 <li ng-repeat="account in State.allParticipants"

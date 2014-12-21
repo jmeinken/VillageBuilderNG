@@ -19,6 +19,7 @@ class FriendshipModel {
     public static function getFriends($personId) {
         //make 3 sets: reciprocated, requested, unconfirmed
         $sql = "SELECT person.person_id, member.pic_small, person.first_name, person.last_name, " .
+                "member.street, member.neighborhood, member.city, " .
                 "'reciprocated' AS `relationship_type`, 'person' as `type` " .
         "FROM friendship INNER JOIN person ON friendship.friend_id = person.person_id " .
                 "INNER JOIN member ON member.member_id = person.person_id " .
@@ -27,6 +28,7 @@ class FriendshipModel {
                     "WHERE F.friend_id = ?) ";
         $result1 = DB::select($sql, array($personId, $personId));
         $sql = "SELECT person.person_id, member.pic_small, person.first_name, person.last_name, " .
+                "member.street, member.neighborhood, member.city, " .
                 "'unconfirmed' AS `relationship_type`, 'person' as `type` " .
         "FROM friendship INNER JOIN person ON friendship.friend_id = person.person_id " .
                 "INNER JOIN member ON member.member_id = person.person_id " .
@@ -35,6 +37,7 @@ class FriendshipModel {
                     "WHERE F.friend_id = ?) ";
         $result2 = DB::select($sql, array($personId, $personId));
         $sql = "SELECT person.person_id, member.pic_small, person.first_name, person.last_name, " .
+                "member.street, member.neighborhood, member.city, " .
                 "'requested' AS `relationship_type`, 'person' as `type` " .
         "FROM friendship INNER JOIN person ON friendship.person_id = person.person_id " .
                 "INNER JOIN member ON member.member_id = person.person_id " .

@@ -5,22 +5,23 @@
         participant.person_id || 
         participant.group_id }}
 </span>
-<div ng-if="participant.type=='person' && State.activeParticipant.type=='person'">
-    <img  ng-src="{{ participant.profilePicThumbUrl }}"
-              width="60" height="60">
-    {{participant.first_name}} {{participant.last_name}} {{ friendStatus(participant.id) }}
-    <div class="btn-group">
+
+<div ng-if="participant.type=='person' && State.activeParticipant.type=='person'" 
+    class="clearfix no-padding vcenter-contents list-group-item">
+    <img  ng-src="{{ participant.profilePicThumbUrl }}" class="float-left padded-image"
+        width="45" height="45">
+    <div class="btn-group float-right">
         <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-          &raquo;
+          <b class="caret"></b>
         </a>
-        <ul class="dropdown-menu" ng-if="friendStatus(participant.id)=='none'">
+        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='none'">
             <li>
                 <a href="" ng-click="addFriend(participant.id)">
                     {{participant.id}} Add to friend list
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="friendStatus(participant.id)=='requested'">
+        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='requested'">
             <li>
                 &#10004; Added you as friend
             </li>
@@ -30,7 +31,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="friendStatus(participant.id)=='unconfirmed'">
+        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='unconfirmed'">
             <li>
                 &#10004; Friendship requested
             </li>
@@ -40,7 +41,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="friendStatus(participant.id)=='reciprocated'">
+        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='reciprocated'">
             <li>
                 &#10004; Friends
             </li>
@@ -50,19 +51,28 @@
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="friendStatus(participant.id)=='self'">
+        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='self'">
         </ul>
     </div>
+    <div class="vcenter-me" style="margin-left:51px">
+        <span class="text-warning">
+            <strong>{{participant.first_name}} {{participant.last_name}}</strong>
+        </span>
+        <br>
+        <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
+    </div>
+
 </div>
-<div ng-if="participant.type=='group' && State.activeParticipant.type=='person'">
-    <img  ng-src="{{ participant.profilePicThumbUrl }}"
-              width="60" height="60">
-    {{participant.title}} {{ membershipStatus(participant.id) }}
-    <div class="btn-group">
+
+<div ng-if="participant.type=='group' && State.activeParticipant.type=='person'"
+     class="clearfix no-padding vcenter-contents list-group-item">
+    <img  ng-src="{{ participant.profilePicThumbUrl }}" class="float-left padded-image"
+              width="45" height="45">
+    <div class="btn-group float-right">
         <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-          &raquo;
+          <b class="caret"></b>
         </a>
-        <ul class="dropdown-menu" ng-if="membershipStatus(participant.id)=='none'">
+        <ul class="dropdown-menu pull-right" ng-if="membershipStatus(participant.id)=='none'">
             <li>
                 <a href="" ng-click="joinGroup(participant.id)">
                     {{participant.id}} Become a member (requires approval)
@@ -74,7 +84,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="membershipStatus(participant.id)=='member'">
+        <ul class="dropdown-menu pull-right" ng-if="membershipStatus(participant.id)=='member'">
             <li>
                 &#10004; Member
             </li>
@@ -84,7 +94,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="membershipStatus(participant.id)=='watcher'">
+        <ul class="dropdown-menu pull-right" ng-if="membershipStatus(participant.id)=='watcher'">
             <li>
                 &#10004; Watching
             </li>
@@ -99,7 +109,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="membershipStatus(participant.id)=='unconfirmed'">
+        <ul class="dropdown-menu pull-right" ng-if="membershipStatus(participant.id)=='unconfirmed'">
             <li>
                 &#10004; Awaiting membership approval
             </li>
@@ -110,24 +120,31 @@
             </li>
         </ul>
     </div>
+    <div class="vcenter-me" style="margin-left:51px">
+        <span class="text-warning">
+            <strong>{{participant.title}}</strong>
+        </span>
+        <br>
+        <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
+    </div>
 </div>
         
-<div ng-if="participant.type=='person' && State.activeParticipant.type=='group'">
-    <img  ng-src="{{ participant.profilePicThumbUrl }}"
-              width="60" height="60">
-    {{participant.first_name}} {{participant.last_name}} {{ memberStatus(participant.id) }}
-    <div class="btn-group">
+<div ng-if="participant.type=='person' && State.activeParticipant.type=='group'"
+     class="clearfix no-padding vcenter-contents list-group-item">
+    <img  ng-src="{{ participant.profilePicThumbUrl }}" class="float-left padded-image"
+              width="45" height="45">
+    <div class="btn-group float-right">
         <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-          &raquo;
+          <b class="caret"></b>
         </a>
-        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='none'">
+        <ul class="dropdown-menu pull-right" ng-if="memberStatus(participant.id)=='none'">
             <li>
                 <a href="" ng-click="joinGroup(participant.id)">
                     {{participant.id}} Invite to join
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='member'">
+        <ul class="dropdown-menu pull-right" ng-if="memberStatus(participant.id)=='member'">
             <li>
                 &#10004; Member
             </li>
@@ -137,7 +154,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='watcher'">
+        <ul class="dropdown-menu pull-right" ng-if="memberStatus(participant.id)=='watcher'">
             <li>
                 &#10004; Watching your group
             </li>
@@ -147,7 +164,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu" ng-if="memberStatus(participant.id)=='unconfirmed'">
+        <ul class="dropdown-menu pull-right" ng-if="memberStatus(participant.id)=='unconfirmed'">
             <li>
                 &#10004; Membership requested
             </li>
@@ -158,14 +175,28 @@
             </li>
         </ul>
     </div>
+    <div class="vcenter-me" style="margin-left:51px">
+        <span class="text-warning">
+            <strong>{{participant.first_name}} {{participant.last_name}}</strong>
+        </span>
+        <br>
+        <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
+    </div>
 </div>
-<div ng-if="participant.type=='group' && State.activeParticipant.type=='group'">
-    <img  ng-src="{{ participant.profilePicThumbUrl }}"
-              width="60" height="60">
-    {{participant.title}} {{ alreadyFriends(participant.id) }}
-    <div class="btn-group">
+<div ng-if="participant.type=='group' && State.activeParticipant.type=='group'"
+     class="clearfix no-padding vcenter-contents list-group-item">
+    <img  ng-src="{{ participant.profilePicThumbUrl }}" class="float-left padded-image"
+              width="45" height="45">
+    <div class="btn-group float-right">
       <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        &raquo;
+        <b class="caret"></b>
       </a>
+    </div>
+    <div class="vcenter-me" style="margin-left:51px">
+        <span class="text-warning">
+            <strong>{{participant.title}}</strong>
+        </span>
+        <br>
+        <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
     </div>
 </div>
