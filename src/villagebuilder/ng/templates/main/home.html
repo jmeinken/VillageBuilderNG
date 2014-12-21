@@ -1,12 +1,20 @@
         <div class="row">
             <div class="col-lg-3">
                 <h3>Shared With You</h3>
-                <div class="form-group">
-                    <input class="form-control" placeholder="Search listings" type="text">
+                <div class="form-group" ng-controller="SearchParticipantsController">
+                    <div class="input-group">
+                        <input class="form-control" id="focusedInput" 
+                            placeholder="Search Listings" type="text"
+                            ng-model="State.participantSearchString">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" 
+                                    ng-click="searchParticipants()">Go</button>
+                        </span>
+                    </div>
                 </div>
-                <button class="btn btn-default btn-block">Browse Listings by Category &#9654;</button>
+                <button class="btn btn-primary btn-block">Browse Listings by Category &#9654;</button>
                 <br>
-                <h4>Recent Listings:</h4>
+                <h4>Recent Listings</h4>
                 <div class="list-group">
                     <a href="#" class="list-group-item">
                       <h4 class="list-group-item-heading">List group item heading</h4>
@@ -18,9 +26,8 @@
                     </a>
                 </div>
             </div>	
-            <div class="col-lg-5 well">
-                <h3>Request Feed</h3>
-                <div class="btn-group">
+            <div class="col-lg-6">
+                <div class="btn-group float-right" style="margin-top: 5px">
                     <a href="#" class="btn btn-primary">Share Something</a>
                     <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -31,21 +38,45 @@
                       <li><a href="#">Activity</a></li>
                     </ul>
                 </div>
-                <div class="form-group">
-                      <textarea class="form-control" rows="3" placeholder="Ask for something you need..."></textarea>
-                      <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
-                </div> 
-            </div>
-            <div class="col-lg-3">
-                <div class="form-group" ng-controller="SearchParticipantsController">
-                    <label class="control-label">Search for People and Groups</label>
-                    <input class="form-control" id="focusedInput" 
-                           placeholder="Enter a name" type="text"
-                           ng-model="State.participantSearchString">
-                    <button ng-click="searchParticipants()">Search</button>
+                <ul class="nav nav-tabs">
+                    <li class="active" style="margin: 5px 5px -1px 0">
+                        <a href="" style="background-color:#F5F5F5">
+                            <span class="text-info">Request Something</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content" style="background-color:#F5F5F5; padding:0 7px 0 7px; border:solid 1px #DDDDDD; border-top: none">
+                    <br>
+                    <div class="form-group">
+                          <textarea class="form-control" rows="2" placeholder="Ask for something you need..."></textarea>
+                          <button type="submit" class="btn btn-default" style="margin-top: 5px">Post Request</button>
+                    </div> 
                 </div>
                 <hr>
-                <h5>People Near You</h5>
+                Here is where the feed is
+            </div>
+            <div class="col-lg-3">
+                <h4>Search for People / Groups</h4>
+                <div class="form-group" ng-controller="SearchParticipantsController">
+                    <div class="input-group">
+                        <input class="form-control" id="focusedInput" 
+                            placeholder="Enter a name" type="text"
+                            ng-model="State.participantSearchString">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" 
+                                    ng-click="searchParticipants()">Go</button>
+                        </span>
+                    </div>
+                </div>
+                <hr>
+                <h4>People Near You</h4>
+                <div ng-controller="NearbyPeopleController">
+                    <div ng-repeat="participant in nearbyPeopleCollection"  
+                         ng-if="State.activeParticipant.type=='person'"
+                         ng-include="'templates/_reusable/participant-infobox.html?o=1'"></div>
+                </div>
+                <hr>
+                <h4>Friends of Friends</h4>
                 <div ng-controller="NearbyPeopleController">
                     <div ng-repeat="participant in nearbyPeopleCollection"  
                          ng-if="State.activeParticipant.type=='person'"
