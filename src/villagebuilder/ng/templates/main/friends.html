@@ -7,4 +7,10 @@
         {{ friend.relationship_type }}
     </div>
     
+    <h3>Here are all your groups</h3>
+    <div ng-repeat="group in membershipCollection">
+        {{ group.group_id }} {{ group.title }} | 
+        {{ group.relationship_type }}
+    </div>
+    
 </div>

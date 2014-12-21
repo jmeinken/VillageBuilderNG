@@ -19,8 +19,8 @@ class ApiGroup extends BaseController {
         $userId = Auth::user()->id;
         $success = GroupModel::createGroup($userId);
         //if the transaction failed, return error
-        if (!$success) {
-            return Response::json('query failed', 500);
+        if ($success !== true) {
+            return Response::json($success, 500);
         }
         return Response::json(['message' => 'Group Created'], self::STATUS_OK);
     }

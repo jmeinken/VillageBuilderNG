@@ -99,8 +99,8 @@ app.controller('MapController', function($scope, $interval, $location, $state, S
         State.changedAddress = false;
         var selected = $scope.geocodeResults[$scope.addressIndex];
         requestObject.request.full_address = selected.formatted_address;
-        requestObject.request.latitude = selected.geometry.location.k;
-        requestObject.request.longitude = selected.geometry.location.B;
+        requestObject.request.latitude = selected.geometry.location.lat();
+        requestObject.request.longitude = selected.geometry.location.lng();
         requestObject.request.street = "";
         requestObject.request.neighborhood = "";
         requestObject.request.city = "";

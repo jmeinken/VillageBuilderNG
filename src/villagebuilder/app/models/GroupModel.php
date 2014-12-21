@@ -15,8 +15,9 @@ class GroupModel {
     
     //all values except code should be set in Input
     public static function createGroup($userId) {
+        $personId = DB::table('participant')->where('user_id', $userId)->pluck('participant_id');
         try {
-            DB::transaction(function() use ($userId) {
+            DB::transaction(function() use ($personId, $userId) {
                $participantId = DB::table('participant')->insertGetId(
                    array(
                        'user_id' => $userId 
@@ -52,10 +53,18 @@ class GroupModel {
                        'email' => Input::get('email')
                    )
                );
+               DB::table('group_member')->insert(
+                    array(
+                        'person_id' => $personId,
+                        'group_id' => $participantId,
+                        'watching_only' => 0,
+                        'approved' => 1
+                    )
+               );
            });
            return true;
         } catch(Exception $e) {
-           return false;
+           return $e;
         }
     }
     

@@ -93,37 +93,46 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
     
     //this can be more efficient
     $scope.friendStatus = function(friendId) {
-        //State.tester += friendId + " ";
-        var status = "none";
+        if (friendId == State.activeParticipant.participantId) {
+            return "self";
+        }
         for (var i=0; i<State.activeParticipant.friendCollection.length; i++) {
             if (friendId == State.activeParticipant.friendCollection[i].person_id) {
-                status = State.activeParticipant.friendCollection[i].relationship_type;
+                return State.activeParticipant.friendCollection[i].relationship_type;
             }
         }
-        return status;
+        return "none";
     }
     
     
     //look up whether a person belongs to current group
     $scope.memberStatus = function(personId) {
-        var status = "none";
-        for (var i=0; i<State.activeParticipant.memberCollection.length; i++) {
-            if (personId == State.activeParticipant.memberCollection[i].person_id) {
-                status = State.activeParticipant.memberCollection[i].relationship_type;
+        for (var participant in State.allParticipants) {
+            if (personId == State.allParticipants[participant].participantId) {
+                return "owner";
             }
         }
-        return status;
+        for (var i=0; i<State.activeParticipant.memberCollection.length; i++) {
+            if (personId == State.activeParticipant.memberCollection[i].person_id) {
+                return State.activeParticipant.memberCollection[i].relationship_type;
+            }
+        }
+        return "none";
     }
     
     //look up whether current person belongs to group
     $scope.membershipStatus = function(groupId) {
-        var status = "none";
-        for (var i=0; i<State.activeParticipant.membershipCollection.length; i++) {
-            if (groupId == State.activeParticipant.membershipCollection[i].group_id) {
-                status = State.activeParticipant.membershipCollection[i].relationship_type;
+        for (var participant in State.allParticipants) {
+            if (groupId == State.allParticipants[participant].participantId) {
+                return "owner";
             }
         }
-        return status;
+        for (var i=0; i<State.activeParticipant.membershipCollection.length; i++) {
+            if (groupId == State.activeParticipant.membershipCollection[i].group_id) {
+                return State.activeParticipant.membershipCollection[i].relationship_type;
+            }
+        }
+        return "none";
     }
     
     
