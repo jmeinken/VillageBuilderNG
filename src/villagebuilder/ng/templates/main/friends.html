@@ -1,13 +1,13 @@
-<div ng-controller="FriendsController">
+<div>
     
     
     <h3>Here are all your friends</h3>
-    <div ng-repeat="participant in friendCollection">
+    <div ng-repeat="participant in State.activeParticipant.friendCollection">
         <div ng-include="'templates/_reusable/participant-infobox.html?k=1'"></div>
     </div>
     
     <h3>Here are all your groups</h3>
-    <div ng-repeat="participant in membershipCollection">
+    <div ng-repeat="participant in State.activeParticipant.membershipCollection">
         <div ng-include="'templates/_reusable/participant-infobox.html?k=1'"></div>
     </div>
     

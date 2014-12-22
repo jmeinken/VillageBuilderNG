@@ -1,8 +1,8 @@
-<div ng-controller="MemberController">
+<div>
     
     
     <h3>Here are all your Members</h3>
-    <div ng-repeat="participant in memberCollection">
+    <div ng-repeat="participant in State.activeParticipant.memberCollection">
         <div ng-include="'templates/_reusable/participant-infobox.html?k=1'"></div>
     </div>
     

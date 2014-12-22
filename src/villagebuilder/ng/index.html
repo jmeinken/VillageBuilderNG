@@ -46,7 +46,7 @@
 <body ng-cloak  ng-controller="GlobalController"  ng-init="State.authenticate()">
 
     <code ng-show="true">
-        {{ State.debug }} | {{State.tester}} | {{ State.activeParticipant.membershipCollection }}
+        {{ State.debug }} | {{State.tester}} | {{ State.activeParticipant.friendCollection }}
     </code>
 
 <div ui-view></div>
@@ -90,8 +90,6 @@
 <!-- Friend Suggestion Controllers -->
 <script src="js/controllers/friend_suggestions/nearby_people_controller.js"></script>
 <script src="js/controllers/friend_suggestions/search_participants_controller.js"></script>
-<script src="js/controllers/friends_controller.js"></script>
-<script src="js/controllers/member_controller.js"></script>
 <!-- Debug/Testing -->
 <script src="js/controllers/debug/tester_controller.js"></script>
 
