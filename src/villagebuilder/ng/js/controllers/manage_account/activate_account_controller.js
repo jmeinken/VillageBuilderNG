@@ -1,5 +1,5 @@
 
-app.controller('ActivateAccountController', function($scope, $location, $http, $stateParams, Ajax, State) {
+app.controller('ActivateAccountController', function($scope, $location, $http, $stateParams, Ajax, State, ErrorHandler) {
     
     //user is not redirected even if they are logged in
     
@@ -16,18 +16,7 @@ app.controller('ActivateAccountController', function($scope, $location, $http, $
                 $location.path( '/info' );
             }).
             error(function(data, status, headers, config) {
-                State.debug = status;
-                if (data.hasOwnProperty('errorMessage')) {
-                    State.infoTitle = "Error";
-                    State.infoMessage = data.errorMessage;
-                } else {
-                    State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
-                    State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
-                }
-                State.infoLinks = [
-                    {"link" : "#/login", "description": "Go to Login Page"}
-                ];
-                $location.path( '/info' );
+                ErrorHandler.activationCodeError(data, status);
             });
     }
 

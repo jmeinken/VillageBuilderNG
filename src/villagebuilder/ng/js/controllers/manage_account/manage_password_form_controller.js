@@ -1,5 +1,5 @@
 
-app.controller('ManagePasswordFormController', function($scope, $location, $http, Ajax, State, Request, Utilities) {
+app.controller('ManagePasswordFormController', function($scope, $location, $http, Ajax, State, Request, Utilities, ErrorHandler) {
     
     var form = 'password';
     var getUrl = Ajax.GET_PASSWORD;
@@ -52,22 +52,7 @@ app.controller('ManagePasswordFormController', function($scope, $location, $http
                 State.debug = data;
             }).
             error(function(data, status, headers, config) {
-                State.debug = status;
-                if (data.hasOwnProperty('inputErrors'))  {
-                    Request.password.inputErrors = data.inputErrors;
-                }
-                if (data.hasOwnProperty('errorMessage')) {
-                    Request.password.formError = data.errorMessage;
-                }
-                if (!data.hasOwnProperty('errorMessage') && !data.hasOwnProperty('inputErrors')) {
-                    State.debug = data;
-                    State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
-                    State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
-                    State.infoLinks = [
-                        {"link" : "#/home", "description": "Return to Home Page"}
-                    ];
-                    $location.path( '/info' );
-                }
+                ErrorHandler.formSubmission(data, status, 'password');
             });
     }
     

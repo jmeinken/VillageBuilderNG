@@ -20,14 +20,6 @@ app.controller('AlertController', function($scope, $state, $http, $timeout, Ajax
                         }
                     }
                 }
-                
-                /*
-                for (var i = 0; i<data[State.activeParticipantId].length; i++) {
-                    if (data[State.activeParticipantId][i].viewed == 0) {
-                        $scope.newAlertCount++;
-                    }
-                }
-                */
             }).
             error(function(data, status, headers, config) {
                 State.debug = data;

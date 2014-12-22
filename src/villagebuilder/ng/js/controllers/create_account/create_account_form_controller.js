@@ -1,5 +1,5 @@
 
-app.controller('CreateAccountFormController', function($scope, $location, $http, $state, Ajax, State, Request) {
+app.controller('CreateAccountFormController', function($scope, $location, $http, $state, Ajax, State, Request, ErrorHandler) {
     
     var form = 'createAccount';
     var getUrl = Ajax.GET_ACCOUNT;
@@ -70,29 +70,7 @@ app.controller('CreateAccountFormController', function($scope, $location, $http,
                 $location.path( '/info' );
             }).
             error(function(data, status, headers, config) {
-                State.debug = status;
-                if (data.hasOwnProperty('inputErrors'))  {
-                    Request.createAccount.inputErrors = data.inputErrors;
-                    if ( data.inputErrors.hasOwnProperty('email') ||
-                         data.inputErrors.hasOwnProperty('password') ||
-                         data.inputErrors.hasOwnProperty('password_again') ||
-                         data.inputErrors.hasOwnProperty('first_name') ||
-                         data.inputErrors.hasOwnProperty('last_name') )
-                    {
-                        //$location.path( '/create-account/account-info' );
-                        $state.go($scope.accountInfoView);
-                    }
-                } else if (data.hasOwnProperty('errorMessage')) {
-                    Request.createAccount.formError = data.errorMessage;
-                } else {
-                    State.debug = data;
-                    State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
-                    State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
-                    State.infoLinks = [
-                        {"link" : "#/home", "description": "Return to Home Page"}
-                    ];
-                    $location.path( '/info' );
-                }
+                ErrorHandler.createAccountFormSubmission(data,status,'createAccount');
             });
     }
     

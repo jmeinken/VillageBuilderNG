@@ -12,7 +12,7 @@ app.controller('SearchParticipantsController', function($scope, $http, $state, A
                 $state.go('main.participant-search-results');
             }).
             error(function(data, status, headers, config) {
-                State.debug = data;
+                State.debug = "search participants query failed";
             });
     }
    

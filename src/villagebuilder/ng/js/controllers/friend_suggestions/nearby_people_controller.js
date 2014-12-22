@@ -10,7 +10,7 @@ app.controller('NearbyPeopleController', function($scope, $http, Ajax, State) {
                         $scope.nearbyPeopleCollection = data;
                     }).
                     error(function(data, status, headers, config) {
-                        State.debug = "it was this";
+                        State.debug = "nearby people query failed";
                     });
         }
     });

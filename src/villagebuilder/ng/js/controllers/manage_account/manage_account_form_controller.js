@@ -1,5 +1,5 @@
 
-app.controller('ManageAccountFormController', function($scope, $location, $timeout, $http, Ajax, State, Request) {
+app.controller('ManageAccountFormController', function($scope, $location, $timeout, $http, Ajax, State, Request, ErrorHandler) {
     
     var form = 'account';
     if (State.activeParticipant.type == 'person') {
@@ -103,24 +103,7 @@ app.controller('ManageAccountFormController', function($scope, $location, $timeo
                 State.authenticate();
             }).
             error(function(data, status, headers, config) {
-                State.debug = status;
-                if (data.hasOwnProperty('inputErrors'))  {
-                    Request.account.inputErrors = data.inputErrors;
-                }
-                else if (data.hasOwnProperty('errorMessage')) {
-                    Request.account.formError = data.errorMessage;
-                } else if (data=="Unauthorized") {
-                    State.intendedLocation = "main/manage-account";
-                    State.authenticate();
-                } else {
-                    State.debug = data;
-                    State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
-                    State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
-                    State.infoLinks = [
-                        {"link" : "#/home", "description": "Return to Home Page"}
-                    ];
-                    $location.path( '/info' );
-                }
+                ErrorHandler.formSubmission(data, status, 'account');
             });
     }
 

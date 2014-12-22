@@ -1,4 +1,4 @@
-app.controller('LoginFormController', function($scope, $location, $http, Ajax, State, Request, Utilities) {
+app.controller('LoginFormController', function($scope, $location, $http, Ajax, State, Request, ErrorHandler, Utilities) {
 
     var form = 'login';
     var getUrl = Ajax.GET_LOG_IN;
@@ -36,23 +36,7 @@ app.controller('LoginFormController', function($scope, $location, $http, Ajax, S
                 State.authenticate();
             }).
             error(function(data, status, headers, config) {
-                State.debug = status;
-                if (data.hasOwnProperty('inputErrors'))  {
-                    Request.login.inputErrors = data.inputErrors;
-                } else if (data.hasOwnProperty('errorMessage')) {
-                    Request.login.formError = data.errorMessage;
-                }
-                else if (data == "Unauthorized") {
-                    State.authenticate();
-                } else {
-                    State.debug = data;
-                    State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
-                    State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
-                    State.infoLinks = [
-                        {"link" : "#/home", "description": "Return to Home Page"}
-                    ];
-                    $location.path( '/info' );
-                }
+                ErrorHandler.formSubmission(data, status, 'login');
             });
     }
 

@@ -1,5 +1,5 @@
 
-app.controller('ResetPasswordFormController', function($scope, $location, $http, Ajax, State, Request, Utilities) {
+app.controller('ResetPasswordFormController', function($scope, $location, $http, Ajax, State, Request, Utilities, ErrorHandler) {
     
     var form = 'resetPassword';
     var getUrl = Ajax.GET_RESET_PASSWORD;
@@ -40,19 +40,7 @@ app.controller('ResetPasswordFormController', function($scope, $location, $http,
                 State.debug = data;
             }).
             error(function(data, status, headers, config) {
-                State.debug = status;
-                if (status == 400)  {  //bad request (validation failed)
-                    Request.resetPassword.inputErrors = data;
-                } else if (data.hasOwnProperty('errorMessage')) {  //resource not found (record missing)
-                    Request.resetPassword.formError = data.errorMessage;
-                } else {  // token mismatch (500), unauthorized (401), etc.
-                    State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
-                    State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
-                    State.infoLinks = [
-                        {"link" : "#/home", "description": "Return to Home Page"}
-                    ];
-                    $location.path( '/info' );
-                }
+                ErrorHandler.formSubmission(data, status, 'resetPassword');
             });
     }
     

@@ -1,5 +1,5 @@
 
-app.controller('CreateGroupFormController', function($scope, $location, $http, $state, Ajax, State, Request) {
+app.controller('CreateGroupFormController', function($scope, $location, $http, $state, Ajax, State, Request, ErrorHandler) {
     
     var form = 'createGroup';
     var getUrl = Ajax.GET_GROUP;
@@ -66,29 +66,7 @@ app.controller('CreateGroupFormController', function($scope, $location, $http, $
                 $location.path( '/info' );
             }).
             error(function(data, status, headers, config) {
-                State.debug = status;
-                if (data.hasOwnProperty('inputErrors'))  {
-                    Request.createAccount.inputErrors = data.inputErrors;
-                    if ( data.inputErrors.hasOwnProperty('email') ||
-                         data.inputErrors.hasOwnProperty('title') ||
-                         data.inputErrors.hasOwnProperty('description') )
-                    {
-                        //$location.path( '/create-account/account-info' );
-                        $state.go($scope.accountInfoView);
-                    }
-                }
-                if (data.hasOwnProperty('errorMessage')) {
-                    Request.createAccount.formError = data.errorMessage;
-                }
-                if (!data.hasOwnProperty('errorMessage') && !data.hasOwnProperty('inputErrors')) {
-                    State.debug = data;
-                    State.infoTitle = Ajax.ERROR_GENERAL_TITLE;
-                    State.infoMessage = Ajax.ERROR_GENERAL_DESCRIPTION;
-                    State.infoLinks = [
-                        {"link" : "#/home", "description": "Return to Home Page"}
-                    ];
-                    $location.path( '/info' );
-                }
+                ErrorHandler.createGroupFormSubmission(data, status, 'createGroup');
             });
     }
     
