@@ -12,3 +12,13 @@
 <div ng-repeat="participant in State.participantSearchResults">
     <div ng-include="'templates/_reusable/participant-infobox.html?k=1'"></div>
 </div>
+
+Didn't find them?  You can share with friends who are not already on VillageBuilder
+using their email address.  They will only receive emails if you share items
+with them and are not required to create an account to see your items.
+
+<form name="form1" ng-controller="CreateGuestFormController" novalidate
+    ng-init="loadForm()">
+   <div ng-include="'templates/_reusable/generic-form.html?q=2'"></div>
+   <button ng-click="validateForm(form1.$valid)">CreateGuest</button>
+</form>

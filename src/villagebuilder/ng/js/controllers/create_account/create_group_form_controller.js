@@ -58,6 +58,7 @@ app.controller('CreateGroupFormController', function($scope, $location, $http, $
         $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
                 State.debug = status;
+                State.authenticate();
                 State.infoTitle = "Group Created";
                 State.infoMessage = "Your group was successfully created.";
                 State.infoLinks = [

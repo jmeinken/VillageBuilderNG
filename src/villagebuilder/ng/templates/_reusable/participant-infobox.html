@@ -177,7 +177,10 @@
     </div>
     <div class="vcenter-me" style="margin-left:51px">
         <span class="text-warning">
-            <strong>{{participant.first_name}} {{participant.last_name}}</strong>
+            <strong>
+                {{participant.first_name}} {{participant.last_name}}
+                <span ng-if="memberStatus(participant.id)=='owner'">(group owner)</span>
+            </strong>
         </span>
         <br>
         <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>

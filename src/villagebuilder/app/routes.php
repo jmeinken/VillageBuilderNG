@@ -1,39 +1,14 @@
 <?php
 
+Route::post('api/post-guest', array(
+    'as' => 'api-post-guest',
+    'uses' => 'ApiGuest@postGuest'
+));
+Route::get('api/get-guest', array(
+    'as' => 'api-get-guest',
+    'uses' => 'ApiGuest@getGuest'
+));
 
-
-Route::post('api/post-friendship', array(
-    'as' => 'api-post-friendship',
-    'uses' => 'ApiFriendship@postFriendship'
-));
-Route::get('api/get-collection-friendship', array(
-    'as' => 'api-get-collection-friendship',
-    'uses' => 'ApiFriendship@getCollectionFriendship'
-));
-Route::post('api/delete-friendship', array(
-    'as' => 'api-delete-friendship',
-    'uses' => 'ApiFriendship@deleteFriendship'
-));
-Route::get('api/get-collection-alert', array(
-    'as' => 'api-get-collection-alert',
-    'uses' => 'ApiAlert@getCollectionAlert'
-));
-Route::post('api/post-reset-unviewed-alert-count', array(
-    'as' => 'api-post-reset-unviewed-alert-count',
-    'uses' => 'ApiAlert@postResetUnviewedAlertCount'
-));
-Route::get('api/get-collection-search-participants', array(
-    'as' => 'api-get-collection-search-participants',
-    'uses' => 'ApiFriendship@getCollectionSearchParticipants'
-));
-Route::post('api/post-group-membership', array(
-    'as' => 'api-post-group-membership',
-    'uses' => 'ApiGroupMember@postMembership'
-));
-Route::post('api/delete-group-membership', array(
-    'as' => 'api-delete-group-membership',
-    'uses' => 'ApiGroupMember@deleteMembership'
-));
 
 
 
@@ -132,6 +107,38 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('api/get-collection-nearby-people', array(
         'as' => 'api-get-collection-nearby-people',
         'uses' => 'ApiFriendship@getCollectionNearbyPeople'
+    ));
+    Route::post('api/post-friendship', array(
+        'as' => 'api-post-friendship',
+        'uses' => 'ApiFriendship@postFriendship'
+    ));
+    Route::get('api/get-collection-friendship', array(
+        'as' => 'api-get-collection-friendship',
+        'uses' => 'ApiFriendship@getCollectionFriendship'
+    ));
+    Route::post('api/delete-friendship', array(
+        'as' => 'api-delete-friendship',
+        'uses' => 'ApiFriendship@deleteFriendship'
+    ));
+    Route::get('api/get-collection-alert', array(
+        'as' => 'api-get-collection-alert',
+        'uses' => 'ApiAlert@getCollectionAlert'
+    ));
+    Route::post('api/post-reset-unviewed-alert-count', array(
+        'as' => 'api-post-reset-unviewed-alert-count',
+        'uses' => 'ApiAlert@postResetUnviewedAlertCount'
+    ));
+    Route::get('api/get-collection-search-participants', array(
+        'as' => 'api-get-collection-search-participants',
+        'uses' => 'ApiFriendship@getCollectionSearchParticipants'
+    ));
+    Route::post('api/post-group-membership', array(
+        'as' => 'api-post-group-membership',
+        'uses' => 'ApiGroupMember@postMembership'
+    ));
+    Route::post('api/delete-group-membership', array(
+        'as' => 'api-delete-group-membership',
+        'uses' => 'ApiGroupMember@deleteMembership'
     ));
 
     

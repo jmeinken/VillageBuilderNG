@@ -35,6 +35,12 @@ app.service("Ajax", function() {
     this.DELETE_GROUP = root + 'delete-group';
     
     /*
+     * Guest API
+     */
+    this.GET_GUEST = root + 'get-guest';
+    this.POST_GUEST = root + 'post-guest';
+    
+    /*
      * Group Member API
      */
     this.POST_GROUP_MEMBERSHIP = root + 'post-group-membership';
