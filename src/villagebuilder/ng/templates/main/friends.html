@@ -6,9 +6,36 @@
         <div ng-include="'templates/_reusable/participant-infobox.html?k=1'"></div>
     </div>
     
+    <hr>
+    
     <h3>Here are all your groups</h3>
     <div ng-repeat="participant in State.activeParticipant.membershipCollection">
         <div ng-include="'templates/_reusable/participant-infobox.html?k=1'"></div>
     </div>
     
 </div>
+
+<hr>
+
+Search for friends:
+<div class="form-group" ng-controller="SearchParticipantsController">
+    <div class="input-group">
+        <input class="form-control" id="focusedInput" 
+            placeholder="Enter a name" type="text"
+            ng-model="State.participantSearchString">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button" 
+                    ng-click="searchParticipants()">Go</button>
+        </span>
+    </div>
+</div>
+
+<hr>
+
+Add friends using their email address:
+<form name="form1" ng-controller="CreateGuestFormController" novalidate
+    ng-init="loadForm()">
+   <div ng-include="'templates/_reusable/generic-form.html?q=2'"></div>
+   
+   <button ng-click="validateForm(form1.$valid)">CreateGuest</button>
+</form>

@@ -8,6 +8,12 @@ class ApiAlert extends BaseController {
     const STATUS_NOT_FOUND = 404;
     const STATUS_INTERNAL_SERVER_ERROR = 500;
     
+    /**
+     * Returns all alerts for all participants associated with the provided 
+     * user.  
+     * 
+     * @return type
+     */
     public function getCollectionAlert() {
         if (!Input::has('user_id')) {
             return Response::json(['errorMessage' => 'Query missing required value'], 
@@ -22,6 +28,12 @@ class ApiAlert extends BaseController {
         return Response::json($result, self::STATUS_OK);
     }
     
+    /**
+     * Marks all unviewed alerts associated with the user as viewed.
+     * (affects all participants for user)
+     * 
+     * @return type
+     */
     public function postResetUnviewedAlertCount() {
         if (!Input::has('user_id')) {
             return Response::json(['errorMessage' => 'Query missing required value'], 

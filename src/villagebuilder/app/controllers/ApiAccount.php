@@ -1,5 +1,14 @@
 <?php
 
+
+/**
+ * An account corresponds to a single set of login credentials on the site.
+ * For historic reasons, the table for account info is called 'Users'.
+ * 
+ * The definition of Account is a little confused.  Some of these methods are
+ * for USER accounts, others are specifically for PERSON accounts.
+ * 
+ */
 class ApiAccount extends BaseController {
     
     const STATUS_OK = 200;
@@ -8,7 +17,15 @@ class ApiAccount extends BaseController {
     const STATUS_NOT_FOUND = 404;
     const STATUS_INTERNAL_SERVER_ERROR = 500;
     
-   
+   /**
+    * Creates an account for a PERSON.  Account is initialized as inactive, and
+    * an email is sent to activate.
+    * 
+    * Returns errors if form data doesn't validate, email is already associated 
+    * with an account or attempt to create account fails.
+    * 
+    * @return type
+    */
     public function postAccount() {
         //validate input
         $validator = Validator::make( Input::all(), $this->postAccountValidator() );
@@ -42,9 +59,13 @@ class ApiAccount extends BaseController {
     }
     
 
-    
+    /**
+     * Accepts two image files ('thumb' and 'large').  Saves these files to 
+     * disk and returns the file path to the files.
+     * 
+     * @return json string
+     */
     public function postUserImage() {
-        
         //return Response::json(['message' => $ct], self::STATUS_OK);
         if (Input::hasFile('thumb') && Input::hasFile('large')) {
             $ct = $this->getNextNumber(Config::get('constants.profilePicFilePath') . 'count.txt');
@@ -79,6 +100,12 @@ class ApiAccount extends BaseController {
         return $count;
     }
     
+    /**
+     * Returns json form required for updating password.  For security, data
+     * fields are always empty.
+     * 
+     * @return type
+     */
     public function getPassword() {
         $response = [
             'values' => $this->getPasswordValues(),
@@ -87,6 +114,11 @@ class ApiAccount extends BaseController {
         return Response::json($response, self::STATUS_OK);
     }
     
+    /**
+     * Accepts json form with password data.
+     * 
+     * @return type
+     */
     public function putPassword() {
         $validator = Validator::make(Input::all(), array(
             'old_password' => 'required',
@@ -113,6 +145,11 @@ class ApiAccount extends BaseController {
         return Response::json(['error' => 'query failed'], self::STATUS_INTERNAL_SERVER_ERROR); 
     }
     
+    /**
+     * Updates a PERSON account.
+     * 
+     * @return type
+     */
     public function putAccount() {
         //validate input
         $validator = Validator::make( Input::all(), $this->putAccountValidator() );
@@ -130,7 +167,14 @@ class ApiAccount extends BaseController {
         return Response::json(['user' => Input::get('email')], self::STATUS_OK);
     }
     
-       
+    /**
+     * Returns JSON form used to create or update a person account.  If a 
+     * participant ID is provided, will contain current account values,
+     * otherwise empty.  To modify account password, use getPassword method
+     * instead.
+     * 
+     * @return type
+     */   
     public function getAccount() {
         if (Input::has('participant_id')) {
             if (Input::get('participant_id') != Auth::user()->id) {
@@ -149,7 +193,12 @@ class ApiAccount extends BaseController {
         return Response::json($response, self::STATUS_OK);
     }
     
-      
+    /**
+     * Deletes a USER account for provided user id.  Any associated person,
+     * guest or group will also be deleted.
+     * 
+     * @return type
+     */  
     public function deleteAccount() {
         if (!Input::has('user_id')) {
             return Response::json(['errorMessage' => "No account selected for deletion."], 

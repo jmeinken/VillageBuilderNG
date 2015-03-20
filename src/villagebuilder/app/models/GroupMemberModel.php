@@ -1,7 +1,23 @@
 <?php
 
+/**
+ * Handles relationships between people and groups.  Guests can not be members
+ * of groups.
+ * 
+ * There are two flags associated with a group membership: watching_only means
+ * a person can view a groups activity but is not an official member; 
+ * approved means that the group owner has accepted a person as a member.
+ */
 class GroupMemberModel {
     
+    /**
+     * Creates an unapproved group membership.
+     * 
+     * @param type $personId
+     * @param type $groupId
+     * @param type $watchingOnly
+     * @return type
+     */
     public static function createMembership($personId, $groupId, $watchingOnly) {
         return DB::table('group_member')->insert(
             array(
@@ -18,6 +34,14 @@ class GroupMemberModel {
                 ->where('group_id', $groupId)->delete();
     }
     
+    /**
+     * Switches a person's membership status to approved.  Returns false if
+     * fails.  If a person is already approved, returns true.
+     * 
+     * @param type $personId
+     * @param type $groupId
+     * @return type
+     */
     public static function approveMembership($personId, $groupId) {
         return DB::table('group_member')->update(
             array(
@@ -27,6 +51,14 @@ class GroupMemberModel {
             ->where('group_id', $groupId);
     }
     
+    /**
+     * Used to modify the watching_only status of a group member.
+     * 
+     * @param type $personId
+     * @param type $groupId
+     * @param type $watchingOnly
+     * @return type
+     */
     public static function alterMembership($personId, $groupId, $watchingOnly) {
         return DB::table('group_member')->update(
             array(
@@ -36,6 +68,14 @@ class GroupMemberModel {
             ->where('group_id', $groupId);
     }
     
+    /**
+     * Returns group information (id, title, small pic, street, neighborhood,
+     * city) for all groups privided person belongs to.  Also specifies
+     * relationship_type as "member", "watcher" or "unconfirmed"
+     * 
+     * @param type $personId
+     * @return type
+     */
     public static function getMemberships($personId) {
         $result1 = DB::select("SELECT `group`.group_id, `group`.title, member.pic_small, " .
                 "member.street, member.neighborhood, member.city, " .
@@ -74,7 +114,14 @@ class GroupMemberModel {
     }
 
 
-    
+    /**
+     * Returns person information (id, name, pic, street, neighborhood, city)
+     * for all people associated with provided group.  Also gives 
+     * relationship_type as 'member', 'watcher' or 'unconfirmed'
+     * 
+     * @param type $groupId
+     * @return type
+     */
     public static function getMembers($groupId) {
         $result1 = DB::select("SELECT person.person_id, person.first_name, person.last_name, member.pic_small, " .
                 "member.street, member.neighborhood, member.city, " .
@@ -112,6 +159,13 @@ class GroupMemberModel {
         return $result;
     }
 
+    /**
+     * For provided group, returns data about people who are either watching
+     * or haven't been approved (or both).
+     * 
+     * @param type $groupId
+     * @return type
+     */
     public static function getWatchers($groupId) {
         $result = DB::table('group_member')
                 ->join('person', 'person.person_id', '=', 'group_member.person_id')
@@ -134,91 +188,7 @@ class GroupMemberModel {
         return $result;
     }
     
-    public static function getFriendCount($personId) {
-        return DB::table('friendship')
-                ->where('person_id', $personId)
-                ->count();
-    }
-    
-    public static function getFriendRequests($personId) {
-        return DB::select('SELECT person_id'.
-                ' FROM friendships'.
-                ' WHERE friend_id = ?'.
-                ' AND person_id NOT IN (SELECT friend_id'.
-                       ' FROM friendships'.
-                       ' WHERE person_id = ?)'
-                , array($personId, $personId));
-    }
-    
-    public static function getNearbyPeople($personId) {
-        //also need to exclude current friends
-        $result =  DB::select('SELECT F.member_id, person.first_name, person.last_name, ' .
-                'F.street, F.neighborhood, F.city, F.pic_small, ' .
-                'SQRT(POW(P.longitude-F.longitude,2)+POW(P.latitude-F.latitude,2)) AS distance ' .
-                'FROM member AS P, member AS F INNER JOIN person on F.member_id = person.person_id ' .
-                'WHERE P.member_id = ? AND F.member_id <> ? ' .
-                'ORDER BY distance LIMIT 100 '
-                , array($personId, $personId));
-        foreach($result as $row) {
-            if ($row->pic_small) {
-                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
-                        $row->pic_small;
-            } else {
-                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
-            }
-        }
-        return $result;
 
-    }
-    
-    public static function searchParticipants($searchString) {
-        $searchArray = explode(" ", $searchString);
-        //$sql  = "SELECT member.member_id, person.first_name, person.last_name, ";
-        //$sql .= "member.street, member.neighborhood, member.city, member.pic_small ";
-        //$sql .= "FROM member INNER JOIN person on member.member_id = person.person_id ";
-        //$sql .= "WHERE ";
-        $result1 = DB::table('member')
-                ->join('person', 'person.person_id', '=', 'member.member_id')
-                ->whereIn('person.first_name', $searchArray)
-                ->whereIn('person.last_name', $searchArray)
-                ->get();
-        foreach($result1 as $row) {
-            $row->type = "person";
-        }
-        /*
-        $result2 = DB::table('member')
-                ->join('person', 'person.person_id', '=', 'member.member_id')
-                ->whereIn('person.first_name', $searchArray)
-                ->orWhere(function($query)
-                {
-                    $query->whereIn('person.last_name', $searchArray);
-                })
-                ->get();
-         * 
-         */
-        //group search needs to be more flexible
-        $result3 = DB::table('member')
-                ->join('group', 'group.group_id', '=', 'member.member_id')
-                ->where('group.title', "=", $searchString)
-                ->get();
-        foreach($result3 as $row) {
-            $row->type = "group";
-        }
-        $result = array_merge($result1, $result3);
-        foreach($result as $row) {
-            if ($row->pic_small) {
-                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
-                        $row->pic_small;
-            } else {
-                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
-            }
-        }
-        return $result;
-    }
-    
-    public static function getFriendsOfFriends($personId) {
-        
-    }
         
     
     

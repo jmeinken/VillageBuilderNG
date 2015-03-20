@@ -2,6 +2,13 @@
 
 class GroupModel {
     
+    /**
+     * Check if a group exists using any unique field in the group table
+     * 
+     * @param type $field
+     * @param type $value
+     * @return boolean
+     */
     public static function groupExists($field, $value) {
         $group = DB::table('group')
             ->where($field, '=', $value)
@@ -9,11 +16,24 @@ class GroupModel {
         return (is_null($group) ? false : true);
     }
     
+    /**
+     * Delete a group using its id.
+     * 
+     * @param type $participantId
+     * @return type
+     */
     public static function deleteGroup($participantId) {
         return DB::table('participant')->where('participant_id', $participantId)->delete();
     }
     
-    //all values except code should be set in Input
+
+    /**
+     * Create a new group associated with the provided user.  All values 
+     * should be set in input.
+     * 
+     * @param type $userId
+     * @return boolean|\Exception
+     */
     public static function createGroup($userId) {
         $personId = DB::table('participant')->where('user_id', $userId)->pluck('participant_id');
         try {
@@ -69,7 +89,12 @@ class GroupModel {
     }
     
     
-    //all values except code should be set in Input
+    /**
+     * Update an existing group.  All values should be set in input.
+     * 
+     * @param type $userId
+     * @return boolean|\Exception
+     */
     public static function updateGroup() {
         try {
             DB::transaction(function() {

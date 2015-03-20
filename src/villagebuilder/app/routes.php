@@ -8,6 +8,10 @@ Route::get('api/get-guest', array(
     'as' => 'api-get-guest',
     'uses' => 'ApiGuest@getGuest'
 ));
+Route::post('api/post-friendship-using-email', array(
+    'as' => 'api-post-friendship-using-email',
+    'uses' => 'ApiFriendship@postFriendshipUsingEmail'
+));
 
 
 

@@ -3,7 +3,8 @@ app.controller('CreateGuestFormController', function($scope, $location, $http, $
     
     var form = 'createGuest';
     var getUrl = Ajax.GET_GUEST;
-    var postUrl = Ajax.POST_GUEST;
+    //var postUrl = Ajax.POST_GUEST;
+    var postUrl = Ajax.POST_FRIENDSHIP_USING_EMAIL;
     
     $scope.request = {};
     $scope.inputFields = [];
@@ -41,10 +42,11 @@ app.controller('CreateGuestFormController', function($scope, $location, $http, $
         Request[form].formError = "";
         $http.post(postUrl, Request[form].request).
             success(function(data, status, headers, config) {
-                State.debug = status;
+                State.debug = data;
             }).
             error(function(data, status, headers, config) {
                 ErrorHandler.formSubmission(data, status, 'createGuest');
+                State.debug = data;
             });
     }
 

@@ -9,7 +9,14 @@ class ApiAuthentication extends BaseController {
     const STATUS_INTERNAL_SERVER_ERROR = 500;
     
     
-       
+    /**
+     * Returns 'logged_in' = true or false
+     * If true, also returns useful initial data.  For person, returns: type, 
+     * id, name, pics, friend collection, membership collection.  
+     * For groups, returns type, id, name, pics, member collection
+     * 
+     * @return type
+     */   
     public function checkLoginStatus() {
         if (Auth::check()) {
             $response = [];
@@ -80,6 +87,11 @@ class ApiAuthentication extends BaseController {
         }
     }
     
+    /**
+     * Returns JSON string for login form.
+     * 
+     * @return type
+     */
     public function getLogIn() {
         $values = [];
         $values['email'] = "thebellsofohio@hotmail.com";
@@ -115,7 +127,12 @@ class ApiAuthentication extends BaseController {
         return Response::json($response, self::STATUS_OK);
     }
     
-    
+    /**
+     * accepts JSON login string.  Returns user id and user email if login
+     * successful.
+     * 
+     * @return type
+     */
     public function postLogIn() {
         $validator = Validator::make(Input::all(),
             array(
@@ -145,11 +162,22 @@ class ApiAuthentication extends BaseController {
         return Response::json(['errorMessage' => 'Unable to log in.  Check your email and password.'], self::STATUS_NOT_FOUND);
     }
     
+    /**
+     * logs out the current user
+     * 
+     * @return type
+     */
     public function postLogOut() {
         Auth::logout();
         return Response::json(['message' => 'logged out'], self::STATUS_OK);
     }
     
+    /**
+     * Accounts are initially created as inactivated.  This will check for 
+     * the appropriate activation code and activate the account.
+     * 
+     * @return type
+     */
     public function postActivateAccount() {
         //validate input code
         $validator = Validator::make( Input::all(), array(
@@ -173,6 +201,12 @@ class ApiAuthentication extends BaseController {
         return Response::json(['error' => "unknown error"], self::STATUS_INTERNAL_SERVER_ERROR);
     }
     
+    /**
+     * Activates the temporary password during a password reset (for forgot 
+     * password)     * 
+     * 
+     * @return type
+     */
     public function postActivateResetPassword() {
         //validate input code
         $validator = Validator::make( Input::all(), array(
@@ -197,6 +231,11 @@ class ApiAuthentication extends BaseController {
         return Response::json(['error' => "unknown error"], self::STATUS_INTERNAL_SERVER_ERROR);
     }
     
+    /**
+     * Returns the password reset (forgot password) form
+     * 
+     * @return type
+     */
     public function getResetPassword() {
         $response = [
             'values' => $this->getResetPasswordValues(),
@@ -205,6 +244,12 @@ class ApiAuthentication extends BaseController {
         return Response::json($response, self::STATUS_OK);
     }
     
+    /**
+     * Sends an email for resetting the password.  The password doesn't actually
+     * get reset until postActivateResetPassword is called.
+     * 
+     * @return type
+     */
     public function postResetPassword() {
         $validator = Validator::make(Input::all(), array(
             'email' => 'required|email'

@@ -13,6 +13,11 @@ class ApiGroupMember extends BaseController {
     const STATUS_INTERNAL_SERVER_ERROR = 500;
     
    
+    /**
+     * Creates an inactive membership and registers an alert 
+     * 
+     * @return type
+     */
     public function postMembership() {
         if (!Input::has('participant_id') || !Input::has('group_id') 
             || !Input::has('watching_only')) {
@@ -49,10 +54,16 @@ class ApiGroupMember extends BaseController {
         return Response::json(['message' => 'Group Membership deleted'], self::STATUS_OK);
     }
     
+    /**
+     * Changed a membership from inactive to active
+     */
     public function putApproveMembership() {
         
     }
     
+    /*
+     * changes a membership type (watching only vs full member)
+     */
     public function putChangeMembershipType() {
         
     }

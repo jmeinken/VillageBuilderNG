@@ -15,12 +15,19 @@ class ApiGuest extends BaseController {
         if ($validator->fails()) {
             return Response::json(['inputErrors' => $validator->messages()], self::STATUS_BAD_REQUEST);
         }
-        //if email belongs to a member, reject
-        
-        //if email belongs to a guest, simply create person-guest relationship
-        
-        //insert record
         $requesterId = Auth::user()->id;
+        //if email belongs to a member, reject
+        $person = AccountModel::getAccountBasic('email', Input::get('email'));
+        if ($person) {
+            return Response::json(['errorMessage' => 'person is already member','participantInfo' => $person], self::STATUS_BAD_REQUEST);
+        }
+        //if email belongs to a guest, simply create person-guest relationship
+        $guest = GuestModel::getGuest('email', Input::get('email'));
+        if ($guest) {
+            GuestModel::createPersonGuestFriendship($requesterId, $guest->guest_id);
+            return Response::json(['message' => 'Friendship created to existing guest.'], self::STATUS_OK);
+        }
+        //insert record
         $code = str_random(60);
         $success = GuestModel::createGuest(Input::get('email'),
                 Input::get('first_name'),
@@ -32,7 +39,7 @@ class ApiGuest extends BaseController {
         if ($success !== true) {
             return Response::json($success, 500);
         }
-        return Response::json(['message' => 'Group Created'], self::STATUS_OK);
+        return Response::json(['message' => 'Guest Created'], self::STATUS_OK);
     }
     
     public function getGuest() {
@@ -71,7 +78,7 @@ class ApiGuest extends BaseController {
             'type' => 'string', 
             'input_type' => 'text',
             'name' => 'First Name', 
-            'required'=>false
+            'required'=>true
         ];
         $meta['last_name'] = [
             'type' => 'string', 

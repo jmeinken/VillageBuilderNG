@@ -1,6 +1,15 @@
 <?php
 
 class AlertModel {
+    
+    /**
+     * Register an event with the alerts class.  The method will decided what
+     * is the appropriate action for the event.
+     * Currently, new friendships and new group-memberships should be registered.
+     * 
+     * @param type $table
+     * @param type $pK
+     */
     public static function registerEvent($table, $pK) {
         $json = json_encode(
             array(
@@ -50,6 +59,13 @@ class AlertModel {
         
     }
     
+    /**
+     * Get all alerts for a particular participant.  Alerts can be for people, 
+     * groups or guests.
+     * 
+     * @param type $participantId
+     * @return type
+     */
     public static function getAlerts($participantId) {
         $alerts = DB::table('alert')
             ->where('participant_id', '=', $participantId)
@@ -124,6 +140,12 @@ class AlertModel {
      *
      */
     
+    /** 
+     * Marks all unviewed alerts for all participants associated with user as 
+     * viewed.
+     * 
+     * @param type $userId
+     */
     public static function markAlertsViewed($userId) {
         $result = DB::update('UPDATE alert SET viewed = 1 ' . 
                 'WHERE participant_id IN (SELECT participant_id FROM participant ' . 

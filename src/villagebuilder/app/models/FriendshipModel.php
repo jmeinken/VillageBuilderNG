@@ -1,7 +1,19 @@
 <?php
 
+/**
+ * This class handles relationships between people.  It does not handle 
+ * relationships between people and guests or relationships beween people
+ * and groups.
+ */
 class FriendshipModel {
     
+    /**
+     * Creates friendship between two people (not guest friendship)
+     * 
+     * @param type $personId
+     * @param type $friendId
+     * @return type
+     */
     public static function createFriendship($personId, $friendId) {
         return DB::table('friendship')->insert(
             array(
@@ -11,11 +23,59 @@ class FriendshipModel {
         );
     }
     
+    /**
+     * Delete a friendship (not guest friendship).  Returns true whether 
+     * relationship existed or not.
+     * 
+     * @param type $personId
+     * @param type $friendId
+     * @return type
+     */
     public static function deleteFriendship($personId, $friendId) {
         return DB::table('friendship')->where('person_id', $personId)
                 ->where('friend_id', $friendId)->delete();
     }
     
+    /**
+     * Return values:
+     * 'reciprocated'
+     * 'unconfirmed' - person has requested but no response
+     * 'requested' - friend has requested but person has not responded
+     * 'guest' - friendship exists but one of the two parties is a guest
+     * 'none' - no relationship exists
+     * 
+     * @param type $personId
+     * @param type $friendId
+     * @return string
+     */
+    public static function getFriendshipType($personId, $friendId) {
+        //return requested, unconfirmed, reciprocated, guest, none
+        $sql = "SELECT person_id, friend_id FROM friendship WHERE person_id=? and friend_id=?";
+        $friendshipForward = DB::select($sql, array($personId, $friendId));
+        $friendshipBackward = DB::select($sql, array($friendId, $personId));
+        $sql = "SELECT person_id, guest_id FROM guest_friendship WHERE person_id=? and guest_id=?";
+        $guestFriendshipForward = DB::select($sql, array($personId, $friendId));
+        $guestFriendshipBackward = DB::select($sql, array($friendId, $personId));
+        if ($friendshipForward && friendshipBackward) {
+            return "reciprocated";
+        } elseif ($friendshipForward && !$friendshipBackward) {
+            return "unconfirmed";
+        } elseif (!$friendshipForward && $friendshipBackward) {
+            return "requested";
+        } elseif ($guestFriendshipForward || $guestFriendshipBackward) {
+            return "guest";
+        } else {
+            return "none";
+        }
+    }
+    
+    /**
+     * Returns array of friends for person with basic information.
+     * Relationship type can be 'reciprocated', 'unconfirmed' or 'requested'.
+     * 
+     * @param type $personId
+     * @return type
+     */
     public static function getFriends($personId) {
         //make 3 sets: reciprocated, requested, unconfirmed
         $sql = "SELECT person.person_id, member.pic_small, person.first_name, person.last_name, " .
@@ -57,12 +117,25 @@ class FriendshipModel {
         return $result;
     }
     
+    /**
+     * Returns count of friends (includes unconfirmed, excludes guest friendships)
+     * 
+     * @param type $personId
+     * @return type
+     */
     public static function getFriendCount($personId) {
         return DB::table('friendship')
                 ->where('person_id', $personId)
                 ->count();
     }
     
+    /**
+     * Gets person_id for all people who have requested to provided person
+     * but have not received a response.
+     * 
+     * @param type $personId
+     * @return type
+     */
     public static function getFriendRequests($personId) {
         return DB::select('SELECT person_id'.
                 ' FROM friendships'.
@@ -73,6 +146,13 @@ class FriendshipModel {
                 , array($personId, $personId));
     }
     
+    /**
+     * Gets a sorted list of all people physically near provided person.  Does
+     * not include guests or groups.  Not filtered based on friendship.
+     * 
+     * @param type $personId
+     * @return type
+     */
     public static function getNearbyPeople($personId) {
         //also need to exclude current friends
         $result =  DB::select('SELECT F.member_id, person.first_name, person.last_name, ' .
@@ -94,6 +174,13 @@ class FriendshipModel {
 
     }
     
+    /**
+     * Accepts a string of keywords and returns a list of people and groups
+     * that match the string.  Guests are excuded.
+     * 
+     * @param type $searchString
+     * @return type
+     */
     public static function searchParticipants($searchString) {
         $searchArray = explode(" ", $searchString);
         //$sql  = "SELECT member.member_id, person.first_name, person.last_name, ";
