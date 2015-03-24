@@ -40,12 +40,17 @@
                 </ul>-->
                 <ul class="dropdown-menu">
                     <li class="dropdown-header" ng-repeat-start="participantId in keyArray(alertCollection)">
-                        for {{ State.allParticipants[participantId].name }}
+                        for {{ State.getParticipantDetail(participantId, "name") }}
+                        
+                        
+                        {{ State.allParticipants[participantId].firstName }}
+                        {{ State.allParticipants[participantId].lastName }}
+                        {{ State.allParticipants[participantId].title }}
                     </li>
                     <li ng-repeat="alert in alertCollection[participantId]" ng-repeat-end>
                         <a href="">
                             <img ng-src="{{alert.profilePicThumbUrl}}" width="60" height="60" />
-                            {{alert.name}} {{alert.lastName}}<br>
+                            {{alert.firstName}} {{alert.lastName}}<br>
                             {{alert.type}} | viewed {{alert.viewed}}
                         </a>
                     </li>
@@ -59,13 +64,11 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                  <img alt="pic" ng-src="{{State.activeParticipant.profilePicThumbUrl}}" 
+                  <img alt="pic" ng-src="{{participantImagePath + State.activeParticipant.pic_small}}" 
                        width="25" height="25" />
                   <strong>
-                        {{ State.activeParticipant.title }}
-                        {{ State.activeParticipant.firstName }}
-                        {{ State.activeParticipant.lastName }}
-                        {{ State.activeParticipant.participantId }}
+                        {{ State.activeParticipant.name }}
+                        {{ State.activeParticipant.participant_id }}
                   </strong>
                   <b class="caret"></b>
               </a>
@@ -81,8 +84,8 @@
                 </li>
                 <li ng-repeat="account in State.allParticipants"
                     ng-show="account != State.activeParticipant">
-                    <a href="" ng-click="changeActiveParticipant(account.participantId)">
-                        <img alt="pic" ng-src="{{account.profilePicThumbUrl}}" 
+                    <a href="" ng-click="changeActiveParticipant(account.participant_id)">
+                        <img alt="pic" ng-src="{{participantImagePath + account.pic_small}}" 
                              width="25" height="25" /> 
                         {{account.name}}
                     </a>

@@ -19,10 +19,11 @@ Route::get('api/get-participant', array(
     'as' => 'api-get-participant',
     'uses' => 'ApiParticipant@getParticipant'
 ));
-Route::get('/api/check-login-status-new', array(
-    'as' => 'api-check-login-status-new',
-    'uses' => 'ApiAuthentication@checkLoginStatusNew'
+Route::post('api/put-approve-membership', array(
+    'as' => 'api-put-approve-membership',
+    'uses' => 'ApiMembership@putApproveMembership'
 ));
+
 
 
 
@@ -36,13 +37,13 @@ Route::get('/api/check-login-status-new', array(
  * check if provided User ID and currently logged in User ID logged match
  * this is done directly in the controller (for now)
  */
-Route::get('api/get-account', array(
-    'as' => 'api-get-account',
-    'uses' => 'ApiAccount@getAccount'
+Route::get('api/get-person', array(
+    'as' => 'api-get-person',
+    'uses' => 'ApiPerson@getPerson'
 ));
-Route::post('api/delete-account', array(
-    'as' => 'api-delete-account',
-    'uses' => 'ApiAccount@deleteAccount'
+Route::post('api/delete-person', array(
+    'as' => 'api-delete-person',
+    'uses' => 'ApiPerson@deletePerson'
 ));
 
 
@@ -76,7 +77,7 @@ Route::get('api/test', array (
 ));
 Route::post('api/post-user-image', array(
     'as' => 'api-post-user-image',
-    'uses' => 'ApiAccount@postUserImage'
+    'uses' => 'ApiImages@postUserImage'
 ));
 
 
@@ -87,9 +88,9 @@ Route::group(array('before' => 'csrf'), function() {
     /*
      * CROSS-SITE FORGERY PROTECTION ONLY (LOGGED IN OR LOGGED OUT OK)
      */
-    Route::post('api/post-account', array(
-        'as' => 'api-post-account',
-        'uses' => 'ApiAccount@postAccount'
+    Route::post('api/post-person', array(
+        'as' => 'api-post-person',
+        'uses' => 'ApiPerson@postPerson'
     ));
 
     
@@ -111,7 +112,7 @@ Route::group(array('before' => 'auth'), function() {
     ));
     Route::get('api/get-password', array(
         'as' => 'api-get-password',
-        'uses' => 'ApiAccount@getPassword'
+        'uses' => 'ApiPerson@getPassword'
     ));
     Route::get('api/get-group', array(
         'as' => 'api-get-group',
@@ -123,7 +124,7 @@ Route::group(array('before' => 'auth'), function() {
     ));
     Route::get('api/get-collection-nearby-people', array(
         'as' => 'api-get-collection-nearby-people',
-        'uses' => 'ApiFriendship@getCollectionNearbyPeople'
+        'uses' => 'ApiParticipant@getCollectionNearbyPeople'
     ));
     Route::post('api/post-friendship', array(
         'as' => 'api-post-friendship',
@@ -147,15 +148,15 @@ Route::group(array('before' => 'auth'), function() {
     ));
     Route::get('api/get-collection-search-participants', array(
         'as' => 'api-get-collection-search-participants',
-        'uses' => 'ApiFriendship@getCollectionSearchParticipants'
+        'uses' => 'ApiParticipant@getCollectionSearchParticipants'
     ));
     Route::post('api/post-group-membership', array(
         'as' => 'api-post-group-membership',
-        'uses' => 'ApiGroupMember@postMembership'
+        'uses' => 'ApiMembership@postMembership'
     ));
     Route::post('api/delete-group-membership', array(
         'as' => 'api-delete-group-membership',
-        'uses' => 'ApiGroupMember@deleteMembership'
+        'uses' => 'ApiMembership@deleteMembership'
     ));
 
     
@@ -172,13 +173,13 @@ Route::group(array('before' => 'auth'), function() {
         /*
          * LOGGED IN AND CROSS-SITE FORGERY PROTECTION
          */
-        Route::post('api/put-account', array(
-            'as' => 'api-put-account',
-            'uses' => 'ApiAccount@putAccount'
+        Route::post('api/put-person', array(
+            'as' => 'api-put-person',
+            'uses' => 'ApiPerson@putPerson'
         ));
         Route::post('api/put-password', array(
             'as' => 'api-put-password',
-            'uses' => 'ApiAccount@putPassword'
+            'uses' => 'ApiPerson@putPassword'
         ));
         Route::post('api/post-group', array(
             'as' => 'api-post-group',

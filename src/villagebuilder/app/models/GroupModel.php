@@ -40,7 +40,8 @@ class GroupModel {
             DB::transaction(function() use ($personId, $userId) {
                $participantId = DB::table('participant')->insertGetId(
                    array(
-                       'user_id' => $userId 
+                       'user_id' => $userId,
+                       'participant_type' => 'group'
                    )
                );
                DB::table('member')->insert(

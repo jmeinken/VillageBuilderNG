@@ -30,7 +30,7 @@
     </div>
     <br>
     
-    <div ng-controller="ManageAccountInputNameController" ng-if="State.activeParticipant.type=='person'">
+    <div ng-controller="ManageAccountInputNameController" ng-if="State.activeParticipant.participant_type=='person'">
         <strong>Name</strong> 
         <a href="" class="label label-primary" 
                ng-if="!State.accountDataEditToggle.name"
@@ -55,7 +55,7 @@
             
         </div>
     </div>
-    <div ng-controller="ManageAccountInputTitleController" ng-if="State.activeParticipant.type=='group'">
+    <div ng-controller="ManageAccountInputTitleController" ng-if="State.activeParticipant.participant_type=='group'">
         <strong>Group Name and Description</strong> 
         <a href="" class="label label-primary" 
                ng-if="!State.accountDataEditToggle.title"
@@ -209,7 +209,7 @@
     
 </form>
 
-<div ng-if="State.activeParticipant.type=='person'">
+<div ng-if="State.activeParticipant.participant_type=='person'">
     <strong>Password</strong> 
     <a href="" class="label label-primary" 
            ng-show="!State.accountDataEditToggle.password"

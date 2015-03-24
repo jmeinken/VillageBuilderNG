@@ -19,10 +19,10 @@ class ApiAuthentication extends BaseController {
                     $response['participants'][$key]->friendships = FriendshipModel::getFriendships($participant->participant_id);
                     $response['participants'][$key]->memberships = MembershipModel::getMemberships($participant->participant_id);
                     $response['participants'][$key]->ownerships = MembershipModel::getOwnerships($participant->participant_id, Auth::user()->id);
-                    //$response['participants'][$key]->friendCollection = FriendshipModel::getFriends($participant->participant_id);
-                    //$response['participants'][$key]->membershipCollection = MembershipModel::getMembershipCollection($participant->participant_id);
+                    $response['participants'][$key]->friendCollection = FriendshipModel::getFriendCollection($participant->participant_id);
+                    $response['participants'][$key]->membershipCollection = MembershipModel::getMembershipCollection($participant->participant_id);
                 } else if ($participant->participant_type == 'group') {
-                    //$response['participants'][$key]->memberCollection = MembershipModel::getMembers($participant->participant_id);
+                    $response['participants'][$key]->memberCollection = MembershipModel::getMemberCollection($participant->participant_id);
                     $response['participants'][$key]->members = MembershipModel::getMembers($participant->participant_id);
                     $response['participants'][$key]->owner = MembershipModel::getOwner(Auth::user()->id);
                 }

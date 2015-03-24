@@ -81,7 +81,7 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
                 }
                 self.participantDataChanged++;
                 self.userDataChanged++;
-                self.debug = data;
+                //self.debug = data;
             }).
             error(function(data, status, headers, config) {
                 self.debug = data;
@@ -98,6 +98,22 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
             error(function(data, status, headers, config) {
                 self.debug = "log out failed";
             });
+    };
+    
+    /**
+     * returns some detail about this users participants
+     * 
+     * @param {type} participantId
+     * @param {type} field
+     * @returns String
+     */
+    this.getParticipantDetail = function(participantId, field) {
+        for (var i = 0; i < this.allParticipants.length; i++) {
+            if (this.allParticipants[i].participant_id == participantId) {
+                return this.allParticipants[i][field];
+            }
+        }
+        return "";
     };
 
 

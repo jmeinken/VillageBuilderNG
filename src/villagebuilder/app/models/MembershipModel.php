@@ -43,12 +43,13 @@ class MembershipModel {
      * @return type
      */
     public static function approveMembership($personId, $groupId) {
-        return DB::table('group_member')->update(
-            array(
-                   'approved' => 1
-            ))
+        return DB::table('group_member')
             ->where('person_id', $personId)
-            ->where('group_id', $groupId);
+            ->where('group_id', $groupId)
+            ->update(array(
+                   'approved' => 1
+            ));
+            
     }
     
     /**
@@ -60,12 +61,12 @@ class MembershipModel {
      * @return type
      */
     public static function alterMembership($personId, $groupId, $watchingOnly) {
-        return DB::table('group_member')->update(
-            array(
-                   'watchingOnly' => $watchingOnly
-            ))
+        return DB::table('group_member')
             ->where('person_id', $personId)
-            ->where('group_id', $groupId);
+            ->where('group_id', $groupId)
+            ->update(array(
+                   'watchingOnly' => $watchingOnly
+            ));
     }
     
     /**

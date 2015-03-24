@@ -39,7 +39,8 @@ class PersonModel {
                );
                $participantId = DB::table('participant')->insertGetId(
                    array(
-                       'user_id' => $userId 
+                       'user_id' => $userId,
+                       'participant_type' => 'person'
                    )
                );
                DB::table('member')->insert(

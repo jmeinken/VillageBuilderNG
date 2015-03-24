@@ -6,9 +6,9 @@
         participant.group_id }}
 </span>
 
-<div ng-if="participant.type=='person' && State.activeParticipant.type=='person'" 
+<div ng-if="participant.participant_type=='person' && State.activeParticipant.participant_type=='person'" 
     class="clearfix no-padding vcenter-contents list-group-item">
-    <img  ng-src="{{ participant.profilePicThumbUrl }}" class="float-left padded-image"
+    <img  ng-src="{{ participantImagePath + participant.pic_small }}" class="float-left padded-image"
         width="45" height="45">
     <div class="btn-group float-right">
         <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -21,7 +21,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='requested'">
+        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='requestReceived'">
             <li>
                 &#10004; Added you as friend
             </li>
@@ -31,7 +31,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='unconfirmed'">
+        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='requesting'">
             <li>
                 &#10004; Friendship requested
             </li>
@@ -51,12 +51,16 @@
                 </a>
             </li>
         </ul>
+        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='guest'">
+            <li>guest</li>
+        </ul>
         <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='self'">
+            <li>self</li>
         </ul>
     </div>
     <div class="vcenter-me" style="margin-left:51px">
         <span class="text-warning">
-            <strong>{{participant.first_name}} {{participant.last_name}}</strong>
+            <strong>{{participant.name}}</strong>
         </span>
         <br>
         <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
@@ -64,9 +68,9 @@
 
 </div>
 
-<div ng-if="participant.type=='group' && State.activeParticipant.type=='person'"
+<div ng-if="participant.participant_type=='group' && State.activeParticipant.participant_type=='person'"
      class="clearfix no-padding vcenter-contents list-group-item">
-    <img  ng-src="{{ participant.profilePicThumbUrl }}" class="float-left padded-image"
+    <img  ng-src="{{ participantImagePath + participant.pic_small }}" class="float-left padded-image"
               width="45" height="45">
     <div class="btn-group float-right">
         <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -74,7 +78,7 @@
         </a>
         <ul class="dropdown-menu pull-right" ng-if="membershipStatus(participant.id)=='none'">
             <li>
-                <a href="" ng-click="joinGroup(participant.id)">
+                <a href="" ng-click="joinGroup(State.activeParticipant.participant_id, participant.id)">
                     {{participant.id}} Become a member (requires approval)
                 </a>
             </li>
@@ -89,7 +93,7 @@
                 &#10004; Member
             </li>
             <li>
-                <a href="" ng-click="unwatchOrUnjoinGroup(participant.id)">
+                <a href="" ng-click="unwatchOrUnjoinGroup(State.activeParticipant.participant_id, participant.id)">
                     {{participant.id}} Unjoin this group
                 </a>
             </li>
@@ -99,22 +103,22 @@
                 &#10004; Watching
             </li>
             <li>
-                <a href="" ng-click="joinGroup(participant.id)">
+                <a href="" ng-click="joinGroup(State.activeParticipant.participant_id, participant.id)">
                     {{participant.id}} Become a member (requires approval)
                 </a>
             </li>
             <li>
-                <a href="" ng-click="unwatchOrUnjoinGroup(participant.id)">
+                <a href="" ng-click="unwatchOrUnjoinGroup(State.activeParticipant.participant_id, participant.id)">
                     {{participant.id}} Stop Watching
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu pull-right" ng-if="membershipStatus(participant.id)=='unconfirmed'">
+        <ul class="dropdown-menu pull-right" ng-if="membershipStatus(participant.id)=='membershipRequested'">
             <li>
                 &#10004; Awaiting membership approval
             </li>
             <li>
-                <a href="" ng-click="unwatchOrUnjoinGroup(participant.id)">
+                <a href="" ng-click="unwatchOrUnjoinGroup(State.activeParticipant.participant_id, participant.id)">
                     {{participant.id}} Cancel request to become member
                 </a>
             </li>
@@ -122,16 +126,16 @@
     </div>
     <div class="vcenter-me" style="margin-left:51px">
         <span class="text-warning">
-            <strong>{{participant.title}}</strong>
+            <strong>{{participant.name}}</strong>
         </span>
         <br>
         <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
     </div>
 </div>
         
-<div ng-if="participant.type=='person' && State.activeParticipant.type=='group'"
+<div ng-if="participant.participant_type=='person' && State.activeParticipant.participant_type=='group'"
      class="clearfix no-padding vcenter-contents list-group-item">
-    <img  ng-src="{{ participant.profilePicThumbUrl }}" class="float-left padded-image"
+    <img  ng-src="{{ participantImagePath + participant.pic_small }}" class="float-left padded-image"
               width="45" height="45">
     <div class="btn-group float-right">
         <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -139,7 +143,7 @@
         </a>
         <ul class="dropdown-menu pull-right" ng-if="memberStatus(participant.id)=='none'">
             <li>
-                <a href="" ng-click="joinGroup(participant.id)">
+                <a href="" ng-click="">
                     {{participant.id}} Invite to join
                 </a>
             </li>
@@ -149,7 +153,7 @@
                 &#10004; Member
             </li>
             <li>
-                <a href="" ng-click="unjoinGroup(participant.id)">
+                <a href="" ng-click="unwatchOrUnjoinGroup(participant.id, State.activeParticipant.participant_id)">
                     {{participant.id}} Delete from group
                 </a>
             </li>
@@ -159,17 +163,17 @@
                 &#10004; Watching your group
             </li>
             <li>
-                <a href="" ng-click="unjoinGroup(participant.id)">
+                <a href="" ng-click="">
                     {{participant.id}} Invite to join
                 </a>
             </li>
         </ul>
-        <ul class="dropdown-menu pull-right" ng-if="memberStatus(participant.id)=='unconfirmed'">
+        <ul class="dropdown-menu pull-right" ng-if="memberStatus(participant.id)=='membershipRequested'">
             <li>
                 &#10004; Membership requested
             </li>
             <li>
-                <a href="" ng-click="unjoinGroup(participant.id)">
+                <a href="" ng-click="approveGroupMember(participant.id, State.activeParticipant.participant_id)">
                     {{participant.id}} Confirm membership
                 </a>
             </li>
@@ -178,7 +182,7 @@
     <div class="vcenter-me" style="margin-left:51px">
         <span class="text-warning">
             <strong>
-                {{participant.first_name}} {{participant.last_name}}
+                {{participant.name}}
                 <span ng-if="memberStatus(participant.id)=='owner'">(group owner)</span>
             </strong>
         </span>
@@ -186,9 +190,9 @@
         <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
     </div>
 </div>
-<div ng-if="participant.type=='group' && State.activeParticipant.type=='group'"
+<div ng-if="participant.participant_type=='group' && State.activeParticipant.participant_type=='group'"
      class="clearfix no-padding vcenter-contents list-group-item">
-    <img  ng-src="{{ participant.profilePicThumbUrl }}" class="float-left padded-image"
+    <img  ng-src="{{ participantImagePath + participant.pic_small }}" class="float-left padded-image"
               width="45" height="45">
     <div class="btn-group float-right">
       <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -197,7 +201,7 @@
     </div>
     <div class="vcenter-me" style="margin-left:51px">
         <span class="text-warning">
-            <strong>{{participant.title}}</strong>
+            <strong>{{participant.name}}</strong>
         </span>
         <br>
         <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>

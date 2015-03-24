@@ -72,14 +72,14 @@
                 <h4>People Near You</h4>
                 <div ng-controller="NearbyPeopleController">
                     <div ng-repeat="participant in nearbyPeopleCollection"  
-                         ng-if="State.activeParticipant.type=='person'"
+                         ng-if="State.activeParticipant.participant_type=='person'"
                          ng-include="'templates/_reusable/participant-infobox.html?o=1'"></div>
                 </div>
                 <hr>
                 <h4>Friends of Friends</h4>
                 <div ng-controller="NearbyPeopleController">
                     <div ng-repeat="participant in nearbyPeopleCollection"  
-                         ng-if="State.activeParticipant.type=='person'"
+                         ng-if="State.activeParticipant.participant_type=='person'"
                          ng-include="'templates/_reusable/participant-infobox.html?o=1'"></div>
                 </div>
                 

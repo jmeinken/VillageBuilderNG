@@ -62,17 +62,18 @@ class ParticipantModel {
     /**
      * Gets a sorted list of all people physically near provided person.  Does
      * not include guests or groups.  Not filtered based on friendship.
+     * !Could easily be modified to include groups
      * 
      * @param type $personId
      * @return type
      */
     public static function getNearbyParticipants($personId) {
         //also need to exclude current friends
-        $result =  DB::select('SELECT F.member_id, person.first_name, person.last_name, ' .
-                "F.street, F.neighborhood, F.city, F.pic_small, 'person' AS `type`, " .
+        $result =  DB::select('SELECT V.user_id, V.participant_id, V.name, ' .
+                "V.street, V.neighborhood, V.pic_small, V.participant_type, V.pic_large, V.description, " .
                 'SQRT(POW(P.longitude-F.longitude,2)+POW(P.latitude-F.latitude,2)) AS distance ' .
-                'FROM member AS P, member AS F INNER JOIN person on F.member_id = person.person_id ' .
-                'WHERE P.member_id = ? AND F.member_id <> ? ' .
+                'FROM member AS P, member AS F INNER JOIN view_participant V on F.member_id = V.participant_id ' .
+                "WHERE P.member_id = ? AND F.member_id <> ? AND V.participant_type <> 'group'" .
                 'ORDER BY distance LIMIT 100 '
                 , array($personId, $personId));
         foreach($result as $row) {
@@ -100,8 +101,8 @@ class ParticipantModel {
         //$sql .= "member.street, member.neighborhood, member.city, member.pic_small ";
         //$sql .= "FROM member INNER JOIN person on member.member_id = person.person_id ";
         //$sql .= "WHERE ";
-        $result1 = DB::table('member')
-                ->join('person', 'person.person_id', '=', 'member.member_id')
+        $result1 = DB::table('view_participant')
+                ->join('person', 'person.person_id', '=', 'view_participant.participant_id')
                 ->whereIn('person.first_name', $searchArray)
                 ->whereIn('person.last_name', $searchArray)
                 ->get();
@@ -120,8 +121,8 @@ class ParticipantModel {
          * 
          */
         //group search needs to be more flexible
-        $result3 = DB::table('member')
-                ->join('group', 'group.group_id', '=', 'member.member_id')
+        $result3 = DB::table('view_participant')
+                ->join('group', 'group.group_id', '=', 'view_participant.participant_id')
                 ->where('group.title', "=", $searchString)
                 ->get();
         foreach($result3 as $row) {

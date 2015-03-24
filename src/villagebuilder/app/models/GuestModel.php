@@ -24,6 +24,7 @@ class GuestModel {
                $participantId = DB::table('participant')->insertGetId(
                    array(
                        'user_id' => $userId,
+                       'participant_type' => 'guest'
                    )
                );
                DB::table('guest')->insert(

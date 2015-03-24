@@ -58,7 +58,18 @@ class ApiMembership extends BaseController {
      * Changed a membership from inactive to active
      */
     public function putApproveMembership() {
-        
+        if (!Input::has('participant_id') || !Input::has('group_id')) {
+            return Response::json(['errorMessage' => 'Query missing required value'], 
+                    self::STATUS_BAD_REQUEST);
+        }
+        $approveStatus = MembershipModel::approveMembership(Input::get('participant_id'), 
+                Input::get('group_id'));
+        if (!$approveStatus) {
+            return Response::json(['errorMessage' => 
+                    "There was a problem approving this member."], 
+                    self::STATUS_NOT_FOUND);
+        }
+        return Response::json(['message' => 'Group Membership approved'], self::STATUS_OK);
     }
     
     /*

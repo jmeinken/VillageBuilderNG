@@ -111,7 +111,7 @@ class FriendshipModel {
      * @param type $personId
      * @return type
      */
-    public static function getFriends($personId) {
+    public static function getFriendCollection($personId) {
         //make 3 sets: reciprocated, requested, unconfirmed
         $sql = "SELECT V.user_id, V.participant_id, V.participant_type,  " .
                 "V.name, V.street, V.neighborhood, V.pic_small, V.pic_large, V.description " . 

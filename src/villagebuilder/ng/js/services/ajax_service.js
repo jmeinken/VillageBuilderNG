@@ -21,10 +21,10 @@ app.service("Ajax", function() {
     /*
      * Account API
      */
-    this.GET_ACCOUNT = root + 'get-account';
-    this.POST_ACCOUNT = root + 'post-account';
-    this.PUT_ACCOUNT = root + 'put-account';
-    this.DELETE_ACCOUNT = root + 'delete-account';
+    this.GET_ACCOUNT = root + 'get-person';
+    this.POST_ACCOUNT = root + 'post-person';
+    this.PUT_ACCOUNT = root + 'put-person';
+    this.DELETE_ACCOUNT = root + 'delete-person';
     this.GET_PASSWORD = root + 'get-password';
     this.PUT_PASSWORD = root + 'put-password';
     this.POST_USER_IMAGE = root + 'post-user-image';
@@ -48,6 +48,7 @@ app.service("Ajax", function() {
      */
     this.POST_GROUP_MEMBERSHIP = root + 'post-group-membership';
     this.DELETE_GROUP_MEMBERSHIP = root + 'delete-group-membership';
+    this.PUT_APPROVE_MEMBERSHIP = root + 'put-approve-membership';
     
     /*
      * Friendship API
