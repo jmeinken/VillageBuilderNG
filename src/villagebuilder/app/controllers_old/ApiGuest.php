@@ -17,14 +17,14 @@ class ApiGuest extends BaseController {
         }
         $requesterId = Auth::user()->id;
         //if email belongs to a member, reject
-        $person = UserModel::userExists('email', Input::get('email'));
+        $person = AccountModel::getAccountBasic('email', Input::get('email'));
         if ($person) {
             return Response::json(['errorMessage' => 'person is already member','participantInfo' => $person], self::STATUS_BAD_REQUEST);
         }
         //if email belongs to a guest, simply create person-guest relationship
         $guest = GuestModel::getGuest('email', Input::get('email'));
         if ($guest) {
-            GuestFriendshipModel::createPersonGuestFriendship($requesterId, $guest->guest_id);
+            GuestModel::createPersonGuestFriendship($requesterId, $guest->guest_id);
             return Response::json(['message' => 'Friendship created to existing guest.'], self::STATUS_OK);
         }
         //insert record

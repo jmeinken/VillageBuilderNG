@@ -8,7 +8,7 @@ app.controller('SearchParticipantsController', function($scope, $http, $state, A
         $http.get(Ajax.GET_COLLECTION_SEARCH_PARTICIPANTS, {params: parameters}).
             success(function(data, status, headers, config){
                 State.participantSearchResults = data;
-                //State.debug = data;
+                State.debug = data;
                 $state.go('main.participant-search-results');
             }).
             error(function(data, status, headers, config) {

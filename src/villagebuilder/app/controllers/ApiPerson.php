@@ -9,7 +9,7 @@
  * for USER accounts, others are specifically for PERSON accounts.
  * 
  */
-class ApiAccount extends BaseController {
+class ApiPerson extends BaseController {
     
     const STATUS_OK = 200;
     const STATUS_FORBIDDEN = 403;
@@ -26,20 +26,20 @@ class ApiAccount extends BaseController {
     * 
     * @return type
     */
-    public function postAccount() {
+    public function postPerson() {
         //validate input
         $validator = Validator::make( Input::all(), $this->postAccountValidator() );
         if ($validator->fails()) {
             return Response::json(['inputErrors' => $validator->messages()], self::STATUS_BAD_REQUEST);
         }
         //return error if account already exists
-        if ( AccountModel::accountExists('email', Input::get('email')) ) {
+        if ( UserModel::userExists('email', Input::get('email')) ) {
             $inputErrors = ['email' => ['Email already in use.  Do you already have an account?']];
             return Response::json(['inputErrors' => $inputErrors], self::STATUS_FORBIDDEN);
         }
         //insert record for user, member and person
         $code = str_random(60);
-        $success = AccountModel::createAccount($code);
+        $success = PersonModel::createPerson($code);
         //if the transaction failed, return error
         if (!$success) {
             return Response::json('query failed', 500);
@@ -59,46 +59,7 @@ class ApiAccount extends BaseController {
     }
     
 
-    /**
-     * Accepts two image files ('thumb' and 'large').  Saves these files to 
-     * disk and returns the file path to the files.
-     * 
-     * @return json string
-     */
-    public function postUserImage() {
-        //return Response::json(['message' => $ct], self::STATUS_OK);
-        if (Input::hasFile('thumb') && Input::hasFile('large')) {
-            $ct = $this->getNextNumber(Config::get('constants.profilePicFilePath') . 'count.txt');
-            $thumbFileName = 'user_thumb' . $ct . '.jpg';
-            $largeFileName = 'user_large' . $ct . '.jpg';
-            Input::file('thumb')->move(Config::get('constants.profilePicFilePath'), $thumbFileName);
-            Input::file('large')->move(Config::get('constants.profilePicFilePath'), $largeFileName);
-            return Response::json([
-                    'pic_small' => [
-                        'name' => $thumbFileName,
-                        'path' => Config::get('constants.profilePicUrlPath') . $thumbFileName
-                    ],
-                    'pic_large' => [
-                        'name' => $largeFileName,
-                        'path' => Config::get('constants.profilePicUrlPath') . $largeFileName
-                    ]
-                ], self::STATUS_OK);
-        } else {
-            return Response::json(['errorMessage' => 'Photo not sent.  Please try again.'], self::STATUS_BAD_REQUEST);
-        }
-    }
     
-    private function getNextNumber($fileLoc) {
-        //$myfile = fopen($fileLoc, "r+");
-        $count = file_get_contents($fileLoc);
-        $count++;
-        file_put_contents($fileLoc, $count);
-        //fclose($myfile);
-        //$count = (int)file_get_contents($fileLoc);
-        //$count+=1;
-        //file_put_contents($fileLoc,$count);
-        return $count;
-    }
     
     /**
      * Returns json form required for updating password.  For security, data
@@ -150,17 +111,17 @@ class ApiAccount extends BaseController {
      * 
      * @return type
      */
-    public function putAccount() {
+    public function putPerson() {
         //validate input
         $validator = Validator::make( Input::all(), $this->putAccountValidator() );
         if ($validator->fails()) {
             return Response::json(['inputErrors' => $validator->messages()], self::STATUS_BAD_REQUEST);
         }
         //return error if account does not already exist
-        if ( !AccountModel::accountExists('id', Input::get('user_id')) ) {
+        if ( !UserModel::userExists('id', Input::get('user_id')) ) {
             return Response::json(['message' => 'user not found for ' . Input::get('user_id')], self::STATUS_BAD_REQUEST);
         }
-        $success = AccountModel::updateAccount();
+        $success = PersonModel::updatePerson();
         if ($success !== true) {
             return Response::json($success, self::STATUS_NOT_FOUND);
         }
@@ -175,7 +136,7 @@ class ApiAccount extends BaseController {
      * 
      * @return type
      */   
-    public function getAccount() {
+    public function getPerson() {
         if (Input::has('participant_id')) {
             if (Input::get('participant_id') != Auth::user()->id) {
                 return Response::json(['errorMessage' => 
@@ -199,7 +160,7 @@ class ApiAccount extends BaseController {
      * 
      * @return type
      */  
-    public function deleteAccount() {
+    public function deletePerson() {
         if (!Input::has('user_id')) {
             return Response::json(['errorMessage' => "No account selected for deletion."], 
                     self::STATUS_BAD_REQUEST);
@@ -209,7 +170,7 @@ class ApiAccount extends BaseController {
                     "The account you're trying to access and the account you're logged in under don't match."], 
                     self::STATUS_BAD_REQUEST);
             }
-        $deleteStatus = AccountModel::deleteAccount(Input::get('user_id'));
+        $deleteStatus = UserModel::deleteUser(Input::get('user_id'));
         if (!$deleteStatus) {
             return Response::json(['errorMessage' => 
                     "The account you're trying to delete doesn't exist."], 

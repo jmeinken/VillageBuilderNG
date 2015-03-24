@@ -60,23 +60,28 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
             success(function(data, status, headers, config) {
                 self.authenticated = data.logged_in;
                 self.userId = data.userId;
-                self.allParticipants = data.participant;
+                self.allParticipants = data.participants;
                 var i = 0;
                 //set the active participant to the person if not yet set
                 if (isEmpty(self.activeParticipant)) {
-                    for (participantId in self.allParticipants) {
-                        if (self.allParticipants[participantId].type == "person") {
-                            self.activeParticipant = self.allParticipants[participantId];
+                    for (participant in self.allParticipants) {
+                        if (self.allParticipants[participant].participant_type == "person") {
+                            self.activeParticipant = self.allParticipants[participant];
                         }
                     }
                 //otherwise set the active participant to the current active participant
                 //(this is required for changes in active participant data to be visible)
                 } else {
-                    var participantId = self.activeParticipant.participantId;
-                    self.activeParticipant = self.allParticipants[participantId];
+                    var participantId = self.activeParticipant.participant_id;
+                    for (participant in self.allParticipants) {
+                        if (self.allParticipants[participant].participant_id == participantId) {
+                            self.activeParticipant = self.allParticipants[participant];
+                        }
+                    }
                 }
                 self.participantDataChanged++;
                 self.userDataChanged++;
+                self.debug = data;
             }).
             error(function(data, status, headers, config) {
                 self.debug = data;

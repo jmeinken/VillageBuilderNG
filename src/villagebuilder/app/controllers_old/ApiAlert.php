@@ -20,7 +20,7 @@ class ApiAlert extends BaseController {
                     self::STATUS_BAD_REQUEST);
         }
         //get participants for user
-        $participants = UserModel::getParticipantIdsForUser(Input::get('user_id'));
+        $participants = AccountModel::getParticipantsForUser(Input::get('user_id'));
         $result = array();
         foreach ($participants as $participant) {
             $result[$participant] = AlertModel::getAlerts($participant);

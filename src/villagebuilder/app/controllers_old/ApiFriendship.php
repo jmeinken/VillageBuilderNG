@@ -35,7 +35,37 @@ class ApiFriendship extends BaseController {
         
     }
     
-
+    /**
+     * Returns all nearby people for the provided person.
+     * 
+     * @return type
+     */
+    public function getCollectionNearbyPeople() {
+        if (!Input::has('participant_id')) {
+            return Response::json(['errorMessage' => 'Query missing required value'], 
+                    self::STATUS_BAD_REQUEST);
+        }
+        $result = FriendshipModel::getNearbyPeople(Input::get('participant_id'));
+        //if the transaction failed, return error
+        return Response::json($result, self::STATUS_OK);
+    }
+    
+    /**
+     * Returns results of a search of people and groups for the provided search
+     * string.
+     * 
+     * @return type
+     */
+    public function getCollectionSearchParticipants() {
+        if (!Input::has('search_string')) {
+            return Response::json(['errorMessage' => 'Query missing required value'], 
+                    self::STATUS_BAD_REQUEST);
+        }
+        $result = FriendshipModel::searchParticipants(Input::get('search_string'));
+        //if the transaction failed, return error
+        return Response::json($result, self::STATUS_OK);
+    }
+    
     /**
      * 
      * Creates a new friendship between two people (not guest friendships).
@@ -72,7 +102,7 @@ class ApiFriendship extends BaseController {
      * already friends
      * friendship added
      * already guest friend
-     * guest friendship added
+     * guest friendhip added
      * 
      * @return type
      */

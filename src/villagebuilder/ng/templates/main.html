@@ -1,5 +1,5 @@
 <div ng-if="showPage" ng-controller="MainController">
-    <div ng-class="{'navbar':true, 'navbar-inverse':State.activeParticipant.type=='person', 'navbar-default':State.activeParticipant.type!='person'}">
+    <div ng-class="{'navbar':true, 'navbar-inverse':State.activeParticipant.participant_type=='person', 'navbar-default':State.activeParticipant.participant_type!='person'}">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
             <span class="icon-bar"></span>
@@ -12,12 +12,12 @@
           <ul class="nav navbar-nav">
             <li><a href="#">Home</a></li>
             <li><a href="#">My Shared Items</a></li>
-            <li ng-if="State.activeParticipant.type=='person'">
+            <li ng-if="State.activeParticipant.participant_type=='person'">
                 <a href="" ui-sref="main.friends">
                     Friends/Groups
                 </a>
             </li>
-            <li ng-if="State.activeParticipant.type=='group'">
+            <li ng-if="State.activeParticipant.participant_type=='group'">
                 <a href="" ui-sref="main.members">
                     Members
                 </a>
@@ -40,14 +40,12 @@
                 </ul>-->
                 <ul class="dropdown-menu">
                     <li class="dropdown-header" ng-repeat-start="participantId in keyArray(alertCollection)">
-                        for {{ State.allParticipants[participantId].firstName }}
-                        {{ State.allParticipants[participantId].lastName }}
-                        {{ State.allParticipants[participantId].title }}
+                        for {{ State.allParticipants[participantId].name }}
                     </li>
                     <li ng-repeat="alert in alertCollection[participantId]" ng-repeat-end>
                         <a href="">
                             <img ng-src="{{alert.profilePicThumbUrl}}" width="60" height="60" />
-                            {{alert.firstName}} {{alert.lastName}}<br>
+                            {{alert.name}} {{alert.lastName}}<br>
                             {{alert.type}} | viewed {{alert.viewed}}
                         </a>
                     </li>
@@ -74,9 +72,7 @@
               <ul class="dropdown-menu">
                 <li>
                     <a href="" ui-sref="main.manage-account">
-                        View/edit account settings for {{ State.activeParticipant.title }}
-                        {{ State.activeParticipant.firstName }}
-                        {{ State.activeParticipant.lastName }}
+                        View/edit account settings for {{ State.activeParticipant.name }}
                     </a>
                 </li>
                 <li class="divider"></li>
@@ -88,9 +84,7 @@
                     <a href="" ng-click="changeActiveParticipant(account.participantId)">
                         <img alt="pic" ng-src="{{account.profilePicThumbUrl}}" 
                              width="25" height="25" /> 
-                        {{account.title}}
-                        {{account.firstName}}
-                        {{account.lastName}}
+                        {{account.name}}
                     </a>
                 </li>
                 <li class="divider"></li>

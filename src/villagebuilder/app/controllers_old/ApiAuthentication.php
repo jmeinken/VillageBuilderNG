@@ -8,25 +8,101 @@ class ApiAuthentication extends BaseController {
     const STATUS_NOT_FOUND = 404;
     const STATUS_INTERNAL_SERVER_ERROR = 500;
     
+    public function checkLoginStatusNew() {
+        //if (Auth::check()) {
+            $response = [];
+            $response['logged_in'] = true;
+            $response['userId'] = Auth::user()->id;
+            $response['participants'] = UserModel::getParticipantsForUser($response['userId']);
+            
+            foreach ($response['participants'] as $key => $participant) {
+                if ($participant->participant_type == 'person') {
+                    $response['participants'][$key]->friendCollection = FriendshipModel::getFriends($participant->participant_id);
+                    $response['participants'][$key]->membershipCollection = GroupMemberModel::getMemberships($participant->participant_id);
+                } else if ($participant->participant_type == 'group') {
+                    $response['participants'][$key]->memberCollection = GroupMemberModel::getMembers($participant->participant_id);
+                }
+            }
+
+            return Response::json($response, self::STATUS_OK);
+    }
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * Returns 'logged_in' = true or false
+     * If true, also returns useful initial data.  For person, returns: type, 
+     * id, name, pics, friend collection, membership collection.  
+     * For groups, returns type, id, name, pics, member collection
+     * 
+     * @return type
+     */   
     public function checkLoginStatus() {
         if (Auth::check()) {
             $response = [];
             $response['logged_in'] = true;
             $response['userId'] = Auth::user()->id;
-            $response['participants'] = UserModel::getParticipantsForUser($response['userId']);
-            foreach ($response['participants'] as $key => $participant) {
-                if ($participant->participant_type == 'person') {
-                    $response['participants'][$key]->friendships = FriendshipModel::getFriendships($participant->participant_id);
-                    $response['participants'][$key]->memberships = MembershipModel::getMemberships($participant->participant_id);
-                    $response['participants'][$key]->ownerships = MembershipModel::getOwnerships($participant->participant_id, Auth::user()->id);
-                    //$response['participants'][$key]->friendCollection = FriendshipModel::getFriends($participant->participant_id);
-                    //$response['participants'][$key]->membershipCollection = MembershipModel::getMembershipCollection($participant->participant_id);
-                } else if ($participant->participant_type == 'group') {
-                    //$response['participants'][$key]->memberCollection = MembershipModel::getMembers($participant->participant_id);
-                    $response['participants'][$key]->members = MembershipModel::getMembers($participant->participant_id);
-                    $response['participants'][$key]->owner = MembershipModel::getOwner(Auth::user()->id);
-                }
+            $account = DB::table('participant')
+                ->join('member', 'participant.participant_id', '=', 'member.member_id')
+                ->join('person', 'person.person_id', '=', 'member.member_id')
+                ->where('participant.user_id', Auth::user()->id)
+                ->first();
+            //return data for user's personal account
+            $participantId = $account->participant_id;
+            $response['participant'][$participantId] = [];
+            $response['participant'][$participantId]['type'] = 'person';
+            $response['participant'][$participantId]['participantId'] = $account->participant_id;
+            $response['participant'][$participantId]['firstName'] = $account->first_name;
+            $response['participant'][$participantId]['lastName'] = $account->last_name;
+            if ($account->pic_large == "") {
+                $response['participant'][$participantId]['profilePicFile'] = "";
+                $response['participant'][$participantId]['profilePicUrl'] = "assets/images/generic-user.png";
+            } else {
+                $response['participant'][$participantId]['profilePicFile'] = $account->pic_large;
+                $response['participant'][$participantId]['profilePicUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_large;
             }
+            if ($account->pic_small == "") {
+                $response['participant'][$participantId]['profilePicThumbFile'] = "";
+                $response['participant'][$participantId]['profilePicThumbUrl'] = "assets/images/generic-user.png";
+            } else {
+                $response['participant'][$participantId]['profilePicThumbFile'] = $account->pic_small;
+                $response['participant'][$participantId]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $account->pic_small;
+            }
+            $response['participant'][$participantId]['friendCollection'] = FriendshipModel::getFriends($account->participant_id);
+            $response['participant'][$participantId]['membershipCollection'] = GroupMemberModel::getMemberships($account->participant_id);
+            //return data for all groups that user owns
+            $groups = DB::table('participant')
+                ->join('member', 'participant.participant_id', '=', 'member.member_id')
+                ->join('group', 'group.group_id', '=', 'member.member_id')
+                ->where('participant.user_id', Auth::user()->id)
+                ->get();
+            foreach ($groups as $group) {
+                $participantId = $group->participant_id;
+                $response['participant'][$participantId]['participantId'] = $group->participant_id;
+                $response['participant'][$participantId]['type'] = 'group';
+                $response['participant'][$participantId]['title'] = $group->title;
+                if ($group->pic_large == "") {
+                    $response['participant'][$participantId]['profilePicFile'] = "";
+                    $response['participant'][$participantId]['profilePicUrl'] = "assets/images/generic-user.png";
+                } else {
+                    $response['participant'][$participantId]['profilePicFile'] = $group->pic_large;
+                    $response['participant'][$participantId]['profilePicUrl'] = Config::get('constants.profilePicUrlPath') . $group->pic_large;
+                }
+                if ($group->pic_small == "") {
+                    $response['participant'][$participantId]['profilePicThumbFile'] = "";
+                    $response['participant'][$participantId]['profilePicThumbUrl'] = "assets/images/generic-user.png";
+                } else {
+                    $response['participant'][$participantId]['profilePicThumbFile'] = $group->pic_small;
+                    $response['participant'][$participantId]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . $group->pic_small;
+                }
+                //do groups even have friends?
+               $response['participant'][$participantId]['memberCollection'] = GroupMemberModel::getMembers($group->participant_id);
+            }
+            //////////////////////////// 
             return Response::json($response, self::STATUS_OK);
         } else {
             $response = [];
@@ -34,8 +110,6 @@ class ApiAuthentication extends BaseController {
             return Response::json($response, self::STATUS_OK);
         }
     }
-    
-
     
     /**
      * Returns JSON string for login form.

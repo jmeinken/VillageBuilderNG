@@ -103,6 +103,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: 'templates/main/participant-search-results.html?m=17',
             controller: 'SearchParticipantsController'
         })
+        .state('main.participant_view', {
+            url: '/user/:participant_id',
+            templateUrl: 'templates/participant-view.html?x=6',
+            controller: 'ParticipantViewController'
+        })
 });
 
 

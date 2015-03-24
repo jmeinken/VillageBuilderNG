@@ -29,6 +29,119 @@ class ParticipantModel {
         return "none";
     }
     
+    /**
+     * Returns public information about provided participant
+     * 
+     * @param type $participantId
+     * @return type
+     */
+    public static function getPublicParticipantInfo($participantId) {
+        $guest = DB::table('view_participant')
+            ->where('participant_id', $participantId)
+            ->select('user_id', 'participant_id', 'participant_type', 
+                    'name', 'street', 'neighborhood', 'pic_small',
+                    'pic_large', 'description')
+            ->first();
+        return $guest;
+    }
+    
+    /**
+     * Returns restricted (friends-only) info about provided participant.
+     * Does not include private info they are not sharing with friends
+     * 
+     * @param type $participantId
+     * @return type
+     */
+    public static function getRestrictedParticipantInfo($participantId) {
+        $guest = DB::table('view_participant')
+            ->where('participant_id', $participantId)
+            ->first();
+        return $guest;
+    }
+    
+    /**
+     * Gets a sorted list of all people physically near provided person.  Does
+     * not include guests or groups.  Not filtered based on friendship.
+     * 
+     * @param type $personId
+     * @return type
+     */
+    public static function getNearbyParticipants($personId) {
+        //also need to exclude current friends
+        $result =  DB::select('SELECT F.member_id, person.first_name, person.last_name, ' .
+                "F.street, F.neighborhood, F.city, F.pic_small, 'person' AS `type`, " .
+                'SQRT(POW(P.longitude-F.longitude,2)+POW(P.latitude-F.latitude,2)) AS distance ' .
+                'FROM member AS P, member AS F INNER JOIN person on F.member_id = person.person_id ' .
+                'WHERE P.member_id = ? AND F.member_id <> ? ' .
+                'ORDER BY distance LIMIT 100 '
+                , array($personId, $personId));
+        foreach($result as $row) {
+            if ($row->pic_small) {
+                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
+                        $row->pic_small;
+            } else {
+                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
+            }
+        }
+        return $result;
+
+    }
+    
+    /**
+     * Accepts a string of keywords and returns a list of people and groups
+     * that match the string.  Guests are excuded.
+     * 
+     * @param type $searchString
+     * @return type
+     */
+    public static function searchParticipants($searchString) {
+        $searchArray = explode(" ", $searchString);
+        //$sql  = "SELECT member.member_id, person.first_name, person.last_name, ";
+        //$sql .= "member.street, member.neighborhood, member.city, member.pic_small ";
+        //$sql .= "FROM member INNER JOIN person on member.member_id = person.person_id ";
+        //$sql .= "WHERE ";
+        $result1 = DB::table('member')
+                ->join('person', 'person.person_id', '=', 'member.member_id')
+                ->whereIn('person.first_name', $searchArray)
+                ->whereIn('person.last_name', $searchArray)
+                ->get();
+        foreach($result1 as $row) {
+            $row->type = "person";
+        }
+        /*
+        $result2 = DB::table('member')
+                ->join('person', 'person.person_id', '=', 'member.member_id')
+                ->whereIn('person.first_name', $searchArray)
+                ->orWhere(function($query)
+                {
+                    $query->whereIn('person.last_name', $searchArray);
+                })
+                ->get();
+         * 
+         */
+        //group search needs to be more flexible
+        $result3 = DB::table('member')
+                ->join('group', 'group.group_id', '=', 'member.member_id')
+                ->where('group.title', "=", $searchString)
+                ->get();
+        foreach($result3 as $row) {
+            $row->type = "group";
+        }
+        $result = array_merge($result1, $result3);
+        foreach($result as $row) {
+            if ($row->pic_small) {
+                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
+                        $row->pic_small;
+            } else {
+                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
+            }
+        }
+        return $result;
+    }
+    
+    public static function getFriendsOfFriends($personId) {
+        
+    }
 
 
     

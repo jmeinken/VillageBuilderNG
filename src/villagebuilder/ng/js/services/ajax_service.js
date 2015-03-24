@@ -3,6 +3,9 @@ app.service("Ajax", function() {
     
     var root = "http://johnmeinken.com/vb-dev/src/villagebuilder/public/api/";
     
+    
+    this.GET_PARTICIPANT = root + 'get-participant';
+    
     /*
      * Authentication API
      */

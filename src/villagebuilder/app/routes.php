@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Newly added/uncategorized
+ */
 Route::post('api/post-guest', array(
     'as' => 'api-post-guest',
     'uses' => 'ApiGuest@postGuest'
@@ -12,6 +15,16 @@ Route::post('api/post-friendship-using-email', array(
     'as' => 'api-post-friendship-using-email',
     'uses' => 'ApiFriendship@postFriendshipUsingEmail'
 ));
+Route::get('api/get-participant', array(
+    'as' => 'api-get-participant',
+    'uses' => 'ApiParticipant@getParticipant'
+));
+Route::get('/api/check-login-status-new', array(
+    'as' => 'api-check-login-status-new',
+    'uses' => 'ApiAuthentication@checkLoginStatusNew'
+));
+
+
 
 
 
