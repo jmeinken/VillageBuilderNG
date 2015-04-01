@@ -7,14 +7,21 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
     $scope.$state = $state;
     
     $scope.participantImagePath = 'assets/images/user_images/';
+    $scope.participantImageDefault = 'assets/images/generic-user.png';
 
+    $scope.getImage = function(imageName) {
+        if (imageName) {
+            return $scope.participantImagePath + imageName;
+        } else {
+            return $scope.participantImageDefault;
+        }
+    }
     
     
     
     $scope.keyArray = Utilities.keyArray;
     
-    $scope.addFriend = function($friendId) {
-        $participantId = State.activeParticipant.participant_id;
+    $scope.addFriend = function($participantId, $friendId) {
         $http.post(Ajax.POST_FRIENDSHIP, {'participant_id': $participantId, 'friend_id': $friendId }).
             success(function(data, status, headers, config) {
                 State.debug = data;
@@ -24,9 +31,19 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
                 State.debug = data;
             });
     }
-    $scope.deleteFriend = function($friendId) {
-        $participantId = State.activeParticipant.participant_id;
+    $scope.deleteFriend = function($participantId, $friendId) {
+        //$participantId = State.activeParticipant.participant_id;
         $http.post(Ajax.DELETE_FRIENDSHIP, {'participant_id': $participantId, 'friend_id': $friendId }).
+            success(function(data, status, headers, config) {
+                State.debug = data;
+                State.authenticate();
+            }).
+            error(function(data, status, headers, config) {
+                State.debug = data;
+            });
+    }
+    $scope.deleteAlert = function($alertId) {
+        $http.post(Ajax.DELETE_ALERT, {'alert_id': $alertId}).
             success(function(data, status, headers, config) {
                 State.debug = data;
                 State.authenticate();
@@ -158,6 +175,10 @@ app.controller('GlobalController', function($scope, $state, $http, Ajax, State, 
     
     $scope.membershipStatus = function(groupId) {
         memberships = State.activeParticipant.memberships;
+        ownerships = State.activeParticipant.ownerships;
+        if ($.inArray(groupId, ownerships.owner)!=-1) {
+            return "owner";
+        }
         if ($.inArray(groupId, memberships.member)!=-1) {
             return "member";
         }

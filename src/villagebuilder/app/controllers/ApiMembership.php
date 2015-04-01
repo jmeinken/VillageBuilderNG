@@ -24,10 +24,18 @@ class ApiMembership extends BaseController {
             return Response::json(['errorMessage' => 'Query missing required value'], 
                     self::STATUS_BAD_REQUEST);
         }
-        $success = MembershipModel::createMembership(Input::get('participant_id'), 
-                Input::get('group_id'),
-                Input::get('watching_only')
-        );
+        $relationshipAlreadyExists = MembershipModel::checkMembership(Input::get('participant_id'), Input::get('group_id'));
+        if ($relationshipAlreadyExists) {
+            $success = MembershipModel::alterMembership(Input::get('participant_id'), 
+                    Input::get('group_id'),
+                    Input::get('watching_only')
+            );
+        } else {
+            $success = MembershipModel::createMembership(Input::get('participant_id'), 
+                    Input::get('group_id'),
+                    Input::get('watching_only')
+            );
+        }
         //if the transaction failed, return error
         if (!$success) {
             return Response::json('query failed', 500);
@@ -51,6 +59,8 @@ class ApiMembership extends BaseController {
                     "The group membership you're trying to delete doesn't exist."], 
                     self::STATUS_NOT_FOUND);
         }
+        $pK = array('person_id' => Input::get('participant_id'), 'group_id' => Input::get('group_id'));
+        AlertModel::unregisterEvent('group_member', $pK);
         return Response::json(['message' => 'Group Membership deleted'], self::STATUS_OK);
     }
     
@@ -69,6 +79,8 @@ class ApiMembership extends BaseController {
                     "There was a problem approving this member."], 
                     self::STATUS_NOT_FOUND);
         }
+        $pK = array('person_id' => Input::get('participant_id'), 'group_id' => Input::get('group_id'));
+        AlertModel::registerEvent('group_member', $pK);
         return Response::json(['message' => 'Group Membership approved'], self::STATUS_OK);
     }
     

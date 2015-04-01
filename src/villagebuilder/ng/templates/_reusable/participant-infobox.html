@@ -8,7 +8,7 @@
 
 <div ng-if="participant.participant_type=='person' && State.activeParticipant.participant_type=='person'" 
     class="clearfix no-padding vcenter-contents list-group-item">
-    <img  ng-src="{{ participantImagePath + participant.pic_small }}" class="float-left padded-image"
+    <img  ng-src="{{ getImage(participant.pic_small) }}" class="float-left padded-image"
         width="45" height="45">
     <div class="btn-group float-right">
         <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -16,7 +16,7 @@
         </a>
         <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='none'">
             <li>
-                <a href="" ng-click="addFriend(participant.id)">
+                <a href="" ng-click="addFriend(State.activeParticipant.participant_id, participant.id)">
                     {{participant.id}} Add to friend list
                 </a>
             </li>
@@ -26,7 +26,7 @@
                 &#10004; Added you as friend
             </li>
             <li>
-                <a href="" ng-click="addFriend(participant.id)">
+                <a href="" ng-click="addFriend(State.activeParticipant.participant_id, participant.id)">
                     {{participant.id}} Confirm friend request
                 </a>
             </li>
@@ -36,7 +36,7 @@
                 &#10004; Friendship requested
             </li>
             <li>
-                <a href=""  ng-click="deleteFriend(participant.id)">
+                <a href=""  ng-click="deleteFriend(State.activeParticipant.participant_id, participant.id)">
                     {{participant.id}} Cancel friend request
                 </a>
             </li>
@@ -46,7 +46,7 @@
                 &#10004; Friends
             </li>
             <li>
-                <a href=""  ng-click="deleteFriend(participant.id)">
+                <a href=""  ng-click="deleteFriend(State.activeParticipant.participant_id, participant.id)">
                     {{participant.id}} Remove from friend list
                 </a>
             </li>
@@ -60,7 +60,9 @@
     </div>
     <div class="vcenter-me" style="margin-left:51px">
         <span class="text-warning">
-            <strong>{{participant.name}}</strong>
+            <a href="" ui-sref="main.participant_view({ participant_id: participant.participant_id })">
+                <strong>{{participant.name}}</strong>
+            </a>
         </span>
         <br>
         <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
@@ -70,7 +72,7 @@
 
 <div ng-if="participant.participant_type=='group' && State.activeParticipant.participant_type=='person'"
      class="clearfix no-padding vcenter-contents list-group-item">
-    <img  ng-src="{{ participantImagePath + participant.pic_small }}" class="float-left padded-image"
+    <img  ng-src="{{ getImage(participant.pic_small) }}" class="float-left padded-image"
               width="45" height="45">
     <div class="btn-group float-right">
         <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -83,7 +85,7 @@
                 </a>
             </li>
             <li>
-                <a href="" ng-click="watchGroup(participant.id)">
+                <a href="" ng-click="watchGroup(State.activeParticipant.participant_id, participant.id)">
                     {{participant.id}} Watch this group
                 </a>
             </li>
@@ -123,10 +125,17 @@
                 </a>
             </li>
         </ul>
+        <ul class="dropdown-menu pull-right" ng-if="membershipStatus(participant.id)=='owner'">
+            <li>
+                You own this group
+            </li>
+        </ul>
     </div>
     <div class="vcenter-me" style="margin-left:51px">
         <span class="text-warning">
-            <strong>{{participant.name}}</strong>
+            <a href="" ui-sref="main.participant_view({ participant_id: participant.participant_id })">
+                <strong>{{participant.name}}</strong>
+            </a>
         </span>
         <br>
         <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
@@ -135,7 +144,7 @@
         
 <div ng-if="participant.participant_type=='person' && State.activeParticipant.participant_type=='group'"
      class="clearfix no-padding vcenter-contents list-group-item">
-    <img  ng-src="{{ participantImagePath + participant.pic_small }}" class="float-left padded-image"
+    <img  ng-src="{{ getImage(participant.pic_small) }}" class="float-left padded-image"
               width="45" height="45">
     <div class="btn-group float-right">
         <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -181,10 +190,12 @@
     </div>
     <div class="vcenter-me" style="margin-left:51px">
         <span class="text-warning">
-            <strong>
-                {{participant.name}}
-                <span ng-if="memberStatus(participant.id)=='owner'">(group owner)</span>
-            </strong>
+            <a href="" ui-sref="main.participant_view({ participant_id: participant.participant_id })">
+                <strong>
+                    {{participant.name}}
+                    <span ng-if="memberStatus(participant.id)=='owner'">(group owner)</span>
+                </strong>
+            </a>
         </span>
         <br>
         <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
@@ -192,7 +203,7 @@
 </div>
 <div ng-if="participant.participant_type=='group' && State.activeParticipant.participant_type=='group'"
      class="clearfix no-padding vcenter-contents list-group-item">
-    <img  ng-src="{{ participantImagePath + participant.pic_small }}" class="float-left padded-image"
+    <img  ng-src="{{  getImage(participant.pic_small) }}" class="float-left padded-image"
               width="45" height="45">
     <div class="btn-group float-right">
       <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -201,9 +212,45 @@
     </div>
     <div class="vcenter-me" style="margin-left:51px">
         <span class="text-warning">
-            <strong>{{participant.name}}</strong>
+            <a href="" ui-sref="main.participant_view({ participant_id: participant.participant_id })">
+                <strong>{{participant.name}}</strong>
+            </a>
         </span>
         <br>
         <em>{{participant.street}} ({{ participant.neighborhood || participant.city }})</em>
     </div>
+</div>
+
+
+
+
+<div ng-if="participant.participant_type=='guest' && State.activeParticipant.participant_type=='person'" 
+    class="clearfix no-padding vcenter-contents list-group-item">
+    <img  ng-src="{{ getImage(participant.pic_small) }}" class="float-left padded-image"
+        width="45" height="45">
+    <div class="btn-group float-right">
+        <a aria-expanded="false" href="" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu pull-right" ng-if="friendStatus(participant.id)=='guest'">
+            <li>
+                &#10004; Guest Friends
+            </li>
+            <li>
+                <a href=""  ng-click="deleteFriend(State.activeParticipant.participant_id, participant.id)">
+                    {{participant.id}} Remove from friend list
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="vcenter-me" style="margin-left:51px">
+        <span class="text-warning">
+            <a href="" ui-sref="main.participant_view({ participant_id: participant.participant_id })">
+                <strong>{{participant.name}}</strong>
+            </a>
+        </span>
+        <br>
+        <em>(guest account)</em>
+    </div>
+
 </div>

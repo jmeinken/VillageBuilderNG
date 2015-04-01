@@ -44,6 +44,15 @@ class ApiAlert extends BaseController {
         return Response::json($result, self::STATUS_OK);
     }
     
+    public function postDeleteAlert() {
+        if (!Input::has('alert_id')) {
+            return Response::json(['errorMessage' => 'Query missing required value'], 
+                    self::STATUS_BAD_REQUEST);
+        }
+        $result = AlertModel::deleteAlert(Input::get('alert_id'));
+        return Response::json($result, self::STATUS_OK);
+    }
+    
     
     
     

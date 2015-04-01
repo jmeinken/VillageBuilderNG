@@ -14,7 +14,26 @@ app.service("Request", function($http, State) {
                 self[name].meta = data.meta;
                 self[name].inputErrors = {};
                 self[name].formError = '';
-                //State.debug = status;
+                //State.debug = data;
+            }).
+            error(function(data, status, headers, config) {
+                State.debug = data;
+                State.authenticate();
+            });
+    }
+    
+    this.loadArrayForm = function(name, url, parameters, arrayValue) {
+        parameters = parameters || {};
+        $http.get(url, {params: parameters}).
+            success(function(data, status, headers, config){
+                if (typeof(self[name])==='undefined') self[name] = [];
+                self[name][arrayValue] = {};
+                self[name][arrayValue].request = data.values;
+                self[name][arrayValue].originalRequest = JSON.parse(JSON.stringify(data.values));
+                self[name][arrayValue].meta = data.meta;
+                self[name][arrayValue].inputErrors = {};
+                self[name][arrayValue].formError = '';
+                //State.debug = data;
             }).
             error(function(data, status, headers, config) {
                 State.debug = data;

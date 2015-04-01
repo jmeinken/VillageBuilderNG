@@ -17,7 +17,7 @@ class GuestModel {
             DB::transaction(function() use ($email, $firstName, $lastName, $code, $requesterId) {
                $userId = DB::table('users')->insertGetId(
                    array(
-                       'email' => Input::get('email'), 
+                       'email' => $email, 
                        'active' => 1
                    )
                );
@@ -47,6 +47,17 @@ class GuestModel {
            return $e;
         }
     }
+    
+    public static function createGuestRelationship($personId, $guestId) {
+        return DB::table('guest_friendship')->insert(
+                array(
+                    'person_id' => $personId,
+                    'guest_id' => $guestId
+                )
+        );
+    }
+    
+
     
     
 

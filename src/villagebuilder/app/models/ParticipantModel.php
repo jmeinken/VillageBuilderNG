@@ -106,9 +106,11 @@ class ParticipantModel {
                 ->whereIn('person.first_name', $searchArray)
                 ->whereIn('person.last_name', $searchArray)
                 ->get();
-        foreach($result1 as $row) {
-            $row->type = "person";
-        }
+        $result2 = DB::table('view_participant')
+                ->join('guest', 'guest.guest_id', '=', 'view_participant.participant_id')
+                ->whereIn('guest.first_name', $searchArray)
+                ->whereIn('guest.last_name', $searchArray)
+                ->get();
         /*
         $result2 = DB::table('member')
                 ->join('person', 'person.person_id', '=', 'member.member_id')
@@ -125,18 +127,7 @@ class ParticipantModel {
                 ->join('group', 'group.group_id', '=', 'view_participant.participant_id')
                 ->where('group.title', "=", $searchString)
                 ->get();
-        foreach($result3 as $row) {
-            $row->type = "group";
-        }
-        $result = array_merge($result1, $result3);
-        foreach($result as $row) {
-            if ($row->pic_small) {
-                $row->profilePicThumbUrl = Config::get('constants.profilePicUrlPath') . 
-                        $row->pic_small;
-            } else {
-                $row->profilePicThumbUrl = Config::get('constants.genericProfilePicUrl');
-            }
-        }
+        $result = array_merge($result1, $result2, $result3);
         return $result;
     }
     

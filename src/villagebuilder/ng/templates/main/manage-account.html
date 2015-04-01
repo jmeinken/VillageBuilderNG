@@ -196,15 +196,22 @@
     <br>
     
     
+    <a href="" class="label label-primary" data-target="#delete-verify-modal" data-toggle="modal">
+            Delete Account
+    </a>
 
-    
-    <button ng-click="deleteAccount()">Delete Account</button>
- 
-    
-<div class="modal fade" id="map-modal" tabindex="-1" role="dialog" 
-     ng-controller="MapController"
-     aria-labelledby="mapModalLabel" aria-hidden="true" 
-     ng-include="'templates/map-modal.html?g=3'"></div>   
+
+
+
+    <div class="modal fade" id="map-modal" tabindex="-1" role="dialog" 
+         ng-controller="MapController"
+         aria-labelledby="mapModalLabel" aria-hidden="true" 
+         ng-include="'templates/map-modal.html?g=3'"></div>   
+
+    <div class="modal fade" modal-tools id="delete-verify-modal" tabindex="-1" role="dialog" 
+         ng-controller="MapController"
+         aria-labelledby="deleteVerifyModalLabel" aria-hidden="true" 
+         ng-include="'templates/delete-verify-modal.html?n=9'"></div>   
 
     
 </form>
@@ -238,6 +245,8 @@
             <div ng-if="!Request.account">Form loading...</div>
         </div>
 -->
+
+
 
 
     

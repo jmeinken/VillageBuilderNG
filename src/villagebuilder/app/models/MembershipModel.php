@@ -29,6 +29,20 @@ class MembershipModel {
         );
     }
     
+    public static function checkMembership($personId, $groupId) {
+        $result = DB::table('group_member')
+                ->where('group_id', $groupId)
+                ->where('person_id', $personId)
+                ->first(); 
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
+    
     public static function deleteMembership($personId, $groupId) {
         return DB::table('group_member')->where('person_id', $personId)
                 ->where('group_id', $groupId)->delete();
@@ -65,7 +79,7 @@ class MembershipModel {
             ->where('person_id', $personId)
             ->where('group_id', $groupId)
             ->update(array(
-                   'watchingOnly' => $watchingOnly
+                   'watching_only' => $watchingOnly
             ));
     }
     

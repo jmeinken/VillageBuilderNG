@@ -32,8 +32,11 @@ class FriendshipModel {
      * @return type
      */
     public static function deleteFriendship($personId, $friendId) {
-        return DB::table('friendship')->where('person_id', $personId)
+        $deleteFriend =  DB::table('friendship')->where('person_id', $personId)
                 ->where('friend_id', $friendId)->delete();
+        $deleteGuestFriend = DB::table('guest_friendship')->where('person_id', $personId)
+                ->where('guest_id', $friendId)->delete();
+        return $deleteFriend || $deleteGuestFriend;
     }
     
     /**
@@ -49,6 +52,9 @@ class FriendshipModel {
      * @return string
      */
     public static function getFriendshipType($personId, $friendId) {
+        if ($personId == $friendId) {
+            return Relationships::SELF;
+        }
         //return requested, unconfirmed, reciprocated, guest, none
         $sql = "SELECT person_id, friend_id FROM friendship WHERE person_id=? and friend_id=?";
         $friendshipForward = DB::select($sql, array($personId, $friendId));
@@ -57,15 +63,15 @@ class FriendshipModel {
         $guestFriendshipForward = DB::select($sql, array($personId, $friendId));
         $guestFriendshipBackward = DB::select($sql, array($friendId, $personId));
         if ($friendshipForward && friendshipBackward) {
-            return "reciprocated";
+            return Relationships::RECIPROCATED;
         } elseif ($friendshipForward && !$friendshipBackward) {
-            return "requesting";
+            return Relationships::REQUEST_SENT;
         } elseif (!$friendshipForward && $friendshipBackward) {
-            return "request received";
+            return Relationships::REQUEST_RECEIVED;
         } elseif ($guestFriendshipForward || $guestFriendshipBackward) {
-            return "guest";
+            return Relationships::GUEST;
         } else {
-            return "none";
+            return Relationships::NONE;
         }
     }
     
@@ -137,7 +143,12 @@ class FriendshipModel {
                 "AND friendship.person_id NOT IN (SELECT friend_id FROM friendship F " .
                     "WHERE F.person_id = ?) ";
         $result3 = DB::select($sql, array($personId, $personId));
-        $result = array_merge($result1, $result2, $result3);
+        $sql = "SELECT V.user_id, V.participant_id, V.participant_type,  " .
+                "V.name, V.street, V.neighborhood, V.pic_small, V.pic_large, V.description " . 
+                "FROM view_participant V INNER JOIN guest_friendship G ON G.guest_id = V.participant_id " .
+                "WHERE G.person_id = ? ";
+        $result4 = DB::select($sql, array($personId));
+        $result = array_merge($result1, $result2, $result3, $result4);
         return $result;
     }
     

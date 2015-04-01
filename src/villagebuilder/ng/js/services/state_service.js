@@ -87,6 +87,16 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
                 self.debug = data;
             });
     };
+    
+    this.authenticateGuest = function() {   
+        $http.get(Ajax.GUEST_LOGIN).
+            success(function(data, status, headers, config) {
+                self.debug = data;
+            }).
+            error(function(data, status, headers, config) {
+                self.debug = data;
+            });
+    };
 
     this.signOut = function() {   
         $http.get(Ajax.POST_LOG_OUT).
@@ -96,6 +106,7 @@ app.service("State", function($http, $location, $state, $window, Ajax) {
                 $window.location.reload();
             }).
             error(function(data, status, headers, config) {
+                $window.location.reload();
                 self.debug = "log out failed";
             });
     };

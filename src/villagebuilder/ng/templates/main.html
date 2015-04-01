@@ -38,21 +38,52 @@
                         </a>
                     </li>
                 </ul>-->
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu widen">
                     <li class="dropdown-header" ng-repeat-start="participantId in keyArray(alertCollection)">
                         for {{ State.getParticipantDetail(participantId, "name") }}
-                        
-                        
-                        {{ State.allParticipants[participantId].firstName }}
-                        {{ State.allParticipants[participantId].lastName }}
-                        {{ State.allParticipants[participantId].title }}
                     </li>
                     <li ng-repeat="alert in alertCollection[participantId]" ng-repeat-end>
-                        <a href="">
-                            <img ng-src="{{alert.profilePicThumbUrl}}" width="60" height="60" />
-                            {{alert.firstName}} {{alert.lastName}}<br>
-                            {{alert.type}} | viewed {{alert.viewed}}
-                        </a>
+                        <div href="#" class="alert-menu-item" ng-if="alert.type=='friend request'">
+                            <img ng-src="{{getImage(alert.pic_small)}}" 
+                                 class="float-left padded-image"
+                                 width="40" height="40" />
+                            Friend request from {{alert.name}}<br>
+                            <a href="#" ng-click="addFriend(participantId, alert.participant_id)"
+                                class="btn btn-success btn-xs alert-menu-button">Accept</a>
+                            <a href="" ng-click="deleteAlert(alert.alert_id)"
+                               class="btn btn-warning btn-xs alert-menu-button">Ignore</a>
+                            <br clear="all">
+                        </div>
+                        <div href="#" class="alert-menu-item" ng-if="alert.type=='friend confirmation'">
+                            <img ng-src="{{getImage(alert.pic_small)}}" 
+                                 class="float-left padded-image"
+                                 width="40" height="40" />
+                            You are now friends with {{alert.name}}<br>
+                            <a href="#" ng-click="deleteAlert(alert.alert_id)"
+                                class="btn btn-success btn-xs alert-menu-button">OK</a>
+                            <br clear="all">
+                        </div>
+                        <div href="#" class="alert-menu-item" ng-if="alert.type=='member request'">
+                            <img ng-src="{{getImage(alert.pic_small)}}" 
+                                 class="float-left padded-image"
+                                 width="40" height="40" />
+                            Membership request from {{alert.name}}<br>
+                            <a href="#" ng-click="approveGroupMember(alert.participant_id,
+                                        participantId)"
+                                class="btn btn-success btn-xs alert-menu-button">Approve</a>
+                            <a href="" ng-click="deleteAlert(alert.alert_id)"
+                               class="btn btn-warning btn-xs alert-menu-button">Ignore</a>
+                            <br clear="all">
+                        </div>
+                        <div href="#" class="alert-menu-item" ng-if="alert.type=='member confirmation'">
+                            <img ng-src="{{getImage(alert.pic_small)}}" 
+                                 class="float-left padded-image"
+                                 width="40" height="40" />
+                            Your membership in {{alert.name}} has been approved<br>
+                            <a href="" ng-click="deleteAlert(alert.alert_id)"
+                               class="btn btn-warning btn-xs alert-menu-button">OK</a>
+                            <br clear="all">
+                        </div>
                     </li>
                     
 
@@ -64,7 +95,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                  <img alt="pic" ng-src="{{participantImagePath + State.activeParticipant.pic_small}}" 
+                  <img alt="pic" ng-src="{{getImage(State.activeParticipant.pic_small)}}" 
                        width="25" height="25" />
                   <strong>
                         {{ State.activeParticipant.name }}
@@ -85,7 +116,7 @@
                 <li ng-repeat="account in State.allParticipants"
                     ng-show="account != State.activeParticipant">
                     <a href="" ng-click="changeActiveParticipant(account.participant_id)">
-                        <img alt="pic" ng-src="{{participantImagePath + account.pic_small}}" 
+                        <img alt="pic" ng-src="{{getImage(account.pic_small)}}" 
                              width="25" height="25" /> 
                         {{account.name}}
                     </a>

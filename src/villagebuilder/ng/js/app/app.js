@@ -101,8 +101,21 @@ app.config(function($routeProvider) {
 });
 */
 
-
-
+/*
+ * Adds ability to hide modal from controller. 
+ * Add to modal with <div class="modal fade" modal-tools ....>...</div>
+ * call with $scope.dismiss();
+ */
+app.directive('modalTools', function() {
+   return {
+     restrict: 'A',
+     link: function(scope, element, attr) {
+       scope.dismiss = function() {
+           element.modal('hide');
+       };
+     }
+   } 
+});
 
 
 /*

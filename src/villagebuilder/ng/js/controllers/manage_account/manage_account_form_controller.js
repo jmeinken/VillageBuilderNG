@@ -47,11 +47,17 @@ app.controller('ManageAccountFormController', function($scope, $location, $timeo
             postUrl = Ajax.PUT_GROUP;
             deleteUrl = Ajax.DELETE_GROUP;
         }
-        Request.loadForm(form, getUrl, { participant_id: State.activeParticipant.participant_id });
+        Request.loadForm(form, getUrl, { 
+            participant_id: State.activeParticipant.participant_id, 
+            user_id: State.activeParticipant.user_id
+        });
     });
    
     $scope.loadForm = function() {
-        Request.loadForm(form, getUrl, { participant_id: State.activeParticipant.participant_id });
+        Request.loadForm(form, getUrl, { 
+            participant_id: State.activeParticipant.participant_id,
+            user_id: State.activeParticipant.user_id
+        });
     }
     
     $scope.cancelSubmit = function() {
@@ -62,13 +68,21 @@ app.controller('ManageAccountFormController', function($scope, $location, $timeo
     }
     
     $scope.deleteAccount = function() {
-        $http.post(deleteUrl, {'participant_id': State.activeParticipant.participant_id}).
+        $http.post(deleteUrl, {
+            'user_id': State.activeParticipant.user_id,
+            'participant_id': State.activeParticipant.participant_id
+        }).
             success(function(data, status, headers, config) {
                 alert("Account successfully deleted");
                 if (State.activeParticipant.participant_type=='person') {
-                    $location.path( '/login' );
+                    State.signOut();
                 } else {
-                    //State.authenticate(); this doesn't do what I expect
+                    for (participant in State.allParticipants) {
+                        if (State.allParticipants[participant].participant_type == "person") {
+                            State.activeParticipant = State.allParticipants[participant];
+                        }
+                    }
+                    State.authenticate();
                     $location.path( '/main/home' );
                 }
             }).

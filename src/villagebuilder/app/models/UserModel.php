@@ -32,6 +32,15 @@ class UserModel {
         return "none";
     }
     
+    public static function getGuestOrPersonIdByEmail($email) {
+        $result = DB::table('view_participant')
+                ->whereIn('participant_type', array('person', 'guest'))
+                ->where('view_participant.email', $email)
+                ->pluck('participant_id');
+        return $result;
+                
+    }
+    
     /**
      * Check if a USER account exists on any unique field (email, etc.).  Field
      * must be contained in users table.
@@ -81,6 +90,16 @@ class UserModel {
             $arr[] = (int) $participant->participant_id;
         }
         return $arr;
+    }
+    
+    public static function getPersonOrGuestForUser($userId) {
+        $result = DB::table('view_participant')
+            ->where('participant_type', 'guest')
+            ->orWhere('participant_type', 'person')
+            ->where('user_id', '=', $userId)
+            ->pluck('view_participant.participant_id');
+
+        return $result;
     }
     
     

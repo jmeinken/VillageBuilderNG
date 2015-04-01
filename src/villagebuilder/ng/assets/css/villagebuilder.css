@@ -105,3 +105,35 @@ OTHER CSS FOR SITE
    top: 50%;
    transform: translate(0, -50%)
 }
+
+.minify {
+    font-size: 10px;
+}
+
+.wrap {
+    white-space: normal !important;
+}
+
+.widen {
+    min-width: 300px !important;
+}
+
+.dropdown-header {
+    color: #317EAC;
+    font-weight: bold;
+    border-top: #317EAC 2px solid;
+    padding: 3px 5px;
+}
+
+.alert-menu-button {
+    display: inline-block !important;
+    margin: 5px;
+}
+
+.alert-menu-item {
+    font-size: 0.8em;
+    white-space: normal !important;
+    padding: 3px 10px;
+}
+
+

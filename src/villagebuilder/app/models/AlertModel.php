@@ -7,6 +7,8 @@ class AlertModel {
      * is the appropriate action for the event.
      * Currently, new friendships and new group-memberships should be registered.
      * 
+     * Possible submissions:
+     * 
      * @param type $table
      * @param type $pK
      */
@@ -26,6 +28,9 @@ class AlertModel {
                 $alertType = "friend request";
             } else {
                 $alertType = "friend confirmation";
+                // remove alert that was created when the friendship was requested
+                $pK2 = array('person_id'=>$pK['friend_id'], 'friend_id'=>$pK['person_id']);
+                AlertModel::unregisterEvent($table, $pK2);
             }
             DB::table('alert')->insert(
                array(
@@ -52,11 +57,32 @@ class AlertModel {
                     )
                  );
             }
+            if (!$membershipCheck->watching_only && $membershipCheck->approved) {
+                AlertModel::unregisterEvent('group_member', $pK);
+                DB::table('alert')->insert(
+                    array(
+                        'participant_id' => $pK['person_id'], 
+                        'type' => 'member confirmation',
+                        'viewed' => 0,
+                        'json' => $json
+                    )
+                 );
+            }
         }
     }
     
-    public static function deleteAlert() {
-        
+    public static function unregisterEvent($table, $pK) {
+        $json = json_encode(
+            array(
+                'relatedTable' => $table,
+                'relatedRecord' => $pK
+            )
+        );
+        return DB::table('alert')->where('json', $json)->delete();
+    }
+    
+    public static function deleteAlert($alertId) {
+        return DB::table('alert')->where('alert_id', $alertId)->delete();
     }
     
     /**
@@ -73,7 +99,10 @@ class AlertModel {
         $results = [];
         $i = 0;
         foreach ($alerts as $alert) {
-            //do processing
+            $results[$i]['alert_id'] = $alert->alert_id;
+            $results[$i]['type'] = $alert->type;
+            $results[$i]['viewed'] = $alert->viewed;
+            $results[$i]['eventDate'] = $alert->created_on;
             $json = json_decode($alert->json, true);
             if ($json['relatedTable'] == "friendship") {
                 //get supplementary info
@@ -86,25 +115,12 @@ class AlertModel {
                 if (!$record) {
                     continue;
                 }
-                //check if there is a reciprocal friendship
-                $reciprocal = DB::table('friendship')
-                    ->where('friendship.person_id', '=', $json['relatedRecord']['friend_id'])
-                    ->where('friendship.friend_id', '=', $json['relatedRecord']['person_id'])
-                    ->first();
-                $results[$i]['type'] = ($reciprocal ? "friend_confirmation" : "friend_request");
                 //append supplementary info to output
-                $results[$i]['viewed'] = $alert->viewed;
-                $results[$i]['eventDate'] = $alert->created_on;
-                $results[$i]['firstName'] = $record->first_name;
-                $results[$i]['lastName'] = $record->last_name;
-                if ($record->pic_small) {
-                   $results[$i]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . 
-                            $record->pic_small;
-                } else {
-                    $results[$i]['profilePicThumbUrl'] = Config::get('constants.genericProfilePicUrl');
-                }
+                $results[$i]['participant_id'] = $record->person_id;
+                $results[$i]['name'] = $record->first_name . " " . $record->last_name;
+                $results[$i]['pic_small'] = $record->pic_small;
             }
-            if ($json['relatedTable'] == "group_member") {
+            if ($json['relatedTable'] == "group_member" && $alert->type == 'member request') {
                 //get supplementary info
                 $record = DB::table('group_member')
                     ->join('person', 'person.person_id', '=', 'group_member.person_id')
@@ -115,18 +131,26 @@ class AlertModel {
                 if (!$record) {
                     continue;
                 }
-                $results[$i]['type'] = "member request";
                 //append supplementary info to output
-                $results[$i]['viewed'] = $alert->viewed;
-                $results[$i]['eventDate'] = $alert->created_on;
-                $results[$i]['firstName'] = $record->first_name;
-                $results[$i]['lastName'] = $record->last_name;
-                if ($record->pic_small) {
-                   $results[$i]['profilePicThumbUrl'] = Config::get('constants.profilePicUrlPath') . 
-                            $record->pic_small;
-                } else {
-                    $results[$i]['profilePicThumbUrl'] = Config::get('constants.genericProfilePicUrl');
+                $results[$i]['participant_id'] = $record->person_id;
+                $results[$i]['name'] = $record->first_name . " " . $record->last_name;
+                $results[$i]['pic_small'] = $record->pic_small;
+            }
+            if ($json['relatedTable'] == "group_member" && $alert->type == 'member confirmation') {
+                //get supplementary info
+                $record = DB::table('group_member')
+                    ->join('group', 'group.group_id', '=', 'group_member.group_id')
+                    ->join('member', 'member.member_id', '=', 'group.group_id')
+                    ->where('group_member.person_id', '=', $json['relatedRecord']['person_id'])
+                    ->where('group_member.group_id', '=', $json['relatedRecord']['group_id'])
+                    ->first();
+                if (!$record) {
+                    continue;
                 }
+                //append supplementary info to output
+                $results[$i]['participant_id'] = $record->group_id;
+                $results[$i]['name'] = $record->title;
+                $results[$i]['pic_small'] = $record->pic_small;
             }
             $i++;
         }

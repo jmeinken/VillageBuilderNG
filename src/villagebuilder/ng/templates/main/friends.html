@@ -3,7 +3,7 @@
     
     <h3>Here are all your friends</h3>
     <div ng-repeat="participant in State.activeParticipant.friendCollection">
-        <div ng-include="'templates/_reusable/participant-infobox.html?k=1'"></div>
+        <div ng-include="'templates/_reusable/participant-infobox.html?t=5'"></div>
     </div>
     
     <hr>
@@ -32,10 +32,22 @@ Search for friends:
 
 <hr>
 
+
+
+
 Add friends using their email address:
+
+
 <form name="form1" ng-controller="CreateGuestFormController" novalidate
-    ng-init="loadForm()">
-   <div ng-include="'templates/_reusable/generic-form.html?q=2'"></div>
-   
-   <button ng-click="validateForm(form1.$valid)">CreateGuest</button>
+ng-init="loadForm()">
+    <div ng-repeat="request in requests">    
+        <div ng-include="'templates/_reusable/generic-form.html?q=2'"></div>
+    </div>
+    <button ng-click="validateForm(form1.$valid)">CreateGuest</button>
+    <button ng-click="loadForm()">Append Row</button>
 </form>
+
+<br><br><br><br>
+
+
+

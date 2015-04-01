@@ -76,20 +76,48 @@ class ApiFriendship extends BaseController {
      * 
      * @return type
      */
+    public function getFriendshipUsingEmail() {
+        //return Response::json(['message' => json_decode(Input::get('request'))], self::STATUS_OK);
+        if (!Input::has('request')) {
+            return Response::json(['errorMessage' => 'Query missing required value'], 
+                    self::STATUS_BAD_REQUEST);
+        }
+        $requests = json_decode(Input::get('request'), true);
+        $participantId = UserModel::getPersonOrGuestForUser(Auth::user()->id);
+        foreach($requests as $request) {
+            $email = $request['request']['email'];
+            $friendId = UserModel::getGuestOrPersonIdByEmail($email);
+            $friendMemberStatus = UserModel::getMemberStatusByEmail($email);
+            if ($friendMemberStatus=='none') {
+                $friendshipType = 'none';
+                $participant_info = new stdClass();
+            } else {
+                $friendshipType = FriendshipModel::getFriendshipType($participantId, $friendId);
+                $participant_info = ParticipantModel::getPublicParticipantInfo($friendId);
+            }
+            $response[] = array('request'=>$request['request'], 
+                'member_status'=>$friendMemberStatus, 
+                'relationship_status'=> $friendshipType,
+                'participant_info' => $participant_info
+            );
+        }
+        return Response::json(['message' => $response], self::STATUS_OK);
+    }
+    
     public function postFriendshipUsingEmail() {
         if (!Input::has('email')) {
             return Response::json(['errorMessage' => 'Query missing required value'], 
                     self::STATUS_BAD_REQUEST);
         }
         $email = Input::get('email');
-        $participantId = UserModel::getParticipantIdByUserId(Auth::user()->id);
-        $friendId = UserModel::getParticipantIdByEmail($email);
-        $friendUserType = UserModel::getUserTypeByEmail($email);
+        $participantId = UserModel::getParticipantIdsForUser(Auth::user()->id);
+        $friendId = UserModel::getGuestOrPersonIdByEmail($email);
+        $friendUserType = UserModel::getMemberStatusByEmail($email);
         if ($friendUserType=='none') {
             //add new guest and guest friendship
             $response = array('email'=>$email, 'action'=>'guest added');
         }
-        if ($friendUserType=='person') {
+        if ($friendUserType=='member') {
             $friendshipType = FriendshipModel::getFriendshipType($participantId, $friendId);
             if ($friendshipType == "reciprocated" || $friendshipType == "unconfirmed") {
                 $response = array('email'=>$email, 'action'=>'already friend');
@@ -182,6 +210,8 @@ class ApiFriendship extends BaseController {
                     "The friendship you're trying to delete doesn't exist."], 
                     self::STATUS_NOT_FOUND);
         }
+        AlertModel::unregisterEvent('friendship', array('person_id' => Input::get('participant_id'),
+            'friend_id' => Input::get('friend_id')));
         return Response::json(['message' => 'Friendship deleted'], self::STATUS_OK);
     }
     

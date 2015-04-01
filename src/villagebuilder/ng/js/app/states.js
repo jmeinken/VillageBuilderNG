@@ -45,6 +45,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: 'templates/activate-reset-password.html?x=11',
             controller: 'ActivateResetPasswordController'
         })
+        .state('guest', {
+            url: '/guest/:code',
+            templateUrl: 'templates/guest.html?r=2',
+            controller: 'GuestController'
+        })
         .state('info', {
             url: '/info',
             templateUrl: 'templates/info.html?x=5'
@@ -107,6 +112,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             url: '/user/:participant_id',
             templateUrl: 'templates/participant-view.html?x=6',
             controller: 'ParticipantViewController'
+        })
+        .state('main.add-friends', {
+            url: '/add-friends',
+            templateUrl: 'templates/main/add-friends.html?x=6',
+            controller: 'CreateGuestFormController'
         })
 });
 

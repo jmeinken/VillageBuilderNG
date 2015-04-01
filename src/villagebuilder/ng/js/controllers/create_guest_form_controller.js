@@ -2,23 +2,33 @@
 app.controller('CreateGuestFormController', function($scope, $location, $http, $state, Ajax, State, Request, ErrorHandler, Utilities) {
     
     var form = 'createGuest';
-    var getUrl = Ajax.GET_GUEST;
+    var form2 = 'createGuestVerify';
+    var getUrl = Ajax.GET_ADD_RELATIONSHIP_BY_EMAIL;
     //var postUrl = Ajax.POST_GUEST;
-    var postUrl = Ajax.POST_FRIENDSHIP_USING_EMAIL;
+    var getUrl2 = Ajax.GET_ADD_RELATIONSHIP_BY_EMAIL_VERIFY;
+    var postUrl = Ajax.POST_ADD_RELATIONSHIP_BY_EMAIL;
+    var counter = 0;
+    
+    
+
     
     $scope.request = {};
     $scope.inputFields = [];
     $scope.showInputErrors = false;
     $scope.showFormError = true;
+    
 
     $scope.$watch(function() {return Request[form]}, function() {
-        $scope.request = Request[form];
-        $scope.inputFields = Utilities.keyArray(Request[form].request);
+        $scope.requests = Request[form];
+        $scope.inputFields = Utilities.keyArray(Request[form][0].request);
     });
 
-
+    /*
+     * loadArrayForm lets us use multiple copies of the form at once
+     */
     $scope.loadForm = function() {
-        Request.loadForm(form, getUrl);
+        Request.loadArrayForm(form, getUrl, {}, counter);
+        counter++;
     }
 
     $scope.resetForm = function() {
@@ -37,15 +47,32 @@ app.controller('CreateGuestFormController', function($scope, $location, $http, $
         }
     }
     
+    $scope.validateForm2 = function() {
+            submitVerification();
+    }
+    
     function submitForm() {
-        Request[form].inputErrors = {};
-        Request[form].formError = "";
-        $http.post(postUrl, Request[form].request).
+        parameters = { 'request' : JSON.stringify(Request[form]) };
+        $http.get(getUrl2, {params: parameters}).
             success(function(data, status, headers, config) {
-                State.debug = data;
+                //State.debug = data[0];
+                Request[form2] = data[0];
+                $state.go('main.add-friends');
             }).
             error(function(data, status, headers, config) {
                 ErrorHandler.formSubmission(data, status, 'createGuest');
+                State.debug = data;
+            });
+    }
+    
+    function submitVerification() {
+        $http.post(postUrl, { 'request' : JSON.stringify(Request[form2]) }).
+            success(function(data, status, headers, config) {
+                State.debug = data;
+                State.authenticate();
+            }).
+            error(function(data, status, headers, config) {
+                //ErrorHandler.createAccountFormSubmission(data,status,'createAccount');
                 State.debug = data;
             });
     }

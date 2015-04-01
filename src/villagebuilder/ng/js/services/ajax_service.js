@@ -40,8 +40,11 @@ app.service("Ajax", function() {
     /*
      * Guest API
      */
-    this.GET_GUEST = root + 'get-guest';
+    this.GET_ADD_RELATIONSHIP_BY_EMAIL = root + 'get-add-relationship-by-email';
+    this.GET_ADD_RELATIONSHIP_BY_EMAIL_VERIFY = root + 'get-add-relationship-by-email-verify';
+    this.POST_ADD_RELATIONSHIP_BY_EMAIL = root + 'post-add-relationship-by-email';
     this.POST_GUEST = root + 'post-guest';
+    this.GUEST_LOGIN = root + 'guest-login';
     
     /*
      * Group Member API
@@ -59,12 +62,14 @@ app.service("Ajax", function() {
     this.GET_COLLECTION_FRIENDSHIP = root + 'get-collection-friendship';
     this.GET_COLLECTION_SEARCH_PARTICIPANTS = root + 'get-collection-search-participants';
     this.POST_FRIENDSHIP_USING_EMAIL = root + 'post-friendship-using-email';
+    this.GET_FRIENDSHIP_USING_EMAIL = root + 'get-friendship-using-email';
     
     /*
      * Alert API
      */
     this.GET_COLLECTION_ALERT = root + 'get-collection-alert';
     this.POST_RESET_UNVIEWED_ALERT_COUNT = root + 'post-reset-unviewed-alert-count';
+    this.DELETE_ALERT = root + 'post-delete-alert';
     
     /*
      * Error Messages

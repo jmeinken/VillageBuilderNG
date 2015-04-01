@@ -2,6 +2,9 @@
 <div ng-init="loadParticipant()">
 Here is the user view.  {{ participantId }}<br>
 
-{{ participant }}
+{{ participant }}<br><br>
+
+<img src="{{ getImage(participant.pic_large) }}" height="250">
+<h1>{{ participant.name }}</h1>
 
 </div>

@@ -7,13 +7,9 @@ Route::post('api/post-guest', array(
     'as' => 'api-post-guest',
     'uses' => 'ApiGuest@postGuest'
 ));
-Route::get('api/get-guest', array(
-    'as' => 'api-get-guest',
-    'uses' => 'ApiGuest@getGuest'
-));
-Route::post('api/post-friendship-using-email', array(
-    'as' => 'api-post-friendship-using-email',
-    'uses' => 'ApiFriendship@postFriendshipUsingEmail'
+Route::get('api/get-friendship-using-email', array(
+    'as' => 'api-get-friendship-using-email',
+    'uses' => 'ApiFriendship@getFriendshipUsingEmail'
 ));
 Route::get('api/get-participant', array(
     'as' => 'api-get-participant',
@@ -22,6 +18,26 @@ Route::get('api/get-participant', array(
 Route::post('api/put-approve-membership', array(
     'as' => 'api-put-approve-membership',
     'uses' => 'ApiMembership@putApproveMembership'
+));
+Route::get('api/get-add-relationship-by-email', array(
+    'as' => 'api-get-add-realtionship-by-email',
+    'uses' => 'ApiRelationship@getAddRelationshipByEmail'
+));
+Route::get('api/get-add-relationship-by-email-verify', array(
+    'as' => 'api-get-add-realtionship-by-email-verify',
+    'uses' => 'ApiRelationship@getAddRelationshipByEmailVerify'
+));
+Route::post('api/post-add-relationship-by-email', array(
+    'as' => 'api-post-add-realtionship-by-email',
+    'uses' => 'ApiRelationship@postAddRelationshipByEmail'
+));
+Route::post('api/post-delete-alert', array(
+    'as' => 'api-post-delete-alert',
+    'uses' => 'ApiAlert@postDeleteAlert'
+));
+Route::get('api/guest-login', array(
+    'as' => 'api-guest-login',
+    'uses' => 'ApiGuest@guestLogin'
 ));
 
 

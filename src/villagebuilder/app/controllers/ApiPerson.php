@@ -32,10 +32,19 @@ class ApiPerson extends BaseController {
         if ($validator->fails()) {
             return Response::json(['inputErrors' => $validator->messages()], self::STATUS_BAD_REQUEST);
         }
+        //if guest account exists with 
         //return error if account already exists
-        if ( UserModel::userExists('email', Input::get('email')) ) {
+        if ( UserModel::getMemberStatusByEmail(Input::get('email')) == 'member' ) {
             $inputErrors = ['email' => ['Email already in use.  Do you already have an account?']];
             return Response::json(['inputErrors' => $inputErrors], self::STATUS_FORBIDDEN);
+        }
+        if ( UserModel::getMemberStatusByEmail(Input::get('email')) == 'guest' ) {
+            //get list of friends
+            $success = PersonModel::guestToMember();
+            if (!$success) {
+                return Response::json("query failed", 500);
+            }
+            return Response::json(['user' => Input::get('email')], self::STATUS_OK);
         }
         //insert record for user, member and person
         $code = str_random(60);
@@ -137,10 +146,11 @@ class ApiPerson extends BaseController {
      * @return type
      */   
     public function getPerson() {
-        if (Input::has('participant_id')) {
-            if (Input::get('participant_id') != Auth::user()->id) {
+        if (Input::has('user_id') && Input::has('participant_id')) {
+            if (Input::get('user_id') != Auth::user()->id) {
                 return Response::json(['errorMessage' => 
-                    "The account you're trying to access and the account you're logged in under don't match."], 
+                    'participant_id: ' . Input::get('participant_id') . '; user_id: ' . Auth::user()->id],
+                    //"The account you're trying to access and the account you're logged in under don't match."], 
                     self::STATUS_BAD_REQUEST);
             }
             $values = $this->getAccountCurrentValues(Input::get('participant_id'));
@@ -265,12 +275,12 @@ class ApiPerson extends BaseController {
         return $values;
     }
     
-     private function getAccountCurrentValues($userId) {
+     private function getAccountCurrentValues($participantId) {
         $account = DB::table('users')
         ->join('participant', 'users.id', '=', 'participant.user_id')
         ->join('member', 'participant.participant_id', '=', 'member.member_id')
         ->join('person', 'person.person_id', '=', 'member.member_id')
-        ->where('users.id', $userId)->first();
+        ->where('participant.participant_id', $participantId)->first();
         $values = [];
         $values['user_id'] = $account->id;
         $values['member_id'] = $account->member_id;

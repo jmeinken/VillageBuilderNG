@@ -70,4 +70,7 @@ require $framework.'/Illuminate/Foundation/start.php';
 |
 */
 
+/* added by John */
+include('../app/enumerations.php'); 
+
 return $app;

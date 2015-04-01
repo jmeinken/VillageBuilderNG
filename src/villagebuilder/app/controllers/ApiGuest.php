@@ -9,6 +9,10 @@ class ApiGuest extends BaseController {
     const STATUS_INTERNAL_SERVER_ERROR = 500;
     
    
+    public function guestLogin() {
+        
+    }
+    
     public function postGuest() {
         //validate input
         $validator = Validator::make( Input::all(), $this->postGuestValidator() );
